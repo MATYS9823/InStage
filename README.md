@@ -25,12 +25,9 @@ Les états des objets sont stockés dans un fichier (flux binaire).
 Pour qu'un objet puisse être sérialisé, il est nécessaire que sa classe implémente l'interface `java.io.Serializable`.
 Seul les éléments du modèle doivent être conservés.
 
->>>
-:warning: **ATTENTION**
-
-À chaque fois que vous ajoutez/supprimez des attributs ou des classes, vous devez supprimer le fichier de sérialisation situé dans le dossier `persistence/`.
-Si vous ne souhaitez pas supprimer le fichier, vous devez incrémenter l'attribut `serialVersionUID` de la classe modifiée.
->>>
+> [!warning] ATTENTION
+> À chaque fois que vous ajoutez/supprimez des attributs ou des classes, vous devez supprimer le fichier de sérialisation situé dans le dossier `persistence/`.
+> Si vous ne souhaitez pas supprimer le fichier, vous devez incrémenter l'attribut `serialVersionUID` de la classe modifiée.
 
 
 ## Structure du squelette de code fourni
@@ -57,11 +54,8 @@ Les informations à destination du contrôleur sont structurées à l'aide des c
 
 #### IHM, JavaFXGUI
 
->>>
-:warning: **ATTENTION**
-
-Afin de permettre au contrôleur de piloter l'exécution, la classe `JavaFXGUI` n'est pas une spécialisation de `javafx.application.Application`.
->>>
+> [!warning] ATTENTION
+> Afin de permettre au contrôleur de piloter l'exécution, la classe `JavaFXGUI` n'est pas une spécialisation de `javafx.application.Application`.
 
 Le contrôleur démarre l'interface dans la méthode `JavaFXGUI#demarrerInteraction()`.
 La spécification du comportement de l'interface est faite dans la méthode `JavaFXGUI#start(Stage)` (de manière classique).
