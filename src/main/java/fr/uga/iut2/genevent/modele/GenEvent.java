@@ -1,5 +1,8 @@
 package fr.uga.iut2.genevent.modele;
 
+import fr.uga.iut2.genevent.modele.bases.Evenement;
+import fr.uga.iut2.genevent.modele.bases.Utilisateur;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -8,34 +11,49 @@ import java.util.Map;
 
 public class GenEvent implements Serializable {
 
-    private static final long serialVersionUID = 1L;  // nécessaire pour la sérialisation
-    private final Map<String, Utilisateur> utilisateurs;  // association qualifiée par l'email
-    private final Map<String, Evenement> evenements;  // association qualifiée par le nom
+    private static final long serialVersionUID = 1L;
+    private final Map<String, Organisateur> organisateurs;  // qualifié par email
+    private final Map<String, Concert> concerts;            // qualifié par nom
 
     public GenEvent() {
-        this.utilisateurs = new HashMap<>();
-        this.evenements = new HashMap<>();
+        this.organisateurs = new HashMap<>();
+        this.concerts = new HashMap<>();
     }
 
-    public boolean ajouteUtilisateur(String email, String nom, String prenom) {
-        if (this.utilisateurs.containsKey(email)) {
+    public boolean ajouteOrganisateur(String nom, String prenom, String mdp, String email) {
+        if (this.organisateurs.containsKey(email)) {
             return false;
-        } else {
-            this.utilisateurs.put(email, new Utilisateur(email, nom, prenom));
-            return true;
         }
+        this.organisateurs.put(email, new Organisateur(nom, prenom, mdp, email));
+        return true;
     }
 
-    public Map<String, Evenement> getEvenements() {
-        return this.evenements;
+    public Organisateur getOrganisateur(String email) {
+        return this.organisateurs.get(email);
     }
 
-    public void nouvelEvenement(String nom, LocalDate dateDebut, LocalDate dateFin, String adminEmail) {
-        assert !this.evenements.containsKey(nom);
-        assert this.utilisateurs.containsKey(adminEmail);
-        Utilisateur admin = this.utilisateurs.get(adminEmail);
-        Evenement evt = Evenement.initialiseEvenement(this, nom, dateDebut, dateFin, admin);
-        this.evenements.put(nom, evt);
+    public Map<String, Concert> getConcerts() {
+        return this.concerts;
     }
 
+    public Map<String, Organisateur> getOrganisateurs() {
+        return this.organisateurs;
+    }
+
+    public void nouveauConcert(String nom, String dateDebut, String dateFin, String lieu, String emailOrganisateur) {
+        assert !this.concerts.containsKey(nom);
+        assert this.organisateurs.containsKey(emailOrganisateur);
+
+        Concert concert = new Concert(dateDebut, dateFin, lieu, nom);
+        this.concerts.put(nom, concert);
+        this.organisateurs.get(emailOrganisateur).creerConcert(concert);
+    }
+
+    public Organisateur connecter(String email, String mdp) {
+        Organisateur org = this.organisateurs.get(email);
+        if (org != null && org.getMdp().equals(mdp)) {
+            return org;
+        }
+        return null;
+    }
 }

@@ -1,4 +1,6 @@
-package fr.uga.iut2.genevent.modele;
+package fr.uga.iut2.genevent.modele.bases;
+
+import fr.uga.iut2.genevent.modele.GenEvent;
 
 import java.io.Serializable;
 import java.time.LocalDate;

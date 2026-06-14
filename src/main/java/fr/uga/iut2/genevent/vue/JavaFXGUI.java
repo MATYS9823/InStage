@@ -1,5 +1,4 @@
 package fr.uga.iut2.genevent.vue;
-
 import fr.uga.iut2.genevent.controleur.Controleur;
 import java.io.IOException;
 import java.util.Set;
@@ -10,59 +9,43 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.apache.commons.validator.routines.EmailValidator;
 
-
-/**
- * La classe JavaFXGUI est responsable des interactions avec
- * l'utilisa·teur/trice en mode graphique.
- * <p>
- * Attention, pour pouvoir faire le lien avec le
- * {@link fr.uga.iut2.genevent.controleur.Controleur}, JavaFXGUI n'est pas une
- * sous-classe de {@link javafx.application.Application} !
- * <p>
- * Le démarrage de l'application diffère des exemples classiques trouvés dans
- * la documentation de JavaFX : l'interface est démarrée à l'initiative du
- * {@link fr.uga.iut2.genevent.controleur.Controleur} via l'appel de la méthode
- * {@link #demarrerInteraction()}.
- */
 public class JavaFXGUI extends IHM {
 
     private final Controleur controleur;
-    private final CountDownLatch eolBarrier;  // /!\ ne pas supprimer /!\ : suivi de la durée de vie de l'interface
+    private final CountDownLatch eolBarrier;
 
-    // éléments vue nouvel·le utilisa·teur/trice
-    @FXML private TextField newUserForenameTextField;
-    @FXML private TextField newUserSurnameTextField;
-    @FXML private TextField newUserEmailTextField;
-    @FXML private Button newUserOkButton;
-    @FXML private Button newUserCancelButton;
+    // champs vue connexion
+    @FXML private TextField loginEmailTextField;
+    @FXML private PasswordField loginMdpField;
+    @FXML private Button loginOkButton;
+    @FXML private Button loginCancelButton;
+
+    // champs vue nouvel organisateur
+    @FXML private TextField newOrgForenameTextField;
+    @FXML private TextField newOrgSurnameTextField;
+    @FXML private TextField newOrgEmailTextField;
+    @FXML private PasswordField newOrgMdpTextField;
+    @FXML private Button newOrgOkButton;
+    @FXML private Button newOrgCancelButton;
 
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
-
-        this.eolBarrier = new CountDownLatch(1);  // /!\ ne pas supprimer /!\
+        this.eolBarrier = new CountDownLatch(1);
     }
 
-    /**
-     * Point d'entrée principal pour le code de l'interface JavaFX.
-     *
-     * @param primaryStage stage principale de l'interface JavaFX, sur laquelle
-     *     définir des scenes.
-     *
-     * @throws IOException si le chargement de la vue FXML échoue.
-     *
-     * @see javafx.application.Application#start(Stage)
-     */
+//-----  Démarrage  ------------------------------------------------------------
+
     private void start(Stage primaryStage) throws IOException {
         FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("main-view.fxml"));
         mainViewLoader.setController(this);
         Scene mainScene = new Scene(mainViewLoader.load());
-
         primaryStage.setTitle("GenEvent");
         primaryStage.setScene(mainScene);
         primaryStage.show();
@@ -71,15 +54,23 @@ public class JavaFXGUI extends IHM {
 //-----  Éléments du dialogue  -------------------------------------------------
 
     private void exitAction() {
-        // fermeture de l'interface JavaFX : on notifie sa fin de vie
         this.eolBarrier.countDown();
     }
 
-    // menu principal  -----
+    // menu principal
+    @FXML
+    private void connexionMenuItemAction() {
+        this.controleur.saisirConnexion();
+    }
 
     @FXML
-    private void newUserMenuItemAction() {
-        this.controleur.saisirUtilisateur();
+    private void newOrganisateurMenuItemAction() {
+        this.controleur.saisirOrganisateur();
+    }
+
+    @FXML
+    private void newConcertMenuItemAction() {
+        this.controleur.saisirConcert();
     }
 
     @FXML
@@ -88,34 +79,57 @@ public class JavaFXGUI extends IHM {
         this.exitAction();
     }
 
-    // vue nouvel·le utilisa·teur/trice  -----
-
+    // vue connexion
     @FXML
-    private void createNewUserAction() {
-        IHM.InfosUtilisateur data = new IHM.InfosUtilisateur(
-                this.newUserEmailTextField.getText().strip().toLowerCase(),
-                this.newUserSurnameTextField.getText().strip(),
-                this.newUserForenameTextField.getText().strip()
+    private void loginAction() {
+        IHM.InfosConnexion data = new IHM.InfosConnexion(
+                this.loginEmailTextField.getText().strip().toLowerCase(),
+                this.loginMdpField.getText()
         );
-        this.controleur.creerUtilisateur(data);
-        this.newUserOkButton.getScene().getWindow().hide();
+        this.controleur.seConnecter(data);
+        this.loginOkButton.getScene().getWindow().hide();
     }
 
     @FXML
-    private void cancelNewUserAction() {
-        this.newUserCancelButton.getScene().getWindow().hide();
+    private void cancelLoginAction() {
+        this.loginCancelButton.getScene().getWindow().hide();
     }
 
     @FXML
-    private void validateTextFields() {
-        boolean isValid = true;
-
-        isValid &= validateNonEmptyTextField(this.newUserForenameTextField);
-        isValid &= validateNonEmptyTextField(this.newUserSurnameTextField);
-        isValid &= validateEmailTextField(this.newUserEmailTextField);
-
-        this.newUserOkButton.setDisable(!isValid);
+    private void validateLoginFields() {
+        boolean isValid = validateEmailTextField(this.loginEmailTextField)
+                && this.loginMdpField.getText().length() > 0;
+        this.loginOkButton.setDisable(!isValid);
     }
+
+    // vue nouvel organisateur
+    @FXML
+    private void createNewOrganisateurAction() {
+        IHM.InfosOrganisateur data = new IHM.InfosOrganisateur(
+                this.newOrgSurnameTextField.getText().strip(),
+                this.newOrgForenameTextField.getText().strip(),
+                this.newOrgMdpTextField.getText(),
+                this.newOrgEmailTextField.getText().strip().toLowerCase()
+        );
+        this.controleur.creerOrganisateur(data);
+        this.newOrgOkButton.getScene().getWindow().hide();
+    }
+
+    @FXML
+    private void cancelNewOrganisateurAction() {
+        this.newOrgCancelButton.getScene().getWindow().hide();
+    }
+
+    @FXML
+    private void validateOrgTextFields() {
+        boolean isValid = validateNonEmptyTextField(this.newOrgForenameTextField)
+                && validateNonEmptyTextField(this.newOrgSurnameTextField)
+                && validateEmailTextField(this.newOrgEmailTextField)
+                && this.newOrgMdpTextField.getText().length() > 0;
+        this.newOrgOkButton.setDisable(!isValid);
+    }
+
+//-----  Utilitaires de validation  --------------------------------------------
 
     private static void markTextFieldErrorStatus(TextField textField, boolean isValid) {
         if (isValid) {
@@ -127,18 +141,14 @@ public class JavaFXGUI extends IHM {
 
     private static boolean validateNonEmptyTextField(TextField textField) {
         boolean isValid = textField.getText().strip().length() > 0;
-
         markTextFieldErrorStatus(textField, isValid);
-
         return isValid;
     }
 
     private static boolean validateEmailTextField(TextField textField) {
         EmailValidator validator = EmailValidator.getInstance(false, false);
         boolean isValid = validator.isValid(textField.getText().strip().toLowerCase());
-
         markTextFieldErrorStatus(textField, isValid);
-
         return isValid;
     }
 
@@ -146,23 +156,18 @@ public class JavaFXGUI extends IHM {
 
     @Override
     public void demarrerInteraction() {
-        // démarrage de l'interface JavaFX
         Platform.startup(() -> {
             Stage primaryStage = new Stage();
             primaryStage.setOnCloseRequest((WindowEvent t) -> this.exitAction());
             try {
                 this.start(primaryStage);
-            }
-            catch (IOException exc) {
+            } catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
         });
-
-        // attente de la fin de vie de l'interface JavaFX
         try {
             this.eolBarrier.await();
-        }
-        catch (InterruptedException exc) {
+        } catch (InterruptedException exc) {
             System.err.println("Erreur d'exécution de l'interface.");
             System.err.flush();
         }
@@ -179,24 +184,44 @@ public class JavaFXGUI extends IHM {
     }
 
     @Override
-    public void saisirUtilisateur() {
+    public void saisirConnexion() {
         try {
-            FXMLLoader newUserViewLoader = new FXMLLoader(getClass().getResource("new-user-view.fxml"));
-            newUserViewLoader.setController(this);
-            Scene newUserScene = new Scene(newUserViewLoader.load());
-
-            Stage newUserWindow = new Stage();
-            newUserWindow.setTitle("Créer un·e utilisa·teur/trice");
-            newUserWindow.initModality(Modality.APPLICATION_MODAL);
-            newUserWindow.setScene(newUserScene);
-            newUserWindow.showAndWait();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            Stage window = new Stage();
+            window.setTitle("Connexion");
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.setScene(scene);
+            window.showAndWait();
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
     }
 
     @Override
-    public void saisirNouvelEvenement(Set<String> nomsExistants) {
+    public void saisirOrganisateur() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("new-org-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            Stage window = new Stage();
+            window.setTitle("Créer un organisateur");
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.setScene(scene);
+            window.showAndWait();
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    @Override
+    public void saisirNouveauConcert(Set<String> nomsExistants) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void saisirInscription() {
+        saisirOrganisateur();
     }
 }
