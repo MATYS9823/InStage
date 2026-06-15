@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.apache.commons.validator.routines.EmailValidator;
 
-public class JavaFXGUI extends IHM {
+public abstract class JavaFXGUI extends IHM {
 
     private final Controleur controleur;
     private final CountDownLatch eolBarrier;

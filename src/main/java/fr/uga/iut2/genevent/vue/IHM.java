@@ -1,9 +1,11 @@
 package fr.uga.iut2.genevent.vue;
 
+import fr.uga.iut2.genevent.modele.Concert;
 import fr.uga.iut2.genevent.modele.bases.Evenement;
 import fr.uga.iut2.genevent.modele.bases.Utilisateur;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -51,6 +53,11 @@ public abstract class IHM {
             this.dateDebut = dateDebut;
             this.dateFin = dateFin;
             this.lieu = lieu;
+        }
+
+        @Override
+        public String toString() {
+            return "le concert :"+ nom+ " "+ dateDebut+" "+ dateFin+" " +lieu;
         }
     }
 
@@ -102,5 +109,7 @@ public abstract class IHM {
 
     public abstract void saisirConnexion();
     public abstract void saisirInscription();
+
+    public abstract void afficherConcerts(Map<String, Concert> concerts);
 
 }

@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.function.Function;
+
+import fr.uga.iut2.genevent.modele.Concert;
 import org.apache.commons.validator.routines.EmailValidator;
 
 public class CLI extends IHM {
@@ -58,6 +60,7 @@ public class CLI extends IHM {
     private static enum CommandeConnecte {
         SE_DECONNECTER(0, "Se déconnecter"),
         CREER_CONCERT(1, "Créer un concert"),
+        AFFICHER_CONCERT(2,"afficher un concert"),
         ;
 
         private final int code;
@@ -146,6 +149,9 @@ public class CLI extends IHM {
                 case CREER_CONCERT:
                     this.controleur.saisirConcert();
                     break;
+                case AFFICHER_CONCERT:
+                    this.controleur.afficherconcerts();
+                    break;
                 default:
                     assert false : "Commande inconnue.";
             }
@@ -184,6 +190,8 @@ public class CLI extends IHM {
         String dateFin = CLI.lireDate().toString();
         return new InfosNouveauConcert(nom, dateDebut, dateFin, lieu);
     }
+
+
 
 //-----  Implémentation des méthodes abstraites  -------------------------------
 
@@ -225,6 +233,18 @@ public class CLI extends IHM {
     public void saisirInscription() {
         saisirOrganisateur(); // même chose que créer un compte
     }
+
+     @Override
+     public void afficherConcerts(Map<String, Concert> concerts) {
+         if (concerts.isEmpty()) {
+             System.out.println("Aucun concert enregistré.");
+             return;
+         }
+         for (Concert c : concerts.values()) {
+             System.out.println("- " + c.getNom() + " | " + c.getLieu()
+                     + " | " + c.getDate_debut() + " → " + c.getDate_fin());
+         }
+     }
 
 //-----  Primitives  -----------------------------------------------------------
 

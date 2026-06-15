@@ -4,6 +4,8 @@ import fr.uga.iut2.genevent.modele.Organisateur;
 import fr.uga.iut2.genevent.modele.GenEvent;
 import fr.uga.iut2.genevent.vue.CLI;
 import fr.uga.iut2.genevent.vue.IHM;
+import fr.uga.iut2.genevent.vue.JavaFXGUI;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,6 +18,7 @@ public class Controleur {
     public Controleur(GenEvent genevent) {
         this.genevent = genevent;
         this.ihm = new CLI(this);
+//        this.ihm = new JavaFXGUI(this);
         this.organisateurConnecte = null;
     }
 
@@ -111,5 +114,9 @@ public class Controleur {
 
     public void saisirConnexion() {
         this.ihm.saisirConnexion();
+    }
+
+    public void afficherconcerts() {
+        this.ihm.afficherConcerts(this.genevent.getConcerts()); ;
     }
 }
