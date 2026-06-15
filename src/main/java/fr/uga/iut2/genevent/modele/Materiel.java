@@ -1,5 +1,7 @@
 package fr.uga.iut2.genevent.modele;
 
+import java.util.Objects;
+
 public class Materiel {
     private int prix;
     private String typeEquipement;
@@ -43,5 +45,20 @@ public class Materiel {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {return true;}
+        else if (o == null || getClass() != o.getClass()){ return false;}
+
+        Materiel materiel = (Materiel) o;
+        return Objects.equals(nom, materiel.nom) &&
+                Objects.equals(typeEquipement, materiel.typeEquipement);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nom, typeEquipement);
     }
 }
