@@ -1,7 +1,12 @@
 package fr.uga.iut2.genevent.modele;
 
+import fr.uga.iut2.genevent.modele.optimisation.ResultatOptimisation;
+import fr.uga.iut2.genevent.modele.optimisation.ResultatRentabiliteMin;
+import fr.uga.iut2.genevent.modele.optimisation.SimulateurFinancier;
+
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,18 +18,46 @@ public class Concert implements Serializable {
     private LocalDate date_fin;
 
     private String lieu;
-    private ArrayList<String> artiste = new ArrayList<>();
+    private ArrayList<String> artistes = new ArrayList<>();
     private String nom;
     private Salle salle = null;
     private Merch merch;
     private List<Materiel> materiels=new ArrayList<>();
 
-    // Constructeur mis à jour
     public Concert(LocalDate date_debut, LocalDate date_fin, String lieu, String nom) {
         this.date_debut = date_debut;
         this.date_fin = date_fin;
         this.lieu = lieu;
         this.nom = nom;
+    }
+
+
+    public LocalDate getDate_debut() {
+        return date_debut;
+    }
+
+    public LocalDate getDate_fin() {
+        return date_fin;
+    }
+
+    public String getLieu() {
+        return lieu;
+    }
+
+    public ArrayList<String> getArtiste() {
+        return artistes;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public Salle getSalle() {
+        return salle;
+    }
+
+    public void setSalle(Salle salle) {
+        this.salle = salle;
     }
 
     /**
@@ -44,36 +77,9 @@ public class Concert implements Serializable {
         return sallesDisponibles;
     }
 
-    public LocalDate getDate_debut() {
-        return date_debut;
-    }
-
-    public LocalDate getDate_fin() {
-        return date_fin;
-    }
-
-    public String getLieu() {
-        return lieu;
-    }
-
-    public ArrayList<String> getArtiste() {
-        return artiste;
-    }
 
     public void ajouterArtiste(String artiste) {
-        this.artiste.add(artiste);
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public Salle getSalle() {
-        return salle;
-    }
-
-    public void setSalle(Salle salle) {
-        this.salle = salle;
+        this.artistes.add(artiste);
     }
 
     public List<Materiel> getMateriels() {
@@ -91,5 +97,58 @@ public class Concert implements Serializable {
             materiels.remove(materiel);
         }
         else {System.out.println("Ce materiel n'est pas présent");}
+    }
+
+    /**
+     * Calcule le coût de location de la salle affectée à ce concert.
+     * @return Le coût total, ou 0 si aucune salle n'est affectée.
+     */
+    public int getCoutLocationSalle() {
+        if (this.salle == null) {
+            System.out.println("Aucune salle n'est affectée au concert " + this.nom);
+            return 0;
+        }
+        // Le concert délègue le calcul à la salle en lui passant ses propres dates
+        return this.salle.calculerPrixLocation(this.date_debut, this.date_fin);
+    }
+
+    /**
+     * Utilise le simulateur pour générer un bilan de rentabilité pour ce concert.
+     */
+    public void afficherBilanFinancier(SimulateurFinancier simulateur, int tarifStandard, int tarifVIP) {
+        if (this.salle == null) {
+            System.out.println("Veuillez affecter une salle avant de lancer la simulation.");
+            return;
+        }
+
+        System.out.println("=== Bilan Financier : " + this.nom + " ===");
+        System.out.println("Salle : " + this.salle.getNom() + " (" + this.salle.getNbPlaces() + " places)");
+        System.out.println("Date :  Du " + this.getDate_debut() + " au " + this.getDate_fin() + " ( "+ (ChronoUnit.DAYS.between(this.date_debut, this.date_fin) + 1)+" jours )");
+
+        System.out.println("Coût de la location : " + this.getCoutLocationSalle() + " €");
+
+        // 1. Calcul du revenu maximum possible (Sommet A)
+        ResultatOptimisation opti = simulateur.calculerOptimisationRevenu(this.salle,this.getCoutLocationSalle(), tarifStandard, tarifVIP);
+        if (opti != null) {
+            System.out.println("[PROFIT MAXIMUM]");
+            System.out.println("-> Places Standards : " + opti.getPlacesStandard());
+            System.out.println("-> Places VIP : " + opti.getPlacesVIP());
+            System.out.println("-> Chiffre d'affaires max : " + opti.getRevenuMax() + " €");
+            System.out.println("-> Bénéfice net : " + (opti.getRevenuMax()-this.getCoutLocationSalle()) + " €");
+        } else {
+            System.out.println("⚠️ La jauge de la salle est trop petite pour atteindre l'objectif de " + this.getCoutLocationSalle() + " €.");
+        }
+
+        System.out.println("---------------------------------");
+
+        // 2. Calcul du minimum syndical pour être rentable (Sommet B)
+        ResultatRentabiliteMin min = simulateur.calculerMinimumBilletsPourRentabilite(this.salle, this.getCoutLocationSalle(), tarifStandard, tarifVIP);
+        if (min != null) {
+            System.out.println("[MINIMUM POUR RENTABILITÉ]");
+            System.out.println("-> Minimum Places Standards : " + min.getPlacesStandard());
+            System.out.println("-> Minimum Places VIP : " + min.getPlacesVIP());
+            System.out.println("-> Total billets à vendre : " + min.getTotalBilletsAchetes() + " / " + this.salle.getNbPlaces());
+        }
+        System.out.println("===================================\n");
     }
 }

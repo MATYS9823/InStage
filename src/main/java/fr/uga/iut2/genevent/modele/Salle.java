@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.temporal.ChronoUnit;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -34,20 +35,6 @@ public class Salle implements Serializable {
         this.tarif=tarif;
     }
 
-    // NOUVEAU : Méthode pour vérifier si la salle est libre pour des dates données
-    public boolean estDisponible(LocalDate debut, LocalDate fin) {
-        for (Occupation occ : occupations) {
-            if (occ.chevauche(debut, fin)) {
-                return false; // La salle est occupée sur cette période
-            }
-        }
-        return true; // Aucune occupation ne chevauche, la salle est libre
-    }
-
-    // NOUVEAU : Méthode pour réserver la salle
-    public void ajouterOccupation(LocalDate debut, LocalDate fin) {
-        this.occupations.add(new Occupation(debut, fin));
-    }
 
 
     public String getNom() {
@@ -73,4 +60,44 @@ public class Salle implements Serializable {
     public int getTarif() {
         return tarif;
     }
+
+
+
+    // NOUVEAU : Méthode pour vérifier si la salle est libre pour des dates données
+    public boolean estDisponible(LocalDate debut, LocalDate fin) {
+        for (Occupation occ : occupations) {
+            if (occ.chevauche(debut, fin)) {
+                return false; // La salle est occupée sur cette période
+            }
+        }
+        return true; // Aucune occupation ne chevauche, la salle est libre
+    }
+
+    // NOUVEAU : Méthode pour réserver la salle
+    public void ajouterOccupation(LocalDate debut, LocalDate fin) {
+        this.occupations.add(new Occupation(debut, fin));
+    }
+
+    /**
+     * Calcule le coût total de la location de la salle pour une période donnée.
+     * * @param debut La date de début du concert
+     * @param fin La date de fin du concert
+     * @return Le prix total en euros
+     * @throws IllegalArgumentException si la date de fin est antérieure à la date de début
+     */
+    public int calculerPrixLocation(LocalDate debut, LocalDate fin) {
+        // Calcul du nombre de jours (inclusif)
+        long nbJours = ChronoUnit.DAYS.between(debut, fin) + 1;
+
+        // Sécurité : on vérifie que les dates sont cohérentes
+        if (nbJours <= 0) {
+            throw new IllegalArgumentException("La date de fin ne peut pas être antérieure à la date de début.");
+        }
+
+        // Calcul du prix total (tarif de la salle * nombre de jours)
+        return (int) (nbJours * this.tarif);
+    }
+
+
+
 }
