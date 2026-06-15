@@ -33,6 +33,12 @@ public class Salle implements Serializable {
         return nom;
     }
 
+    public List<Place> getListePlaces() {
+        return listePlaces;
+    }
+
+
+
     public int getNbPlaces() {
         return nbPlaces;
     }
