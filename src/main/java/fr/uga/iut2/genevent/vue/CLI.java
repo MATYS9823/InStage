@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import fr.uga.iut2.genevent.modele.Concert;
+import fr.uga.iut2.genevent.modele.Organisateur;
 import org.apache.commons.validator.routines.EmailValidator;
 
 public class CLI extends IHM {
@@ -161,8 +162,21 @@ public class CLI extends IHM {
     private InfosConnexion dialogueSaisirConnexion() {
         CLI.afficher("== Connexion ==");
         String email = CLI.lireEmail();
-        CLI.afficher("Saisir le mot de passe :");
-        String mdp = CLI.lireNom();
+        String mdp;
+
+        do {
+            CLI.afficher("Saisir le mot de passe (ou '1' pour retrouver votre mot de passe) :");
+            mdp = CLI.lireNom();
+            if (mdp.equals("1")) {
+                Organisateur org = this.controleur.getOrganisateur(email);
+                if (org != null) {
+                    CLI.afficher("Votre mot de passe est : " + org.getMdp());
+                } else {
+                    CLI.afficher("Aucun compte trouvé pour cet email.");
+                }
+
+            }
+        } while (mdp.equals("1")) ;
         return new InfosConnexion(email, mdp);
     }
 
@@ -217,6 +231,8 @@ public class CLI extends IHM {
         this.controleur.seConnecter(infos);
     }
 
+
+
     @Override
     public void saisirOrganisateur() {
         InfosOrganisateur infos = dialogueSaisirOrganisateur();
@@ -246,7 +262,9 @@ public class CLI extends IHM {
          }
      }
 
-//-----  Primitives  -----------------------------------------------------------
+
+
+    //-----  Primitives  -----------------------------------------------------------
 
     private static <T> String synopsisEnum(T[] values, Function<T, String> toSynopsis) {
         StringBuilder sb = new StringBuilder();

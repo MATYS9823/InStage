@@ -119,4 +119,10 @@ public class Controleur {
     public void afficherconcerts() {
         this.ihm.afficherConcerts(this.genevent.getConcerts()); ;
     }
+
+    public Organisateur getOrganisateur(String email) {
+        return this.genevent.getOrganisateur(email);
+    }
+
+
 }

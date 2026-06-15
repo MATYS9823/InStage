@@ -14,6 +14,7 @@ public class Concert implements Serializable {
     private Salle salle =null;
     private List<Materiel> materiels=new ArrayList<>();
 
+
     public Concert(String date_debut, String date_fin, String lieu, String nom) {
         this.date_debut = date_debut;
         this.date_fin = date_fin;

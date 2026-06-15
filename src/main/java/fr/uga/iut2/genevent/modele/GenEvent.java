@@ -14,10 +14,12 @@ public class GenEvent implements Serializable {
     private static final long serialVersionUID = 1L;
     private final Map<String, Organisateur> organisateurs;  // qualifié par email
     private final Map<String, Concert> concerts;            // qualifié par nom
+    private final Map<String,Materiel> materiel;
 
     public GenEvent() {
         this.organisateurs = new HashMap<>();
         this.concerts = new HashMap<>();
+        this.materiel = new HashMap<>();
     }
 
     public boolean ajouteOrganisateur(String nom, String prenom, String mdp, String email) {
@@ -48,6 +50,17 @@ public class GenEvent implements Serializable {
         this.concerts.put(nom, concert);
         this.organisateurs.get(emailOrganisateur).creerConcert(concert);
     }
+
+ /*   public void nouveauMateriel(String nom, int Prix, String Fournisseur, String TypeEquipement,String nomConcert){
+        assert  !this.materiel.containsKey(nom);
+        assert this.concerts.containsKey(nomConcert);
+
+        Materiel materiel = new Materiel(Prix,TypeEquipement,Fournisseur,nom);
+        this.materiel.put(nom,materiel);
+        this.concerts.get(nomConcert).
+    }*/
+
+
 
     public Organisateur connecter(String email, String mdp) {
         Organisateur org = this.organisateurs.get(email);
