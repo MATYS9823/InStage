@@ -1,6 +1,7 @@
 package fr.uga.iut2.genevent.modele;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class Organisateur implements Serializable {
@@ -10,7 +11,7 @@ public class Organisateur implements Serializable {
     private String mdp;
     private String id;
     private String email;
-    private ArrayList<Concert>  concerts = new ArrayList<Concert>();
+    private ArrayList<Concert>  concerts = new ArrayList<>();
 
     public Organisateur(String nom, String prenom, String mdp, String email) {
         this.nom = nom;
@@ -19,8 +20,19 @@ public class Organisateur implements Serializable {
         this.email = email;
     }
 
-    public void générer_id() {
-        this.id = "id";
+    public BigInteger générer_id(String email) {
+        email= email.toLowerCase();
+        StringBuilder idTemp=new StringBuilder();
+        for (int i = 0; i < email.length(); i++) {
+            char caractere = email.charAt(i);
+            if (caractere >= 'a' && caractere <= 'z') {
+                int positionAlphabet = caractere - 'a' + 1;
+                idTemp.append(positionAlphabet);
+            }
+        }
+        BigInteger idFinal = new BigInteger(idTemp.toString());
+        return idFinal;
+
     }
 
     public String getNom() {

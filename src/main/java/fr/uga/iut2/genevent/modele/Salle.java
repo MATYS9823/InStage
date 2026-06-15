@@ -1,20 +1,32 @@
 package fr.uga.iut2.genevent.modele;
 
+import javafx.application.Platform;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Salle implements Serializable {
     private static final long serialVersionUID = 1L;
     private String nom;
+    private List<Place> listePlaces=new ArrayList<>();
     private int nbPlaces;
     private String lieu;
     private int tarif;
-    private String type;
 
-    public Salle(String nom,String lieu,int tarif,String type){
+
+    public Salle(String nom, List<Place> listePlaces, int nbPlaces, String lieu, int tarif) {
+        this.nom = nom;
+        this.listePlaces = listePlaces;
+        this.nbPlaces = nbPlaces;
+        this.lieu = lieu;
+        this.tarif = tarif;
+    }
+
+    public Salle(String nom,String lieu,int tarif){
         this.nom=nom;
         this.lieu=lieu;
         this.tarif=tarif;
-        this.type=type;
     }
 
     public String getNom() {
@@ -35,9 +47,5 @@ public class Salle implements Serializable {
 
     public int getTarif() {
         return tarif;
-    }
-
-    public String getType() {
-        return type;
     }
 }
