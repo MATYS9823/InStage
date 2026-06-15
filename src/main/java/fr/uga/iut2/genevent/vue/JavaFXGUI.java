@@ -1,5 +1,8 @@
 package fr.uga.iut2.genevent.vue;
 import fr.uga.iut2.genevent.controleur.Controleur;
+
+import fr.uga.iut2.genevent.modele.Organisateur;
+import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +48,8 @@ public class JavaFXGUI extends IHM {
     @FXML private HBox sideMenu;
     @FXML private Region scrim;
 
+    @FXML private TextField forgotEmailTextField;
+
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
         this.eolBarrier = new CountDownLatch(1);
@@ -84,6 +89,17 @@ public class JavaFXGUI extends IHM {
         }
     }
 
+    private void allerVersMotdePasseOublie() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("forgot-password-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
     /** Revient à la vue de login (après déconnexion). */
     private void allerVersLogin() {
         try {
@@ -113,6 +129,25 @@ public class JavaFXGUI extends IHM {
     @FXML
     private void newOrganisateurMenuItemAction() {
         this.controleur.saisirOrganisateur();
+
+    }
+
+    @FXML
+    private void donnermotdepasse(){
+        String email = forgotEmailTextField.getText().strip().toLowerCase();
+        Organisateur org = this.controleur.getOrganisateur(email);
+
+        if (org !=null){
+            informerUtilisateur("Votre mot de passe est :"+ org.getMdp(),true);
+        }
+        else {
+            informerUtilisateur("Aucun compte trouvé pour cet email.",false);
+        }
+    }
+
+    @FXML
+    private void motdepasseOublierAction() {
+        allerVersMotdePasseOublie();
     }
 
     @FXML
@@ -159,10 +194,10 @@ public class JavaFXGUI extends IHM {
     @FXML
     private void createNewOrganisateurAction() {
         IHM.InfosOrganisateur data = new IHM.InfosOrganisateur(
-                this.newOrgSurnameTextField.getText().strip(),
-                this.newOrgForenameTextField.getText().strip(),
-                this.newOrgMdpTextField.getText(),
-                this.newOrgEmailTextField.getText().strip().toLowerCase()
+                this.newOrgEmailTextField.getText().strip().toLowerCase(),  // email
+                this.newOrgSurnameTextField.getText().strip(),              // nom
+                this.newOrgForenameTextField.getText().strip(),             // prenom
+                this.newOrgMdpTextField.getText()                          // mdp
         );
         this.controleur.creerOrganisateur(data);
         this.newOrgOkButton.getScene().getWindow().hide();
