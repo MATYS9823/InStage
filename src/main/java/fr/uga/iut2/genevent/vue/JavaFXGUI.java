@@ -1,8 +1,11 @@
 package fr.uga.iut2.genevent.vue;
 import fr.uga.iut2.genevent.controleur.Controleur;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+
+import fr.uga.iut2.genevent.modele.Concert;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,10 +18,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.apache.commons.validator.routines.EmailValidator;
 
-public abstract class JavaFXGUI extends IHM {
+public class JavaFXGUI extends IHM {
 
     private final Controleur controleur;
     private final CountDownLatch eolBarrier;
+
+    // Stage principal, gardé pour changer de scène
+    private Stage primaryStage;
 
     // champs vue connexion
     @FXML private TextField loginEmailTextField;
@@ -34,6 +40,11 @@ public abstract class JavaFXGUI extends IHM {
     @FXML private Button newOrgOkButton;
     @FXML private Button newOrgCancelButton;
 
+    // champs vue accueil
+    @FXML private Label welcomeLabel;
+    @FXML private HBox sideMenu;
+    @FXML private Region scrim;
+
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
         this.eolBarrier = new CountDownLatch(1);
@@ -41,13 +52,48 @@ public abstract class JavaFXGUI extends IHM {
 
 //-----  Démarrage  ------------------------------------------------------------
 
-    private void start(Stage primaryStage) throws IOException {
-        FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("main-view.fxml"));
-        mainViewLoader.setController(this);
-        Scene mainScene = new Scene(mainViewLoader.load());
+    private void start(Stage stage) throws IOException {
+        this.primaryStage = stage;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+        loader.setController(this);
+        Scene scene = new Scene(loader.load());
         primaryStage.setTitle("GenEvent");
-        primaryStage.setScene(mainScene);
+        primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+//-----  Navigation  -----------------------------------------------------------
+
+    /**
+     * Charge home-view.fxml dans le stage principal après une connexion réussie.
+     * Met à jour le label de bienvenue avec le prénom/nom de l'organisateur.
+     */
+    private void allerVersAccueil() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+            // Met à jour le label de bienvenue si présent dans le FXML
+            if (welcomeLabel != null) {
+                welcomeLabel.setText("Bienvenue " + controleur.getOrganisateurConnecte().getPrenom()
+                        + " " + controleur.getOrganisateurConnecte().getNom());
+            }
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    /** Revient à la vue de login (après déconnexion). */
+    private void allerVersLogin() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
     }
 
 //-----  Éléments du dialogue  -------------------------------------------------
@@ -56,10 +102,12 @@ public abstract class JavaFXGUI extends IHM {
         this.eolBarrier.countDown();
     }
 
-    // menu principal
+    // ---- Navbar home ----
+
     @FXML
     private void connexionMenuItemAction() {
-        this.controleur.saisirConnexion();
+        // Depuis la home, ce bouton sert à se déconnecter
+        this.controleur.seDeconnecter();
     }
 
     @FXML
@@ -78,7 +126,8 @@ public abstract class JavaFXGUI extends IHM {
         this.exitAction();
     }
 
-    // vue connexion
+    // ---- Vue connexion (login-view.fxml) ----
+
     @FXML
     private void loginAction() {
         IHM.InfosConnexion data = new IHM.InfosConnexion(
@@ -86,7 +135,11 @@ public abstract class JavaFXGUI extends IHM {
                 this.loginMdpField.getText()
         );
         this.controleur.seConnecter(data);
-        this.loginOkButton.getScene().getWindow().hide();
+        // Si la connexion a réussi, on navigue vers l'accueil
+        if (this.controleur.estConnecte()) {
+            allerVersAccueil();
+        }
+        // Sinon, informerUtilisateur() a déjà affiché une alerte d'erreur
     }
 
     @FXML
@@ -101,7 +154,8 @@ public abstract class JavaFXGUI extends IHM {
         this.loginOkButton.setDisable(!isValid);
     }
 
-    // vue nouvel organisateur
+    // ---- Vue nouvel organisateur ----
+
     @FXML
     private void createNewOrganisateurAction() {
         IHM.InfosOrganisateur data = new IHM.InfosOrganisateur(
@@ -127,13 +181,13 @@ public abstract class JavaFXGUI extends IHM {
                 && this.newOrgMdpTextField.getText().length() > 0;
         this.newOrgOkButton.setDisable(!isValid);
     }
-    // champs vue accueil
-    @FXML
-    private Label welcomeLabel;
 
-    //déclaration du volet et du fond
-    @FXML private HBox sideMenu;
-    @FXML private Region scrim;
+    public void toggleMenu() {
+        boolean isOpen = sideMenu.isVisible();
+        sideMenu.setVisible(!isOpen);
+        scrim.setVisible(!isOpen);
+    }
+
 //-----  Utilitaires de validation  --------------------------------------------
 
     private static void markTextFieldErrorStatus(TextField textField, boolean isValid) {
@@ -157,22 +211,15 @@ public abstract class JavaFXGUI extends IHM {
         return isValid;
     }
 
-    //pour basculer l'affichage
-    public void toggleMenu() {
-        boolean isOpen = sideMenu.isVisible();
-        sideMenu.setVisible(!isOpen);
-        scrim.setVisible(!isOpen);
-    }
-
 //-----  Implémentation des méthodes abstraites  -------------------------------
 
     @Override
     public void demarrerInteraction() {
         Platform.startup(() -> {
-            Stage primaryStage = new Stage();
-            primaryStage.setOnCloseRequest((WindowEvent t) -> this.exitAction());
+            Stage stage = new Stage();
+            stage.setOnCloseRequest((WindowEvent t) -> this.exitAction());
             try {
-                this.start(primaryStage);
+                this.start(stage);
             } catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
@@ -187,28 +234,21 @@ public abstract class JavaFXGUI extends IHM {
 
     @Override
     public void informerUtilisateur(String msg, boolean succes) {
-        final Alert alert = new Alert(
-                succes ? Alert.AlertType.INFORMATION : Alert.AlertType.WARNING
-        );
-        alert.setTitle("GenEvent");
-        alert.setContentText(msg);
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            final Alert alert = new Alert(
+                    succes ? Alert.AlertType.INFORMATION : Alert.AlertType.WARNING
+            );
+            alert.setTitle("GenEvent");
+            alert.setContentText(msg);
+            alert.showAndWait();
+        });
     }
 
     @Override
     public void saisirConnexion() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
-            loader.setController(this);
-            Scene scene = new Scene(loader.load());
-            Stage window = new Stage();
-            window.setTitle("Connexion");
-            window.initModality(Modality.APPLICATION_MODAL);
-            window.setScene(scene);
-            window.showAndWait();
-        } catch (IOException exc) {
-            throw new RuntimeException(exc);
-        }
+        // Dans le flux principal on navigue directement via la scène de login ;
+        // cette méthode reste utile si le CLI ou un autre composant l'appelle.
+        allerVersLogin();
     }
 
     @Override
@@ -235,5 +275,10 @@ public abstract class JavaFXGUI extends IHM {
     @Override
     public void saisirInscription() {
         saisirOrganisateur();
+    }
+
+    @Override
+    public void afficherConcerts(Map<String, Concert> concerts) {
+        // À implémenter selon la vue concerts
     }
 }

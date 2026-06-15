@@ -17,8 +17,8 @@ public class Controleur {
 
     public Controleur(GenEvent genevent) {
         this.genevent = genevent;
-        this.ihm = new CLI(this);
-//        this.ihm = new JavaFXGUI(this);
+//        this.ihm = new CLI(this);
+        this.ihm = new JavaFXGUI(this);
         this.organisateurConnecte = null;
     }
 
@@ -123,6 +123,11 @@ public class Controleur {
     public Organisateur getOrganisateur(String email) {
         return this.genevent.getOrganisateur(email);
     }
+
+    public Organisateur getOrganisateurConnecte() {
+        return this.organisateurConnecte;
+    }
+
 
 
 }
