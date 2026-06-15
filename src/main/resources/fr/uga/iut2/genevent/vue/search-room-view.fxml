@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: #9E9E9E; -fx-padding: 10;">
+            <children>
+                <Button text="Logo" style="-fx-background-color: white; -fx-background-radius: 5; -fx-cursor: hand;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button style="-fx-background-color: #757575; -fx-background-radius: 50; -fx-min-width: 40; -fx-min-height: 40; -fx-text-fill: white; -fx-cursor: hand;" text="👤">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+
+        <VBox spacing="25.0" VBox.vgrow="ALWAYS" style="-fx-padding: 40 60 40 60;">
+            <children>
+                <VBox spacing="15.0">
+                    <children>
+                        <Label text="Rechercher une salle" textFill="#9a9a9a">
+                            <font>
+                                <Font name="System Bold" size="36.0" />
+                            </font>
+                        </Label>
+                        <HBox spacing="15.0">
+                            <children>
+                                <TextField promptText="Entrez un nom de salle, une ville, une capacité minimale..." HBox.hgrow="ALWAYS" style="-fx-background-color: #EEEEEE; -fx-background-radius: 10; -fx-padding: 12;" />
+                                <Button text="Rechercher" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 12 25 12 25; -fx-font-weight: bold; -fx-cursor: hand;" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0;" VBox.vgrow="ALWAYS">
+                    <content>
+                        <TilePane hgap="30.0" vgap="30.0" prefColumns="3" style="-fx-background-color: #FFFFFF;">
+                            <children>
+                                <VBox prefHeight="160.0" prefWidth="350.0" style="-fx-background-color: #E0E0E0; -fx-background-radius: 20; -fx-padding: 20;" spacing="10.0">
+                                    <children>
+                                        <Label text="Le Summum" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
+                                        <Label text="👥 Capacité : 5000 places" style="-fx-font-size: 14px; -fx-text-fill: #666666;" />
+                                        <Label text="📍 Ville : Grenoble" style="-fx-font-size: 14px; -fx-text-fill: #666666;" />
+                                    </children>
+                                </VBox>
+
+                                <VBox prefHeight="160.0" prefWidth="350.0" style="-fx-background-color: #E0E0E0; -fx-background-radius: 20; -fx-padding: 20;" spacing="10.0">
+                                    <children>
+                                        <Label text="La Belle Électrique" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
+                                        <Label text="👥 Capacité : 1000 places" style="-fx-font-size: 14px; -fx-text-fill: #666666;" />
+                                        <Label text="📍 Ville : Grenoble" style="-fx-font-size: 14px; -fx-text-fill: #666666;" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </TilePane>
+                    </content>
+                </ScrollPane>
+            </children>
+        </VBox>
+    </children>
+</VBox>

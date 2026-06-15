@@ -7,10 +7,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -128,7 +127,13 @@ public abstract class JavaFXGUI extends IHM {
                 && this.newOrgMdpTextField.getText().length() > 0;
         this.newOrgOkButton.setDisable(!isValid);
     }
+    // champs vue accueil
+    @FXML
+    private Label welcomeLabel;
 
+    //déclaration du volet et du fond
+    @FXML private HBox sideMenu;
+    @FXML private Region scrim;
 //-----  Utilitaires de validation  --------------------------------------------
 
     private static void markTextFieldErrorStatus(TextField textField, boolean isValid) {
@@ -150,6 +155,13 @@ public abstract class JavaFXGUI extends IHM {
         boolean isValid = validator.isValid(textField.getText().strip().toLowerCase());
         markTextFieldErrorStatus(textField, isValid);
         return isValid;
+    }
+
+    //pour basculer l'affichage
+    public void toggleMenu() {
+        boolean isOpen = sideMenu.isVisible();
+        sideMenu.setVisible(!isOpen);
+        scrim.setVisible(!isOpen);
     }
 
 //-----  Implémentation des méthodes abstraites  -------------------------------
