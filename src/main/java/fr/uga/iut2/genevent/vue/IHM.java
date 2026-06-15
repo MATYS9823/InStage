@@ -44,11 +44,11 @@ public abstract class IHM {
      */
     public static class InfosNouveauConcert {
         public final String nom;
-        public final String dateDebut;
-        public final String dateFin;
+        public final LocalDate dateDebut;
+        public final LocalDate dateFin;
         public final String lieu;
 
-        public InfosNouveauConcert(String nom, String dateDebut, String dateFin, String lieu) {
+        public InfosNouveauConcert(String nom, LocalDate dateDebut, LocalDate dateFin, String lieu) {
             this.nom = nom;
             this.dateDebut = dateDebut;
             this.dateFin = dateFin;

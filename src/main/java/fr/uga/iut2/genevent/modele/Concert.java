@@ -1,32 +1,54 @@
 package fr.uga.iut2.genevent.modele;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Concert implements Serializable {
     private static final long serialVersionUID = 1L;
-    private  String date_debut;
-    private  String date_fin;
+
+    // CHANGEMENT ICI : Utilisation de LocalDate au lieu de String
+    private LocalDate date_debut;
+    private LocalDate date_fin;
+
     private String lieu;
-    private ArrayList<String> artiste =  new ArrayList<String>();
+    private ArrayList<String> artiste = new ArrayList<>();
     private String nom;
-    private Salle salle =null;
+    private Salle salle = null;
+    private Merch merch;
     private List<Materiel> materiels=new ArrayList<>();
 
-
-    public Concert(String date_debut, String date_fin, String lieu, String nom) {
+    // Constructeur mis à jour
+    public Concert(LocalDate date_debut, LocalDate date_fin, String lieu, String nom) {
         this.date_debut = date_debut;
         this.date_fin = date_fin;
         this.lieu = lieu;
         this.nom = nom;
     }
 
-    public String getDate_debut() {
+    /**
+     * Recherche les salles disponibles parmi une liste donnée,
+     * pour les dates du concert.
+     */
+    public List<Salle> rechercherSallesDisponibles(List<Salle> toutesLesSalles) {
+        List<Salle> sallesDisponibles = new ArrayList<>();
+
+        for (Salle s : toutesLesSalles) {
+            // On demande à la salle si elle est libre à nos dates
+            if (s.estDisponible(this.date_debut, this.date_fin)) {
+                sallesDisponibles.add(s);
+            }
+        }
+
+        return sallesDisponibles;
+    }
+
+    public LocalDate getDate_debut() {
         return date_debut;
     }
 
-    public String getDate_fin() {
+    public LocalDate getDate_fin() {
         return date_fin;
     }
 

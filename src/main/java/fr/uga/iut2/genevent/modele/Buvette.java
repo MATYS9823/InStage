@@ -10,8 +10,6 @@ public class Buvette {
     private Carte carte;
 
 
-
-
     public Buvette(String nom, String localisation) {
         this.nom = nom;
         this.localisation = localisation;

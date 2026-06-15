@@ -42,7 +42,7 @@ public class GenEvent implements Serializable {
         return this.organisateurs;
     }
 
-    public void nouveauConcert(String nom, String dateDebut, String dateFin, String lieu, String emailOrganisateur) {
+    public void nouveauConcert(String nom, LocalDate dateDebut, LocalDate dateFin, String lieu, String emailOrganisateur) {
         assert !this.concerts.containsKey(nom);
         assert this.organisateurs.containsKey(emailOrganisateur);
 

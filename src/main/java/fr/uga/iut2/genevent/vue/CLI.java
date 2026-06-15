@@ -1,6 +1,8 @@
 package fr.uga.iut2.genevent.vue;
 
 import fr.uga.iut2.genevent.controleur.Controleur;
+
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -199,9 +201,9 @@ public class CLI extends IHM {
         CLI.afficher("Saisir le lieu :");
         String lieu = CLI.lireNom();
         CLI.afficher("Date de début :");
-        String dateDebut = CLI.lireDate().toString();
+        LocalDate dateDebut = LocalDate.parse(CLI.lireDate().toString());
         CLI.afficher("Date de fin :");
-        String dateFin = CLI.lireDate().toString();
+        LocalDate dateFin = LocalDate.parse(CLI.lireDate().toString());
         return new InfosNouveauConcert(nom, dateDebut, dateFin, lieu);
     }
 
