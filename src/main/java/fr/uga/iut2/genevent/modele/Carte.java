@@ -27,10 +27,19 @@ public class Carte {
     }
 
     public void ajouterProduit(Produit produit){
+        if(produits.contains(produit)){
+            System.out.println("Ce produit est deja dans votre liste");
+        }
+        else {produits.add(produit);}
     }
 
-    public void supprimererProduit(Produit produit){
-
+    public void supprimerProduit(Produit produit){
+        if (produits.contains(produit)){
+            produits.remove(produit);
+        }
+        else {
+            System.out.println("Ce produit n'est pas dans votre liste");
+        }
     }
 
 

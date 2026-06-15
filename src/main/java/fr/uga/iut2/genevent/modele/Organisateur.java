@@ -9,7 +9,7 @@ public class Organisateur implements Serializable {
     private String nom;
     private String prenom;
     private String mdp;
-    private String id;
+    private BigInteger id;
     private String email;
     private ArrayList<Concert>  concerts = new ArrayList<>();
 
@@ -18,6 +18,7 @@ public class Organisateur implements Serializable {
         this.prenom = prenom;
         this.mdp = mdp;
         this.email = email;
+        this.id=générer_id(email);
     }
 
     public BigInteger générer_id(String email) {
@@ -46,7 +47,7 @@ public class Organisateur implements Serializable {
     public String getMdp() {
         return mdp;
     }
-    public String getId() {
+    public BigInteger getId() {
         return id;
     }
     public String getEmail() {
