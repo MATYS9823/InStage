@@ -65,7 +65,7 @@ public class JavaFXGUI extends IHM {
 
     private void start(Stage stage) throws IOException {
         this.primaryStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
         primaryStage.setTitle("GenEvent");
@@ -343,7 +343,7 @@ public class JavaFXGUI extends IHM {
     @Override
     public void saisirOrganisateur() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("new-org-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("new-user-view.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             Stage window = new Stage();
