@@ -172,6 +172,19 @@ public class JavaFXGUI extends IHM {
         }
     }
 
+    @FXML
+    private void allerVersBuvette(){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("buvette-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+
+        }catch (IOException exc){
+            throw new RuntimeException(exc);
+        }
+    }
+
 //-----  Éléments du dialogue  -------------------------------------------------
 
     private void exitAction() {
