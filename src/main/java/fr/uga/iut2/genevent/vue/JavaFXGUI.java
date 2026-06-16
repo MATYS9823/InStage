@@ -83,7 +83,7 @@ public class JavaFXGUI extends IHM {
 
     private void start(Stage stage) throws IOException {
         this.primaryStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("merch-view.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
         primaryStage.setTitle("GenEvent");
@@ -177,6 +177,19 @@ public class JavaFXGUI extends IHM {
     private void allerVersBuvette(){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("buvette-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+
+        }catch (IOException exc){
+            throw new RuntimeException(exc);
+        }
+    }
+
+    @FXML
+    private void allerVersMerch(){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("merch-view.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
@@ -419,29 +432,7 @@ public class JavaFXGUI extends IHM {
 
     //Pour Merch
     // champs vue Merch
-    @FXML private VBox sideMenuMerch;
     @FXML private Region scrimMerch;
-
-    // Navigation vers la page Merch (à lier à tes autres boutons de menu)
-    @FXML
-    private void allerVersMerch() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("merch-view.fxml"));
-            loader.setController(this);
-            Scene scene = new Scene(loader.load());
-            primaryStage.setScene(scene);
-        } catch (IOException exc) {
-            throw new RuntimeException(exc);
-        }
-    }
-
-    // Gestion du volet latéral de la page Merch
-    @FXML
-    public void toggleMenuMerch() {
-        boolean isOpen = sideMenuMerch.isVisible();
-        sideMenuMerch.setVisible(!isOpen);
-        scrimMerch.setVisible(!isOpen);
-    }
 
     // Protection contre les erreurs : Alerte de confirmation de suppression
     @FXML
