@@ -272,6 +272,164 @@ public class JavaFXGUI extends IHM {
         scrim.setVisible(!isOpen);
     }
 
+    //Pour Merch
+    // champs vue Merch
+    @FXML private VBox sideMenuMerch;
+    @FXML private Region scrimMerch;
+
+    // Navigation vers la page Merch (à lier à tes autres boutons de menu)
+    @FXML
+    private void allerVersMerch() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("merch-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    // Gestion du volet latéral de la page Merch
+    @FXML
+    public void toggleMenuMerch() {
+        boolean isOpen = sideMenuMerch.isVisible();
+        sideMenuMerch.setVisible(!isOpen);
+        scrimMerch.setVisible(!isOpen);
+    }
+
+    // Protection contre les erreurs : Alerte de confirmation de suppression
+    @FXML
+    private void supprimerMerchAction() {
+        // Création de l'alerte de confirmation (Bonne pratique UX)
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de suppression");
+        alert.setHeaderText("Suppression du Merch");
+        alert.setContentText("Attention, voulez-vous vraiment supprimer ce merch ? Cette action est irréversible.");
+
+        // On capture le choix de l'utilisateur
+        java.util.Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // ---> METS ICI TON CODE POUR SUPPRIMER LE MERCH DU MODÈLE <---
+
+            informerUtilisateur("Le merch a été supprimé avec succès.", true);
+            // Tu pourras ensuite rafraîchir l'affichage ici
+        } else {
+            // L'utilisateur a cliqué sur "Annuler" ou fermé la fenêtre, on ne fait rien (Protection réussie !)
+        }
+    }
+
+    // Action pour le gros bouton "Ajout merch +"
+    @FXML
+    private void ajouterMerchAction() {
+        // Ouvre la fenêtre/dialogue pour créer un nouveau Merch
+        System.out.println("Ouverture du formulaire d'ajout d'un nouveau Merch...");
+    }
+
+    //Pour Matériel
+    // champs vue Matériel
+    @FXML private VBox sideMenuMateriel;
+    @FXML private Region scrimMateriel;
+
+    // Navigation vers la page Matériel
+    @FXML
+    private void allerVersMateriel() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("materiel-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    // Gestion du volet latéral spécifique à la page Matériel
+    @FXML
+    public void toggleMenuMateriel() {
+        boolean isOpen = sideMenuMateriel.isVisible();
+        sideMenuMateriel.setVisible(!isOpen);
+        scrimMateriel.setVisible(!isOpen);
+    }
+
+    // Protection contre les erreurs : Alerte de confirmation de suppression
+    @FXML
+    private void supprimerMaterielAction() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de suppression");
+        alert.setHeaderText("Suppression du Matériel");
+        alert.setContentText("Attention, voulez-vous vraiment supprimer cet équipement de la liste ? Cette action est irréversible.");
+
+        java.util.Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // ---> METS ICI TON CODE POUR SUPPRIMER LE MATÉRIEL DU MODÈLE <---
+
+            informerUtilisateur("L'équipement a été supprimé avec succès.", true);
+            // Pense à rafraîchir ta vue ici
+        }
+    }
+
+    // Action pour le bouton "Ajout matériel +"
+    @FXML
+    private void ajouterMaterielAction() {
+        System.out.println("Ouverture du formulaire d'ajout d'un nouvel équipement...");
+        // Tu pourras appeler ici une méthode qui ouvre un Stage en mode "Modality.APPLICATION_MODAL"
+        // comme tu l'as fait pour la méthode saisirOrganisateur()
+    }
+
+
+    //Pour Staff
+    // champs vue Staff
+    @FXML private VBox sideMenuStaff;
+    @FXML private Region scrimStaff;
+
+    // Navigation vers la page Staff
+    @FXML
+    private void allerVersStaff() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("staff-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    // Gestion de la visibilité du volet latéral Staff (Inactif par défaut)
+    @FXML
+    public void toggleMenuStaff() {
+        boolean isOpen = sideMenuStaff.isVisible();
+        sideMenuStaff.setVisible(!isOpen);
+        scrimStaff.setVisible(!isOpen);
+    }
+
+    // Gestion des Erreurs : Fenêtre de confirmation avant suppression irréversible
+    @FXML
+    private void supprimerStaffAction() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de suppression");
+        alert.setHeaderText("Suppression d'une équipe de staff");
+        alert.setContentText("Attention, voulez-vous vraiment supprimer cette équipe ? Cette action retirera tous les membres assignés.");
+
+        java.util.Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // ---> Insérer ici le code pour mettre à jour la liste dans le modèle <---
+
+            informerUtilisateur("L'équipe a été supprimée avec succès.", true);
+        } else {
+            // L'utilisateur a cliqué sur "Annuler" ou fermé la boîte : l'action est avortée sans risque.
+            System.out.println("Suppression annulée.");
+        }
+    }
+
+    // Action pour le bouton global "Nouvelle équipe +"
+    @FXML
+    private void ajouterStaffAction() {
+        System.out.println("Ouverture du formulaire de création d'une équipe de staff...");
+    }
+
+
     public void voirconcertaction(){
         allerVersMesConcerts();
     }
