@@ -76,9 +76,9 @@ public class Salle implements Serializable {
     public double getLatitude() { return latitude; }
     public double getLongitude() { return longitude; }
 
-    // --- NOUVELLE MÉTHODE POUR LA CARTE (JSON) ---
     public String toJson() {
-        return String.format("{\"nom\":\"%s\",\"adresse\":\"%s\",\"latitude\":%f,\"longitude\":%f}",
+        // On ajoute Locale.US pour forcer l'utilisation du '.' au lieu de la ','
+        return String.format(java.util.Locale.US, "{\"nom\":\"%s\",\"adresse\":\"%s\",\"latitude\":%f,\"longitude\":%f}",
                 nom.replace("\"", "\\\""), lieu.replace("\"", "\\\""), latitude, longitude);
     }
 

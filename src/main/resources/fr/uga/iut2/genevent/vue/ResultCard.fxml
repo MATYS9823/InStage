@@ -5,7 +5,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="rootHBox" alignment="CENTER_LEFT" prefWidth="360.0" style="-fx-border-color: #cccccc; -fx-border-width: 1; -fx-background-color: white; -fx-padding: 15; -fx-border-radius: 5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://fxml.com/fxml/1">
+<?import javafx.scene.control.Button?>
+<HBox fx:id="rootHBox" alignment="CENTER_LEFT" prefWidth="360.0" style="-fx-border-color: #cccccc; -fx-border-width: 1;
+-fx-background-color: white; -fx-padding: 15; -fx-border-radius: 5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label style="-fx-font-size: 28px;" text="📍">
             <HBox.margin>
@@ -47,10 +49,16 @@
             </children>
         </VBox>
 
-        <Label style="-fx-font-size: 24px; -fx-cursor: hand;" text="♡">
+        <VBox alignment="CENTER" spacing="10.0">
+            <children>
+                <Button fx:id="btnSelectionner" mnemonicParsing="false" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="SÉLECTIONNER" visible="false" managed="false" />
+
+                <Label style="-fx-font-size: 24px; -fx-cursor: hand;" text="♡" />
+            </children>
             <HBox.margin>
                 <Insets left="10.0" />
             </HBox.margin>
-        </Label>
+        </VBox>
+    </children> </HBox>
     </children>
 </HBox>

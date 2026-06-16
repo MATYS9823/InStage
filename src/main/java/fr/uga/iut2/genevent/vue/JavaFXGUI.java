@@ -387,6 +387,31 @@ public class JavaFXGUI extends IHM {
         // À implémenter selon la vue concerts
     }
 
+    @FXML
+    private void allerVersRechercheSalles() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("recherche-salles-view.fxml"));
+
+            // On charge d'abord la vue (le FXML)
+            Scene scene = new Scene(loader.load());
+
+            // On récupère le contrôleur de la page qui a été créé automatiquement par le FXML
+            RechercheSallesController controller = loader.getController();
+
+            // On l'initialise avec les bonnes données !
+            // (this.controleur pour les données de l'application, et this pour pouvoir revenir en arrière plus tard)
+            controller.initialiser(this.controleur, this);
+
+            // On affiche la page
+            primaryStage.setScene(scene);
+
+        } catch (IOException exc) {
+            System.err.println("Erreur lors du chargement de la page Recherche Salles !");
+            exc.printStackTrace();
+            throw new RuntimeException(exc);
+        }
+    }
+
 
 
 

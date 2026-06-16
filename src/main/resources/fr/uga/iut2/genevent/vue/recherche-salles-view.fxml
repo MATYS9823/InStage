@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.web.*?>
 
-<BorderPane  fx:controller="fr.uga.iut2.genevent.vue.RechercheSallesController" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" >
+<BorderPane fx:controller="fr.uga.iut2.genevent.vue.RechercheSallesController" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: #929292;" BorderPane.alignment="CENTER">
@@ -86,10 +86,13 @@
                                 <DatePicker fx:id="date_fin" maxWidth="Infinity" style="-fx-background-radius: 0; -fx-border-color: #A0A0A0;" />
                             </children>
                         </VBox>
+
                     </children>
                 </GridPane>
 
-                <ListView fx:id="listViewSalles" style="-fx-background-color: transparent; -fx-control-inner-background: transparent;" VBox.vgrow="ALWAYS">
+                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#appliquerFiltres" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-cursor: hand;" text="RECHERCHER UNE SALLE" />
+
+                <ListView fx:id="listViewSalles" style="-fx-background-color: #FAFAFA; -fx-control-inner-background: #FAFAFA;" VBox.vgrow="ALWAYS">
                     <VBox.margin>
                         <Insets top="10.0" />
                     </VBox.margin>

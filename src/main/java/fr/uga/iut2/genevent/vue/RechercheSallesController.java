@@ -45,9 +45,9 @@ public class RechercheSallesController {
         this.controleurPrincipal = controleur;
         this.mainGUI = gui;
 
-        comboTypeSalle.setItems(FXCollections.observableArrayList("Ouverte", "Fermée"));
-        listViewSalles.setCellFactory(lv -> new SalleListCell());
+        listViewSalles.setCellFactory(lv -> new SalleListCell(this.mainGUI));
         listViewSalles.setItems(sallesFiltrees);
+        listViewSalles.setFixedCellSize(120);
 
         // Récupération des vraies données
         if (this.controleurPrincipal != null && this.controleurPrincipal.getToutesLesSalles() != null) {
@@ -55,17 +55,10 @@ public class RechercheSallesController {
         }
         sallesFiltrees.setAll(toutesLesSalles);
 
-        // Listeners
-        filtreLieu.textProperty().addListener((o, old, newVal) -> appliquerFiltres());
-        filtreCapacite.textProperty().addListener((o, old, newVal) -> appliquerFiltres());
-        filtreTarif.textProperty().addListener((o, old, newVal) -> appliquerFiltres());
-        comboTypeSalle.valueProperty().addListener((o, old, newVal) -> appliquerFiltres());
-        date_debut.valueProperty().addListener((o, old, newVal) -> appliquerFiltres());
-        date_fin.valueProperty().addListener((o, old, newVal) -> appliquerFiltres());
 
         // Chargement de la carte
         WebEngine webEngine = webViewCarte.getEngine();
-        URL urlCarte = getClass().getResource("map.html");
+        URL urlCarte = getClass().getResource("web/map.html");
         if (urlCarte != null) {
             webEngine.load(urlCarte.toExternalForm());
         } else {
@@ -79,11 +72,11 @@ public class RechercheSallesController {
         });
     }
 
+    @FXML
     private void appliquerFiltres() {
         String lieuCherche = filtreLieu.getText() != null ? filtreLieu.getText().toLowerCase().trim() : "";
         String capStr = filtreCapacite.getText() != null ? filtreCapacite.getText().trim() : "";
         String tarifStr = filtreTarif.getText() != null ? filtreTarif.getText().trim() : "";
-        String typeCherche = comboTypeSalle.getValue();
         LocalDate dateDebut = date_debut.getValue();
         LocalDate dateFin = date_fin.getValue();
 
@@ -109,5 +102,21 @@ public class RechercheSallesController {
             try { webViewCarte.getEngine().executeScript("updateMarkers('" + json + "')"); }
             catch (Exception e) {}
         }
+    }
+
+
+    @FXML
+    private void connexionMenuItemActionNU() {
+        if (this.mainGUI != null) {
+            // On utilise la méthode publique de JavaFXGUI pour retourner à l'écran de login
+            this.mainGUI.saisirConnexion();
+        }
+    }
+
+    @FXML
+    private void quitterMenuBurgerAction() {
+        // Ferme proprement l'application JavaFX
+        javafx.application.Platform.exit();
+        System.exit(0);
     }
 }
