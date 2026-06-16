@@ -114,6 +114,7 @@ public class JavaFXGUI extends IHM {
         }
     }
 
+    @FXML
     private void allerVersMesConcerts(){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("manage-concerts-view.fxml"));
@@ -138,8 +139,15 @@ public class JavaFXGUI extends IHM {
     private void connexionMenuItemAction() {
         // Depuis la home, ce bouton sert à se déconnecter
         allerVersLogin();
+    }
+
+    @FXML
+    private void connexionMenuItemActionNU() {
+        // Depuis la home, ce bouton sert à se déconnecter
+        allerVersLogin();
         inscritlink.getScene().getWindow().hide();
     }
+
 
     @FXML
     private void newOrganisateurMenuItemAction() {
@@ -238,6 +246,10 @@ public class JavaFXGUI extends IHM {
         scrim.setVisible(!isOpen);
     }
 
+    public void voirconcertaction(){
+        allerVersMesConcerts();
+    }
+
 //-----  Utilitaires de validation  --------------------------------------------
 
     private static void markTextFieldErrorStatus(TextField textField, boolean isValid) {
@@ -300,6 +312,7 @@ public class JavaFXGUI extends IHM {
         // cette méthode reste utile si le CLI ou un autre composant l'appelle.
         allerVersLogin();
     }
+
 
     @Override
     public void saisirOrganisateur() {
