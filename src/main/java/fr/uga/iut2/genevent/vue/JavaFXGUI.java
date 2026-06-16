@@ -5,6 +5,7 @@ import fr.uga.iut2.genevent.modele.Organisateur;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
@@ -154,18 +155,33 @@ public class JavaFXGUI extends IHM {
 
     @FXML
     private void quitterMenuBurgerAction() {
-        Platform.runLater(() -> {
-            // 1. On récupère TOUTES les fenêtres ouvertes (principale + popups) et on les ferme
-            new java.util.ArrayList<>(javafx.stage.Window.getWindows()).forEach(window -> {
-                if (window instanceof Stage) {
-                    ((Stage) window).close();
-                }
-            });
+        // 1. Création de la fenêtre de confirmation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de fermeture");
+        alert.setHeaderText(null); // Optionnel : null pour un affichage plus épuré sans en-tête
+        alert.setContentText("Êtes-vous sûr de vouloir quitter l'application ?");
 
-            // 2. On libère la barrière pour réveiller ton Main
-            // Le programme va exécuter ton code de sauvegarde automatique puis s'éteindre
-            this.exitAction();
-        });
+        // 2. Affichage de la fenêtre et attente du choix de l'utilisateur
+        Optional<ButtonType> resultat = alert.showAndWait();
+
+        // 3. Vérification de la réponse
+        if (resultat.isPresent() && resultat.get() == ButtonType.OK) {
+            // L'utilisateur a cliqué sur "OK", on lance la procédure de fermeture
+            Platform.runLater(() -> {
+                // On récupère TOUTES les fenêtres ouvertes (principale + popups) et on les ferme
+                new java.util.ArrayList<>(javafx.stage.Window.getWindows()).forEach(window -> {
+                    if (window instanceof Stage) {
+                        ((Stage) window).close();
+                    }
+                });
+
+                // On libère la barrière pour réveiller ton Main
+                // Le programme va exécuter ton code de sauvegarde automatique puis s'éteindre
+                this.exitAction();
+            });
+        }
+        // Si l'utilisateur clique sur "Annuler" ou ferme la fenêtre,
+        // le code s'arrête ici et l'application reste ouverte naturellement.
     }
 
 
