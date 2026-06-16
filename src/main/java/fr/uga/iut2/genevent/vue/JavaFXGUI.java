@@ -4,6 +4,7 @@ import fr.uga.iut2.genevent.controleur.Controleur;
 import fr.uga.iut2.genevent.modele.Organisateur;
 import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -17,11 +18,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.apache.commons.validator.routines.EmailValidator;
+import java.util.List;
+
 
 public class JavaFXGUI extends IHM {
 
@@ -30,6 +34,7 @@ public class JavaFXGUI extends IHM {
 
     // Stage principal, gardé pour changer de scène
     private Stage primaryStage;
+    private final List<IHM.InfosNouveauConcert> concertsSauvegardes = new ArrayList<InfosNouveauConcert>();
 
     // champs vue connexion
     @FXML private TextField loginEmailTextField;
@@ -62,6 +67,7 @@ public class JavaFXGUI extends IHM {
     @FXML private TextField tfArtiste;
 
     @FXML private Button creerconcertButton;
+    @FXML private TilePane concertsTilePane;
 
 
     // vhamp vue dashboard
@@ -131,20 +137,22 @@ public class JavaFXGUI extends IHM {
     }
 
     @FXML
-    private void allerVersMesConcerts(){
-        try{
+    private void allerVersMesConcerts() {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("manage-concerts-view.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
-            if (gererconcertlabel != null) {
-                gererconcertlabel.setText("Gérer vos concerts " + controleur.getOrganisateurConnecte().getPrenom()
-                        + " " + controleur.getOrganisateurConnecte().getNom());
+
+            if (concertsTilePane != null) {
+                concertsTilePane.getChildren().clear();
+                for (Concert concert : controleur.getOrganisateurConnecte().getConcerts()) {
+                    concertsTilePane.getChildren().add(creerCarteConcert(concert));
+                }
             }
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
-
     }
 
     private void allerVerscreerConcerts(){
@@ -275,16 +283,54 @@ public class JavaFXGUI extends IHM {
     }
 
     @FXML
-    private void createNewConcertAction(){
+    private void createNewConcertAction() {
+        // Validation basique
+        if (tfNomconcert.getText().isBlank() || dpDateDebut.getValue() == null) {
+            informerUtilisateur("Merci de remplir au moins le nom et la date de début.", false);
+            return;
+        }
+
         IHM.InfosNouveauConcert data = new IHM.InfosNouveauConcert(
-            this.tfNomconcert.getText().strip(),
-                this.dpDateDebut.getValue(),
-                this.dpDateDebut.getValue(),
-                this.tflieuconcert.getText().strip(),
-                this.tfArtiste.getText().strip()
+                tfNomconcert.getText().strip(),
+                dpDateDebut.getValue(),
+                dpDateFin.getValue() != null ? dpDateFin.getValue() : dpDateDebut.getValue(),
+                tflieuconcert.getText().strip(),
+                tfArtiste.getText().strip()
         );
 
-        this.controleur.creerConcert(data);
+        concertsSauvegardes.add(data);        // ← on mémorise
+        this.controleur.creerConcert(data);   // ← logique métier existante
+        allerVersMesConcerts();               // ← on navigue directement
+    }
+
+    private VBox creerCarteConcert(Concert c) {
+        Label nom = new Label(c.getNom());
+        nom.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333;");
+
+        Label lieu = new Label("📍 " + c.getLieu());
+        lieu.setStyle("-fx-text-fill: #666666;");
+        Label artiste = new Label(c.getArtiste());
+        artiste.setStyle("-fx-text-fill: #666666;");
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox infoLigne = new HBox(10, lieu, spacer, artiste);
+
+        String dateStr = c.getDate_debut() != null
+                ? c.getDate_debut().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                : "—";
+        Label date = new Label(dateStr);
+        date.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333333;");
+        date.setMaxWidth(Double.MAX_VALUE);
+        date.setAlignment(javafx.geometry.Pos.CENTER);
+
+        Region vSpacer = new Region();
+        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+
+        VBox carte = new VBox(10, nom, infoLigne, vSpacer, date);
+        carte.setPrefWidth(350);
+        carte.setPrefHeight(180);
+        carte.setStyle("-fx-background-color: #E0E0E0; -fx-background-radius: 25; -fx-padding: 20;");
+        return carte;
     }
 
     @FXML

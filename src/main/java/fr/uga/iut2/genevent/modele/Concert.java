@@ -13,6 +13,7 @@ import java.util.List;
 public class Concert implements Serializable {
     private static final long serialVersionUID = 1L;
 
+
     // CHANGEMENT ICI : Utilisation de LocalDate au lieu de String
     private LocalDate date_debut;
     private LocalDate date_fin;
