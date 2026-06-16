@@ -49,6 +49,8 @@ public class JavaFXGUI extends IHM {
     @FXML private Region scrim;
 
     @FXML private TextField forgotEmailTextField;
+    @FXML private Hyperlink inscritlink;
+    @FXML private Button concertButton;
 
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
@@ -112,6 +114,18 @@ public class JavaFXGUI extends IHM {
         }
     }
 
+    private void allerVersMesConcerts(){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("manage-concerts-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+
+    }
+
 //-----  Éléments du dialogue  -------------------------------------------------
 
     private void exitAction() {
@@ -123,7 +137,8 @@ public class JavaFXGUI extends IHM {
     @FXML
     private void connexionMenuItemAction() {
         // Depuis la home, ce bouton sert à se déconnecter
-        this.controleur.seDeconnecter();
+        allerVersLogin();
+        inscritlink.getScene().getWindow().hide();
     }
 
     @FXML
