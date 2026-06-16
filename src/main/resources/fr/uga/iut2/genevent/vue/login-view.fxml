@@ -16,7 +16,7 @@
                     </graphic>
                     <items>
                         <MenuItem mnemonicParsing="false" text="Se connecter" />
-                        <MenuItem mnemonicParsing="false" text="Quitter" />
+                        <MenuItem mnemonicParsing="false"  onAction="#quitterMenuBurgerAction" text="Quitter" />
                     </items>
                 </MenuButton>
             </children>
