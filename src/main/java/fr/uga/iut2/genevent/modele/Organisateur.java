@@ -60,6 +60,10 @@ public class Organisateur implements Serializable {
     public void creerConcert(Concert concert) {
         this.concerts.add(concert);
     }
+
+    public void supprimerConcert(Concert concert) {
+        this.concerts.remove(concert);
+    }
 }
 
 

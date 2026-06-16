@@ -83,7 +83,7 @@ public class JavaFXGUI extends IHM {
 
     private void start(Stage stage) throws IOException {
         this.primaryStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("merch-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
         primaryStage.setTitle("GenEvent");
@@ -194,6 +194,17 @@ public class JavaFXGUI extends IHM {
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
 
+        }catch (IOException exc){
+            throw new RuntimeException(exc);
+        }
+    }
+
+    private void allerVersdashboard(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
         }catch (IOException exc){
             throw new RuntimeException(exc);
         }
@@ -370,8 +381,20 @@ public class JavaFXGUI extends IHM {
         // --- BOUTONS INTERACTIFS ---
         // Bouton Supprimer (Top Right)
         Button btnSupprimer = new Button("✕");
+        btnSupprimer.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setContentText("Supprimer le concert \"" + c.getNom() + "\" ?");
+            alert.showAndWait().ifPresent(reponse -> {
+                if (reponse == ButtonType.OK) {
+                    controleur.supprimerConcert(c);   // à ajouter dans Controleur/modèle
+                    allerVersMesConcerts();           // recharge la vue pour rafraîchir les cartes
+                }
+            });
+        });
         // Bouton Modifier (Bottom Right)
         Button btnModifier = new Button("Modifier");
+        btnModifier.setOnAction(e -> {allerVersdashboard();});
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);

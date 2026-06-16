@@ -70,6 +70,13 @@ public class GenEvent implements Serializable {
         this.organisateurs.get(emailOrganisateur).creerConcert(concert);
     }
 
+    public void supprimerConcert(Concert concert, String emailOrganisateur) {
+        assert this.concerts.containsKey(concert.getNom());
+        assert this.organisateurs.containsKey(emailOrganisateur);
+
+        this.concerts.remove(concert.getNom());
+        this.organisateurs.get(emailOrganisateur).supprimerConcert(concert);
+    }
  /*   public void nouveauMateriel(String nom, int Prix, String Fournisseur, String TypeEquipement,String nomConcert){
         assert  !this.materiel.containsKey(nom);
         assert this.concerts.containsKey(nomConcert);
