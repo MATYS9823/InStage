@@ -17,7 +17,7 @@ public class MainTestcoût {
         // 3. On crée le concert (du 12 au 14 Mai)
         LocalDate debut = LocalDate.of(2026, 5, 12);
         LocalDate fin = LocalDate.of(2026, 6, 3);
-        Concert monConcert = new Concert(debut, fin, "Paris", "Festival Rock 2026");
+        Concert monConcert = new Concert(debut, fin, "Paris", "Festival Rock 2026","travis");
 
         // 4. On affecte la salle au concert
         monConcert.setSalle(zenith);

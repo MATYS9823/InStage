@@ -16,15 +16,18 @@ public class SalleListCell extends ListCell<Salle> {
     @FXML private Label lblAdresse;
     @FXML private Label lblCapacite;
     @FXML private Label lblTarif;
-    @FXML private Button btnSelectionner; // NOUVEAU BOUTON
+    @FXML private Button btnSelectionner;
 
     private FXMLLoader mLLoader;
-    private JavaFXGUI mainGUI; // Lien pour pouvoir changer de page
-    private boolean isExpanded = false; // L'état actuel de la carte
+    private JavaFXGUI mainGUI;
 
-    // NOUVEAU CONSTRUCTEUR : on lui passe l'interface graphique
     public SalleListCell(JavaFXGUI mainGUI) {
         this.mainGUI = mainGUI;
+    }
+
+    @Override
+    public void updateSelected(boolean selected) {
+        // Empêche la cellule de changer d'état visuel lors du clic
     }
 
     @Override
@@ -32,7 +35,6 @@ public class SalleListCell extends ListCell<Salle> {
         super.updateItem(salle, empty);
 
         if (empty || salle == null) {
-            setText(null);
             setGraphic(null);
         } else {
             if (mLLoader == null) {
@@ -44,32 +46,19 @@ public class SalleListCell extends ListCell<Salle> {
                     e.printStackTrace();
                 }
 
-                // ÉVÉNEMENT 1 : Clic n'importe où sur la carte pour afficher/cacher le bouton
-                rootHBox.setOnMouseClicked(event -> {
-                    isExpanded = !isExpanded; // On inverse l'état
-                    btnSelectionner.setVisible(isExpanded);
-                    btnSelectionner.setManaged(isExpanded);
-                });
-
-                // ÉVÉNEMENT 2 : Clic sur le bouton vert "Sélectionner"
                 btnSelectionner.setOnAction(event -> {
-                    event.consume(); // Empêche le clic de refermer la carte par accident
                     if (this.mainGUI != null) {
-                        this.mainGUI.allerVersCreerConcert(); // On lance le changement de page
+                        this.mainGUI.allerVerscreerConcertsFromSalle(lblAdresse.getText());
                     }
                 });
             }
 
+            // Mise à jour des textes
             lblNom.setText(salle.getNom());
             lblAdresse.setText(salle.getLieu());
-            lblCapacite.setText(String.valueOf(salle.getNbPlaces()));
-            lblTarif.setText(String.valueOf(salle.getTarif()));
+            lblCapacite.setText(salle.getNbPlaces() + " pers.");
+            lblTarif.setText(salle.getTarif() + " €/h");
 
-            // On s'assure que le bouton garde le bon état quand on scrolle dans la liste
-            btnSelectionner.setVisible(isExpanded);
-            btnSelectionner.setManaged(isExpanded);
-
-            setText(null);
             setGraphic(rootHBox);
         }
     }

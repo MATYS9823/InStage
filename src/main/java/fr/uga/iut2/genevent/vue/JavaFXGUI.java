@@ -172,6 +172,23 @@ public class JavaFXGUI extends IHM {
             throw new RuntimeException(exc);
         }
     }
+    public void allerVerscreerConcertsFromSalle(String lieu) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-concert-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+
+            // Une fois la vue chargée, on remplit le champ avec le lieu passé en paramètre
+            if (tflieuconcert != null) {
+                tflieuconcert.setText(lieu);
+            }
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+
 
     @FXML
     private void allerVersBuvette(){
