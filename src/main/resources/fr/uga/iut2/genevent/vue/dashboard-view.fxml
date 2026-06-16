@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           prefHeight="700.0" prefWidth="1000.0">
+
+    <BorderPane style="-fx-background-color: white;">
+
+        <top>
+            <VBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #909090; -fx-padding: 10 20 10 20;">
+                    <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 3; -fx-padding: 5 30 5 30;" text="Logo" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <StackPane prefHeight="35.0" prefWidth="35.0" style="-fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 50%; -fx-padding: 5;">
+                        <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
+                    </StackPane>
+                </HBox>
+
+                <BorderPane style="-fx-padding: 10 20 10 20; -fx-background-color: white;">
+                    <left>
+                        <Label style="-fx-font-size: 32px; -fx-text-fill: #B0B0B0; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" onMouseClicked="#toggleMenuD"/>
+                    </left>
+                    <center>
+                        <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Goosebump_France" BorderPane.alignment="CENTER" />
+                    </center>
+                    <right>
+                        <Label style="-fx-font-size: 24px; -fx-text-fill: #000000;" text="Travis Scott" BorderPane.alignment="CENTER" />
+                    </right>
+                </BorderPane>
+                <Separator prefWidth="200.0" style="-fx-background-color: #D0D0D0;" />
+            </VBox>
+        </top>
+
+        <center>
+            <GridPane alignment="CENTER" hgap="60.0" vgap="40.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="350.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="350.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="220.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="220.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+
+                <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: black;" text="Ma buvette" />
+                    <VBox alignment="CENTER" prefHeight="180.0" spacing="15.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20;">
+                        <Label style="-fx-font-size: 18px;" text="Utopia" />
+                        <Label style="-fx-font-size: 14px; -fx-font-style: italic;" text="Thème: Amerique" />
+                        <Button style="-fx-background-color: #AEAEAE; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 25 8 25;" text="Voir plus" />
+                    </VBox>
+                </VBox>
+
+                <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: black;" text="Merchandising" />
+                    <VBox alignment="CENTER" prefHeight="180.0" spacing="15.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20;">
+                        <Label style="-fx-font-size: 18px;" text="Utopia_store" />
+                        <Button style="-fx-background-color: #AEAEAE; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 20 8 20;" text="Voir les produits" />
+                    </VBox>
+                </VBox>
+
+                <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: black;" text="Personnel" />
+                    <VBox alignment="CENTER" prefHeight="180.0" spacing="5.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 10;">
+                        <Label style="-fx-font-size: 16px;" text="Nombre d'équipe: 5" />
+                        <Label style="-fx-font-size: 16px;" text="Catégorie:" />
+                        <Label style="-fx-font-size: 16px;" text="Sécurité,Buvette,Merch" />
+                        <Button style="-fx-background-color: #AEAEAE; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 25 8 25;" text="Voir les équipes">
+                            <VBox.margin><Insets top="15.0" /></VBox.margin>
+                        </Button>
+                    </VBox>
+                </VBox>
+
+                <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: black;" text="Matériel" />
+                    <VBox alignment="CENTER" prefHeight="180.0" spacing="5.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 10;">
+                        <Label style="-fx-font-size: 16px;" text="Catégorie:" />
+                        <Label style="-fx-font-size: 16px;" text="Son,Lumière,Sécurité" />
+                        <Button style="-fx-background-color: #AEAEAE; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" text="Voir la liste logistique">
+                            <VBox.margin><Insets top="15.0" /></VBox.margin>
+                        </Button>
+                    </VBox>
+                </VBox>
+            </GridPane>
+        </center>
+    </BorderPane>
+
+    <Region fx:id="scrim" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" onMouseClicked="#toggleMenuD" />
+
+    <VBox fx:id="sideMenuD" maxWidth="300.0" style="-fx-background-color: #555555;" visible="false" StackPane.alignment="CENTER_LEFT">
+
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
+            <Label style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" onMouseClicked="#toggleMenuD" />
+        </HBox>
+
+        <VBox spacing="40.0" style="-fx-padding: 20 20 20 40;">
+
+            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-cursor: hand;">
+                <SVGPath content="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
+                <Label style="-fx-text-fill: white; -fx-font-size: 18px;" text="Accueil" />
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-cursor: hand;">
+                <SVGPath content="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
+                <Label style="-fx-text-fill: white; -fx-font-size: 18px;" text="Rechercher une salle" />
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-cursor: hand;" onMouseClicked="#voirconcertaction">
+                <SVGPath content="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
+                <Label style="-fx-text-fill: white; -fx-font-size: 18px;" text="Mes concerts" />
+            </HBox>
+
+        </VBox>
+    </VBox>
+
+</StackPane>

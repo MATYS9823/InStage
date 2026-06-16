@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -52,6 +53,9 @@ public class JavaFXGUI extends IHM {
     @FXML private Hyperlink inscritlink;
     @FXML private Button concertButton;
 
+    // vhamp vue dashboard
+    @FXML private VBox sideMenuD;
+
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
         this.eolBarrier = new CountDownLatch(1);
@@ -61,7 +65,7 @@ public class JavaFXGUI extends IHM {
 
     private void start(Stage stage) throws IOException {
         this.primaryStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
         primaryStage.setTitle("GenEvent");
@@ -259,6 +263,12 @@ public class JavaFXGUI extends IHM {
     public void toggleMenu() {
         boolean isOpen = sideMenu.isVisible();
         sideMenu.setVisible(!isOpen);
+        scrim.setVisible(!isOpen);
+    }
+
+    public void toggleMenuD() {
+        boolean isOpen = sideMenuD.isVisible();
+        sideMenuD.setVisible(!isOpen);
         scrim.setVisible(!isOpen);
     }
 
