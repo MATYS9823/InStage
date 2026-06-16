@@ -33,7 +33,7 @@ public class Merch {
 
     public void ajouterEquipe(Equipe equipe){
         if(equipes.contains(equipe)){
-            System.out.println("Ce produit est deja dans votre liste");
+            System.out.println("Cette equipe est deja dans votre liste");
         }
         else {equipes.add(equipe);}
     }
@@ -43,7 +43,7 @@ public class Merch {
             equipes.remove(equipe);
         }
         else {
-            System.out.println("Ce produit n'est pas dans votre liste");
+            System.out.println("Cette equipe n'est pas dans votre liste");
         }
     }
 
