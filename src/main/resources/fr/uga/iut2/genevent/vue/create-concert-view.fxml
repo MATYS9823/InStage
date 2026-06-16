@@ -10,84 +10,130 @@
     <BorderPane style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         <top>
-            <VBox>
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #909090; -fx-padding: 10 20 10 20;">
-                    <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 3; -fx-padding: 5 30 5 30;" text="Logo" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <StackPane prefHeight="35.0" prefWidth="35.0" style="-fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 50%; -fx-padding: 5;">
-                        <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
-                    </StackPane>
-                </HBox>
-
-                <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-padding: 15 20 0 20;">
-                    <Label style="-fx-font-size: 32px; -fx-text-fill: #A0A0A0; -fx-font-weight: bold;" text="☰" />
-                </HBox>
-            </VBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #909090; -fx-padding: 10 20 10 20;">
+                <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 3; -fx-padding: 5 30 5 30;" text="Logo" />
+                <Region HBox.hgrow="ALWAYS" />
+                <StackPane prefHeight="35.0" prefWidth="35.0" style="-fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 50%; -fx-padding: 5;">
+                    <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
+                </StackPane>
+            </HBox>
         </top>
 
         <center>
-            <VBox alignment="CENTER" maxWidth="500.0" spacing="12.0" BorderPane.alignment="CENTER">
-                <BorderPane.margin>
-                    <Insets bottom="20.0" top="10.0" />
-                </BorderPane.margin>
+            <StackPane>
+                <children>
 
-                <Label alignment="CENTER" style="-fx-font-size: 32px; -fx-text-fill: #555555; -fx-font-family: 'Segoe UI', sans-serif; -fx-font-weight: bold;" text="Créer un nouveau concert" textAlignment="CENTER" wrapText="true">
-                    <VBox.margin>
-                        <Insets bottom="15.0" />
-                    </VBox.margin>
-                </Label>
+                    <BorderPane style="-fx-background-color: white;">
+                        <top>
+                            <HBox alignment="CENTER_LEFT" style="-fx-padding: 15 20 0 20;">
+                                <Label onMouseClicked="#toggleMenuD" style="-fx-font-size: 32px; -fx-text-fill: #B0B0B0; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" />
+                            </HBox>
+                        </top>
+                        <center>
+                            <VBox alignment="CENTER" maxWidth="500.0" spacing="12.0" BorderPane.alignment="CENTER">
+                                <BorderPane.margin>
+                                    <Insets bottom="20.0" top="10.0" />
+                                </BorderPane.margin>
 
-                <VBox spacing="5.0">
-                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Nom">
-                        <VBox.margin>
-                            <Insets left="15.0" />
-                        </VBox.margin>
-                    </Label>
-                    <TextField fx:id="tfNomconcert" prefHeight="40.0" style="-fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-padding: 0 20 0 20; -fx-font-size: 14px;" />
-                </VBox>
+                                <Label alignment="CENTER" style="-fx-font-size: 32px; -fx-text-fill: #555555; -fx-font-family: 'Segoe UI', sans-serif; -fx-font-weight: bold;" text="Créer un nouveau concert" textAlignment="CENTER" wrapText="true">
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" />
+                                    </VBox.margin>
+                                </Label>
 
-                <VBox spacing="5.0">
-                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Lieu">
-                        <VBox.margin>
-                            <Insets left="15.0" />
-                        </VBox.margin>
-                    </Label>
-                    <TextField fx:id="tflieuconcert" prefHeight="40.0" style="-fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-padding: 0 20 0 20; -fx-font-size: 14px;" />
-                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Nom">
+                                        <VBox.margin>
+                                            <Insets left="15.0" />
+                                        </VBox.margin>
+                                    </Label>
+                                    <TextField fx:id="tfNomconcert" prefHeight="40.0" style="-fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-padding: 0 20 0 20; -fx-font-size: 14px;" />
+                                </VBox>
 
-                <VBox spacing="5.0">
-                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Date de début">
-                        <VBox.margin>
-                            <Insets left="15.0" />
-                        </VBox.margin>
-                    </Label>
-                    <DatePicker fx:id="dpDateDebut" maxWidth="Infinity" prefHeight="40.0" style="-fx-control-inner-background: #F0F0F0; -fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-font-size: 14px;" />
-                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Lieu">
+                                        <VBox.margin>
+                                            <Insets left="15.0" />
+                                        </VBox.margin>
+                                    </Label>
+                                    <TextField fx:id="tflieuconcert" prefHeight="40.0" style="-fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-padding: 0 20 0 20; -fx-font-size: 14px;" />
+                                </VBox>
 
-                <VBox spacing="5.0">
-                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Date de fin">
-                        <VBox.margin>
-                            <Insets left="15.0" />
-                        </VBox.margin>
-                    </Label>
-                    <DatePicker fx:id="dpDateFin" maxWidth="Infinity" prefHeight="40.0" style="-fx-control-inner-background: #F0F0F0; -fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-font-size: 14px;" />
-                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Date de début">
+                                        <VBox.margin>
+                                            <Insets left="15.0" />
+                                        </VBox.margin>
+                                    </Label>
+                                    <DatePicker fx:id="dpDateDebut" maxWidth="Infinity" prefHeight="40.0" style="-fx-control-inner-background: #F0F0F0; -fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-font-size: 14px;" />
+                                </VBox>
 
-                <VBox spacing="5.0">
-                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Artiste">
-                        <VBox.margin>
-                            <Insets left="15.0" />
-                        </VBox.margin>
-                    </Label>
-                    <TextField fx:id="tfArtiste" prefHeight="40.0" style="-fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-padding: 0 20 0 20; -fx-font-size: 14px;" />
-                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Date de fin">
+                                        <VBox.margin>
+                                            <Insets left="15.0" />
+                                        </VBox.margin>
+                                    </Label>
+                                    <DatePicker fx:id="dpDateFin" maxWidth="Infinity" prefHeight="40.0" style="-fx-control-inner-background: #F0F0F0; -fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-font-size: 14px;" />
+                                </VBox>
 
-                <Button fx:id="creerconcertButton" maxWidth="Infinity" onAction="#createNewConcertAction" prefHeight="45.0" style="-fx-background-color: #0078D4; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-background-radius: 25;" text="Créer">
-                    <VBox.margin>
-                        <Insets top="15.0" />
-                    </VBox.margin>
-                </Button>
-            </VBox>
+                                <VBox spacing="5.0">
+                                    <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Artiste">
+                                        <VBox.margin>
+                                            <Insets left="15.0" />
+                                        </VBox.margin>
+                                    </Label>
+                                    <TextField fx:id="tfArtiste" prefHeight="40.0" style="-fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-padding: 0 20 0 20; -fx-font-size: 14px;" />
+                                </VBox>
+
+                                <Button fx:id="creerconcertButton" maxWidth="Infinity" onAction="#createNewConcertAction" prefHeight="45.0" style="-fx-background-color: #0078D4; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-background-radius: 25;" text="Créer">
+                                    <VBox.margin>
+                                        <Insets top="15.0" />
+                                    </VBox.margin>
+                                </Button>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+
+                    <Region fx:id="scrim" onMouseClicked="#toggleMenuD" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
+
+                    <VBox fx:id="sideMenuD" maxWidth="300.0" style="-fx-background-color: #555555;" visible="false" StackPane.alignment="CENTER_LEFT">
+                        <children>
+                            <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
+                                <children>
+                                    <Label onMouseClicked="#toggleMenuD" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
+                                </children>
+                            </HBox>
+
+                            <VBox spacing="40.0" style="-fx-padding: 20 20 20 40;">
+                                <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-cursor: hand;" onMouseClicked="#allerVersAccueil">
+                                        <children>
+                                            <SVGPath content="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
+                                            <Label style="-fx-text-fill: white; -fx-font-size: 18px;" text="Accueil" />
+                                        </children>
+                                    </HBox>
+
+                                    <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-cursor: hand;">
+                                        <children>
+                                            <SVGPath content="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
+                                            <Label style="-fx-text-fill: white; -fx-font-size: 18px;" text="Rechercher une salle" />
+                                        </children>
+                                    </HBox>
+
+                                    <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-cursor: hand;" onMouseClicked="#allerVersMesConcerts">
+                                        <children>
+                                            <SVGPath content="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
+                                            <Label style="-fx-text-fill: white; -fx-font-size: 18px;" text="Mes concerts" />
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+                        </children>
+                    </VBox>
+
+                </children>
+            </StackPane>
         </center>
 
     </BorderPane>
