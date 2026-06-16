@@ -121,6 +121,12 @@ public class Controleur {
         this.ihm.afficherConcerts(this.genevent.getConcerts()); ;
     }
 
+    public java.util.List<fr.uga.iut2.genevent.modele.Salle> getToutesLesSalles() {
+        // IMPORTANT : Assurez-vous que votre classe GenEvent possède bien
+        // une méthode getSalles() qui retourne la liste des salles existantes.
+        return this.genevent.getSalles();
+    }
+
     public Organisateur getOrganisateur(String email) {
         return this.genevent.getOrganisateur(email);
     }

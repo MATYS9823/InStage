@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Carte des Salles</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        html, body, #map { height: 100%; margin: 0; padding: 0; }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    // Initialisation centrée sur Grenoble
+    var map = L.map('map').setView([45.1885, 5.7245], 12);
+
+    // Ajout du fond de carte OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    var markersGroup = L.layerGroup().addTo(map);
+
+    // Fonction appelée directement par JavaFX !
+    function updateMarkers(sallesJson) {
+        markersGroup.clearLayers();
+        var salles = JSON.parse(sallesJson);
+        var bounds = [];
+
+        salles.forEach(function(salle) {
+            var marker = L.marker([salle.latitude, salle.longitude])
+                .bindPopup("<b>" + salle.nom + "</b><br>" + salle.adresse);
+
+            markersGroup.addLayer(marker);
+            bounds.push([salle.latitude, salle.longitude]);
+        });
+
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, {padding: [30, 30]});
+        }
+    }
+</script>
+</body>
+</html>

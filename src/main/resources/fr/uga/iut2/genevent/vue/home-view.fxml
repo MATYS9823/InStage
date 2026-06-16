@@ -71,7 +71,7 @@
                                 <Font name="System Bold" size="18.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="200.0" prefWidth="320.0" style="-fx-background-color: #B5B5B5; -fx-background-radius: 35; -fx-cursor: hand;" text="Rechercher une salle" textFill="WHITE">
+                        <Button mnemonicParsing="false"  onAction="#allerVersRechercheSalles" prefHeight="200.0" prefWidth="320.0" style="-fx-background-color: #B5B5B5; -fx-background-radius: 35; -fx-cursor: hand;" text="Rechercher une salle" textFill="WHITE">
                             <font>
                                 <Font name="System Bold" size="18.0" />
                             </font>

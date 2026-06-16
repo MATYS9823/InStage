@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
@@ -195,18 +196,33 @@ public class JavaFXGUI extends IHM {
 
     @FXML
     private void quitterMenuBurgerAction() {
-        Platform.runLater(() -> {
-            // 1. On récupère TOUTES les fenêtres ouvertes (principale + popups) et on les ferme
-            new java.util.ArrayList<>(javafx.stage.Window.getWindows()).forEach(window -> {
-                if (window instanceof Stage) {
-                    ((Stage) window).close();
-                }
-            });
+        // 1. Création de la fenêtre de confirmation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de fermeture");
+        alert.setHeaderText(null); // Optionnel : null pour un affichage plus épuré sans en-tête
+        alert.setContentText("Êtes-vous sûr de vouloir quitter l'application ?");
 
-            // 2. On libère la barrière pour réveiller ton Main
-            // Le programme va exécuter ton code de sauvegarde automatique puis s'éteindre
-            this.exitAction();
-        });
+        // 2. Affichage de la fenêtre et attente du choix de l'utilisateur
+        Optional<ButtonType> resultat = alert.showAndWait();
+
+        // 3. Vérification de la réponse
+        if (resultat.isPresent() && resultat.get() == ButtonType.OK) {
+            // L'utilisateur a cliqué sur "OK", on lance la procédure de fermeture
+            Platform.runLater(() -> {
+                // On récupère TOUTES les fenêtres ouvertes (principale + popups) et on les ferme
+                new java.util.ArrayList<>(javafx.stage.Window.getWindows()).forEach(window -> {
+                    if (window instanceof Stage) {
+                        ((Stage) window).close();
+                    }
+                });
+
+                // On libère la barrière pour réveiller ton Main
+                // Le programme va exécuter ton code de sauvegarde automatique puis s'éteindre
+                this.exitAction();
+            });
+        }
+        // Si l'utilisateur clique sur "Annuler" ou ferme la fenêtre,
+        // le code s'arrête ici et l'application reste ouverte naturellement.
     }
 
 
@@ -617,7 +633,7 @@ public class JavaFXGUI extends IHM {
     @Override
     public void saisirOrganisateur() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("new-org-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("new-user-view.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             Stage window = new Stage();
@@ -644,4 +660,35 @@ public class JavaFXGUI extends IHM {
     public void afficherConcerts(Map<String, Concert> concerts) {
         // À implémenter selon la vue concerts
     }
+
+    @FXML
+    private void allerVersRechercheSalles() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("recherche-salles-view.fxml"));
+
+            // On charge d'abord la vue (le FXML)
+            Scene scene = new Scene(loader.load());
+
+            // On récupère le contrôleur de la page qui a été créé automatiquement par le FXML
+            RechercheSallesController controller = loader.getController();
+
+            // On l'initialise avec les bonnes données !
+            // (this.controleur pour les données de l'application, et this pour pouvoir revenir en arrière plus tard)
+            controller.initialiser(this.controleur, this);
+
+            // On affiche la page
+            primaryStage.setScene(scene);
+
+        } catch (IOException exc) {
+            System.err.println("Erreur lors du chargement de la page Recherche Salles !");
+            exc.printStackTrace();
+            throw new RuntimeException(exc);
+        }
+    }
+
+
+
+
+
+
 }

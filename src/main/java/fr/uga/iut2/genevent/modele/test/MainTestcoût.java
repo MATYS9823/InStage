@@ -11,13 +11,13 @@ public class MainTestcoût {
         SimulateurFinancier simulateur = new SimulateurFinancier();
 
         // 2. On crée une salle (ex: Le Zénith, 500 places, 2500€ par jour)
-        Salle zenith = new Salle("Le Zénith", "Paris", 12500);
-        zenith.setNbPlaces(800);
+        Salle zenith = new Salle("Le Zénith", "Paris", 12400);
+        zenith.setNbPlaces(8000);
 
         // 3. On crée le concert (du 12 au 14 Mai)
         LocalDate debut = LocalDate.of(2026, 5, 12);
-        LocalDate fin = LocalDate.of(2026, 5, 14);
-        Concert monConcert = new Concert(debut, fin, "Paris", "Festival Rock 2026","Eminem");
+        LocalDate fin = LocalDate.of(2026, 6, 3);
+        Concert monConcert = new Concert(debut, fin, "Paris", "Festival Rock 2026");
 
         // 4. On affecte la salle au concert
         monConcert.setSalle(zenith);
