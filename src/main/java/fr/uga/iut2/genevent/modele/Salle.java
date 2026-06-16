@@ -20,6 +20,18 @@ public class Salle implements Serializable {
     private String lieu;
     private int tarif;
     private List<Occupation> occupations = new ArrayList<>();
+    private double latitude;
+    private double longitude;
+
+    public Salle(String nom, List<Place> listePlaces, int nbPlaces, String lieu, int tarif, double latitude, double longitude) {
+        this.nom = nom;
+        this.listePlaces = listePlaces;
+        this.nbPlaces = nbPlaces;
+        this.lieu = lieu;
+        this.tarif = tarif;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     public Salle(String nom, List<Place> listePlaces, int nbPlaces, String lieu, int tarif) {
         this.nom = nom;
@@ -59,6 +71,15 @@ public class Salle implements Serializable {
 
     public int getTarif() {
         return tarif;
+    }
+
+    public double getLatitude() { return latitude; }
+    public double getLongitude() { return longitude; }
+
+    // --- NOUVELLE MÉTHODE POUR LA CARTE (JSON) ---
+    public String toJson() {
+        return String.format("{\"nom\":\"%s\",\"adresse\":\"%s\",\"latitude\":%f,\"longitude\":%f}",
+                nom.replace("\"", "\\\""), lieu.replace("\"", "\\\""), latitude, longitude);
     }
 
 

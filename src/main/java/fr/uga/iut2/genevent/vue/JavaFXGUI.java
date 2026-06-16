@@ -386,4 +386,10 @@ public class JavaFXGUI extends IHM {
     public void afficherConcerts(Map<String, Concert> concerts) {
         // À implémenter selon la vue concerts
     }
+
+
+
+
+
+
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="rootHBox" alignment="CENTER_LEFT" prefWidth="360.0" style="-fx-border-color: #cccccc; -fx-border-width: 1; -fx-background-color: white; -fx-padding: 15; -fx-border-radius: 5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://fxml.com/fxml/1">
+    <children>
+        <Label style="-fx-font-size: 28px;" text="📍">
+            <HBox.margin>
+                <Insets right="15.0" />
+            </HBox.margin>
+        </Label>
+
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox spacing="5.0">
+                    <children>
+                        <Label text="Nom :" />
+                        <Label fx:id="lblNom" style="-fx-font-weight: bold;" text="..." />
+                    </children>
+                </HBox>
+
+                <HBox spacing="5.0">
+                    <children>
+                        <Label text="Adresse :" />
+                        <Label fx:id="lblAdresse" text="..." wrapText="true" />
+                    </children>
+                </HBox>
+
+                <HBox spacing="5.0">
+                    <children>
+                        <Label text="Capacité :" />
+                        <Label fx:id="lblCapacite" style="-fx-font-weight: bold;" text="..." />
+                        <Label text="personnes" />
+                    </children>
+                </HBox>
+
+                <HBox spacing="5.0">
+                    <children>
+                        <Label text="Tarif :" />
+                        <Label fx:id="lblTarif" style="-fx-font-weight: bold;" text="..." />
+                        <Label text="€/heure" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <Label style="-fx-font-size: 24px; -fx-cursor: hand;" text="♡">
+            <HBox.margin>
+                <Insets left="10.0" />
+            </HBox.margin>
+        </Label>
+    </children>
+</HBox>
