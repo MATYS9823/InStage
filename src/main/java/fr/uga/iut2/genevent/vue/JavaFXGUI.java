@@ -150,6 +150,11 @@ public class JavaFXGUI extends IHM {
                     concertsTilePane.getChildren().add(creerCarteConcert(concert));
                 }
             }
+            if (welcomeLabel != null) {
+                welcomeLabel.setText("Bienvenue " + controleur.getOrganisateurConnecte().getPrenom()
+                        + " " + controleur.getOrganisateurConnecte().getNom());
+            }
+
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -304,32 +309,56 @@ public class JavaFXGUI extends IHM {
     }
 
     private VBox creerCarteConcert(Concert c) {
+        // --- ÉLÉMENTS DE TEXTE ---
         Label nom = new Label(c.getNom());
-        nom.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333;");
+        nom.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+
+        Label artiste = new Label(c.getArtiste());
+        artiste.setStyle("-fx-font-size: 14px; -fx-font-style: italic; -fx-text-fill: #7F8C8D;");
 
         Label lieu = new Label("📍 " + c.getLieu());
-        lieu.setStyle("-fx-text-fill: #666666;");
-        Label artiste = new Label(c.getArtiste());
-        artiste.setStyle("-fx-text-fill: #666666;");
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-        HBox infoLigne = new HBox(10, lieu, spacer, artiste);
+        lieu.setStyle("-fx-text-fill: #34495E; -fx-font-size: 13px;");
 
         String dateStr = c.getDate_debut() != null
-                ? c.getDate_debut().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                : "—";
-        Label date = new Label(dateStr);
-        date.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333333;");
-        date.setMaxWidth(Double.MAX_VALUE);
-        date.setAlignment(javafx.geometry.Pos.CENTER);
+                ? c.getDate_debut().format(java.time.format.DateTimeFormatter.ofPattern("dd MMMM yyyy", java.util.Locale.FRANCE))
+                : "Date inconnue";
+        Label date = new Label("📅 " + dateStr);
+        date.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #2980B9;");
 
+        // --- BOUTONS INTERACTIFS ---
+        // Bouton Supprimer (Top Right)
+        Button btnSupprimer = new Button("✕");
+        // Bouton Modifier (Bottom Right)
+        Button btnModifier = new Button("Modifier");
+        Region headerSpacer = new Region();
+        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+
+        // Contenu central : Artiste et Lieu
+        VBox corpsContenu = new VBox(5, artiste, lieu);
+
+        // Footer : Date à gauche, bouton modifier à droite
+        Region footerSpacer = new Region();
+        HBox.setHgrow(footerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox footer = new HBox(10, date, footerSpacer, btnModifier);
+        footer.setAlignment(javafx.geometry.Pos.BOTTOM_CENTER);
+
+        // Spacer vertical pour pousser le footer vers le bas
         Region vSpacer = new Region();
         VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
 
-        VBox carte = new VBox(10, nom, infoLigne, vSpacer, date);
-        carte.setPrefWidth(350);
-        carte.setPrefHeight(180);
-        carte.setStyle("-fx-background-color: #E0E0E0; -fx-background-radius: 25; -fx-padding: 20;");
+        // Assemblage final de la carte
+        VBox carte = new VBox(12, header, corpsContenu, vSpacer, footer);
+        // Style de la carte : Fond blanc/ombragé plus moderne qu'un gris brut
+        carte.setStyle(
+                "-fx-background-color: #FFFFFF; " +
+                        "-fx-background-radius: 18; " +
+                        "-fx-padding: 20; " +
+                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+        );
+        carte.setPrefSize(360, 200);
+
         return carte;
     }
 
