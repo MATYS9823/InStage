@@ -1,5 +1,6 @@
 package fr.uga.iut2.genevent.controleur;
 
+import fr.uga.iut2.genevent.modele.Concert;
 import fr.uga.iut2.genevent.modele.Organisateur;
 import fr.uga.iut2.genevent.modele.GenEvent;
 import fr.uga.iut2.genevent.vue.CLI;
@@ -111,6 +112,20 @@ public class Controleur {
                 "Nouveau concert : " + infos.nom + " à " + infos.lieu,
                 true
         );
+    }
+
+    public void supprimerConcert(Concert concert) {
+        if (!this.estConnecte()) {
+            this.ihm.informerUtilisateur("Vous devez être connecté pour supprimer un concert.", false);
+            return;
+        }
+        if (!this.organisateurConnecte.getConcerts().contains(concert)) {
+            this.ihm.informerUtilisateur("Ce concert ne vous appartient pas.", false);
+            return;
+        }
+
+        this.genevent.supprimerConcert(concert,this.organisateurConnecte.getEmail());
+        this.ihm.informerUtilisateur("Le concert \"" + concert.getNom() + "\" a été supprimé.", true);
     }
 
     public void saisirConnexion() {
