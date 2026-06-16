@@ -152,6 +152,22 @@ public class JavaFXGUI extends IHM {
         inscritlink.getScene().getWindow().hide();
     }
 
+    @FXML
+    private void quitterMenuBurgerAction() {
+        Platform.runLater(() -> {
+            // 1. On récupère TOUTES les fenêtres ouvertes (principale + popups) et on les ferme
+            new java.util.ArrayList<>(javafx.stage.Window.getWindows()).forEach(window -> {
+                if (window instanceof Stage) {
+                    ((Stage) window).close();
+                }
+            });
+
+            // 2. On libère la barrière pour réveiller ton Main
+            // Le programme va exécuter ton code de sauvegarde automatique puis s'éteindre
+            this.exitAction();
+        });
+    }
+
 
     @FXML
     private void newOrganisateurMenuItemAction() {
