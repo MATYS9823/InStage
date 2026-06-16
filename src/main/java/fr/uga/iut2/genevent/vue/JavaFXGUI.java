@@ -4,6 +4,7 @@ import fr.uga.iut2.genevent.controleur.Controleur;
 import fr.uga.iut2.genevent.modele.Organisateur;
 import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -52,6 +53,16 @@ public class JavaFXGUI extends IHM {
     @FXML private TextField forgotEmailTextField;
     @FXML private Hyperlink inscritlink;
     @FXML private Button concertButton;
+    @FXML private  Label gererconcertlabel;
+
+    @FXML private TextField tfNomconcert;
+    @FXML private TextField tflieuconcert;
+    @FXML private DatePicker dpDateDebut;
+    @FXML private DatePicker dpDateFin;
+    @FXML private TextField tfArtiste;
+
+    @FXML private Button creerconcertButton;
+
 
     // vhamp vue dashboard
     @FXML private VBox sideMenuD;
@@ -65,7 +76,7 @@ public class JavaFXGUI extends IHM {
 
     private void start(Stage stage) throws IOException {
         this.primaryStage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
         primaryStage.setTitle("GenEvent");
@@ -79,6 +90,7 @@ public class JavaFXGUI extends IHM {
      * Charge home-view.fxml dans le stage principal après une connexion réussie.
      * Met à jour le label de bienvenue avec le prénom/nom de l'organisateur.
      */
+    @FXML
     private void allerVersAccueil() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
@@ -125,10 +137,26 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            if (gererconcertlabel != null) {
+                gererconcertlabel.setText("Gérer vos concerts " + controleur.getOrganisateurConnecte().getPrenom()
+                        + " " + controleur.getOrganisateurConnecte().getNom());
+            }
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
 
+    }
+
+    private void allerVerscreerConcerts(){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-concert-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+
+        }catch (IOException exc){
+            throw new RuntimeException(exc);
+        }
     }
 
 //-----  Éléments du dialogue  -------------------------------------------------
@@ -195,7 +223,7 @@ public class JavaFXGUI extends IHM {
 
     @FXML
     private void newConcertMenuItemAction() {
-        this.controleur.saisirConcert();
+        allerVerscreerConcerts();
     }
 
     @FXML
@@ -244,6 +272,19 @@ public class JavaFXGUI extends IHM {
         );
         this.controleur.creerOrganisateur(data);
         this.newOrgOkButton.getScene().getWindow().hide();
+    }
+
+    @FXML
+    private void createNewConcertAction(){
+        IHM.InfosNouveauConcert data = new IHM.InfosNouveauConcert(
+            this.tfNomconcert.getText().strip(),
+                this.dpDateDebut.getValue(),
+                this.dpDateDebut.getValue(),
+                this.tflieuconcert.getText().strip(),
+                this.tfArtiste.getText().strip()
+        );
+
+        this.controleur.creerConcert(data);
     }
 
     @FXML

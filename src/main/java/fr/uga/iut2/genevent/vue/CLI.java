@@ -204,7 +204,9 @@ public class CLI extends IHM {
         LocalDate dateDebut = LocalDate.parse(CLI.lireDate().toString());
         CLI.afficher("Date de fin :");
         LocalDate dateFin = LocalDate.parse(CLI.lireDate().toString());
-        return new InfosNouveauConcert(nom, dateDebut, dateFin, lieu);
+        CLI.afficher("artistes");
+        String artistes = CLI.lireNom();
+        return new InfosNouveauConcert(nom, dateDebut, dateFin, lieu,artistes);
     }
 
 

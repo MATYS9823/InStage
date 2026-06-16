@@ -1,8 +1,5 @@
 package fr.uga.iut2.genevent.modele;
 
-import fr.uga.iut2.genevent.modele.bases.Evenement;
-import fr.uga.iut2.genevent.modele.bases.Utilisateur;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -42,11 +39,11 @@ public class GenEvent implements Serializable {
         return this.organisateurs;
     }
 
-    public void nouveauConcert(String nom, LocalDate dateDebut, LocalDate dateFin, String lieu, String emailOrganisateur) {
+    public void nouveauConcert(String nom, LocalDate dateDebut, LocalDate dateFin, String lieu,String artistes, String emailOrganisateur) {
         assert !this.concerts.containsKey(nom);
         assert this.organisateurs.containsKey(emailOrganisateur);
 
-        Concert concert = new Concert(dateDebut, dateFin, lieu, nom);
+        Concert concert = new Concert(dateDebut, dateFin, lieu, nom ,artistes);
         this.concerts.put(nom, concert);
         this.organisateurs.get(emailOrganisateur).creerConcert(concert);
     }

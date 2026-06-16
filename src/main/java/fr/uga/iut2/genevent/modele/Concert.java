@@ -18,17 +18,18 @@ public class Concert implements Serializable {
     private LocalDate date_fin;
 
     private String lieu;
-    private ArrayList<String> artistes = new ArrayList<>();
+    private String artistes;
     private String nom;
     private Salle salle = null;
     private Merch merch;
     private List<Materiel> materiels=new ArrayList<>();
 
-    public Concert(LocalDate date_debut, LocalDate date_fin, String lieu, String nom) {
+    public Concert(LocalDate date_debut, LocalDate date_fin, String lieu, String nom,String artistes) {
         this.date_debut = date_debut;
         this.date_fin = date_fin;
         this.lieu = lieu;
         this.nom = nom;
+        this.artistes = artistes;
     }
 
 
@@ -44,7 +45,7 @@ public class Concert implements Serializable {
         return lieu;
     }
 
-    public ArrayList<String> getArtiste() {
+    public String getArtiste() {
         return artistes;
     }
 
@@ -78,9 +79,7 @@ public class Concert implements Serializable {
     }
 
 
-    public void ajouterArtiste(String artiste) {
-        this.artistes.add(artiste);
-    }
+
 
     public List<Materiel> getMateriels() {
         return materiels;

@@ -47,12 +47,14 @@ public abstract class IHM {
         public final LocalDate dateDebut;
         public final LocalDate dateFin;
         public final String lieu;
+        public final String artistes;
 
-        public InfosNouveauConcert(String nom, LocalDate dateDebut, LocalDate dateFin, String lieu) {
+        public InfosNouveauConcert(String nom, LocalDate dateDebut, LocalDate dateFin, String lieu, String artistes) {
             this.nom = nom;
             this.dateDebut = dateDebut;
             this.dateFin = dateFin;
             this.lieu = lieu;
+            this.artistes = artistes;
         }
 
         @Override

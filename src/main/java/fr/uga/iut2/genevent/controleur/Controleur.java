@@ -104,6 +104,7 @@ public class Controleur {
                 infos.dateDebut,
                 infos.dateFin,
                 infos.lieu,
+                infos.artistes,
                 this.organisateurConnecte.getEmail()  // ← l'organisateur connecté
         );
         this.ihm.informerUtilisateur(

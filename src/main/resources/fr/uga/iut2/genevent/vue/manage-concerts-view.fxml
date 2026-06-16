@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" style="-fx-background-color: white;">
+
 
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: #9E9E9E; -fx-padding: 10 20 10 20;">
@@ -26,9 +29,11 @@
         </HBox>
     </top>
 
+
     <center>
         <StackPane>
             <children>
+
 
                 <BorderPane style="-fx-background-color: white;">
                     <top>
@@ -57,6 +62,7 @@
                             </children>
                         </VBox>
                     </top>
+
 
                     <center>
                         <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 20 40 20 40;">
@@ -92,7 +98,9 @@
                     </center>
                 </BorderPane>
 
+
                 <Region fx:id="scrim" onMouseClicked="#toggleMenu" style="-fx-background-color: rgba(0,0,0,0.3);" visible="false" />
+
 
                 <HBox fx:id="sideMenu" maxWidth="300.0" visible="false" StackPane.alignment="CENTER_LEFT">
                     <children>
@@ -105,7 +113,7 @@
                                 </HBox>
                                 <VBox spacing="10.0">
                                     <children>
-                                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#allerVersDashboard" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand;" text="🏠  Accueil">
+                                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#allerVersAccueil" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand;" text="🏠  Accueil">
                                             <font>
                                                 <Font size="18.0" />
                                             </font>
@@ -127,7 +135,9 @@
                     </children>
                 </HBox>
 
+
             </children>
         </StackPane>
     </center>
 </BorderPane>
+
