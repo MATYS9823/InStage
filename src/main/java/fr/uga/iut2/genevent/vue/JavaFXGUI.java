@@ -114,6 +114,7 @@ public class JavaFXGUI extends IHM {
         }
     }
 
+    @FXML
     private void allerVersMesConcerts(){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("manage-concerts-view.fxml"));
@@ -236,6 +237,10 @@ public class JavaFXGUI extends IHM {
         boolean isOpen = sideMenu.isVisible();
         sideMenu.setVisible(!isOpen);
         scrim.setVisible(!isOpen);
+    }
+
+    public void voirconcertaction(){
+        allerVersMesConcerts();
     }
 
 //-----  Utilitaires de validation  --------------------------------------------
