@@ -1,6 +1,7 @@
 package fr.uga.iut2.genevent.controleur;
 
 import fr.uga.iut2.genevent.modele.Concert;
+import fr.uga.iut2.genevent.modele.Equipe;
 import fr.uga.iut2.genevent.modele.Organisateur;
 import fr.uga.iut2.genevent.modele.GenEvent;
 import fr.uga.iut2.genevent.vue.CLI;
@@ -16,6 +17,7 @@ public class Controleur {
     private final IHM ihm;
     private Organisateur organisateurConnecte;  // ← session
     private Concert concertSelectionne;
+
 
     public Controleur(GenEvent genevent) {
         this.genevent = genevent;
@@ -137,6 +139,18 @@ public class Controleur {
         );
         this.ihm.informerUtilisateur(
                 "Nouveau merch créé : " + infosMerch.nom,
+                true
+        );
+    }
+
+    public void creerEquipe(IHM.InfosMerch infosMerch){
+        this.genevent.nouvelEquipe(
+                infosMerch.nom,
+                infosMerch.localisation,
+                this.concertSelectionne.getNom()
+        );
+        this.ihm.informerUtilisateur(
+                "Nouvel equipe : " + infosMerch.nom,
                 true
         );
     }

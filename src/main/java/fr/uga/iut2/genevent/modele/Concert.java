@@ -25,6 +25,7 @@ public class Concert implements Serializable {
     private Merch merch;
     private List<Materiel> materiels = new ArrayList<>();
     private List<Merch> merchs = new ArrayList<>();
+    private List<Equipe > equipes = new ArrayList<>();
     public Concert(LocalDate date_debut, LocalDate date_fin, String lieu, String nom,String artistes) {
         this.date_debut = date_debut;
         this.date_fin = date_fin;
@@ -107,8 +108,34 @@ public class Concert implements Serializable {
         }
     }
 
+    public void suprimerMerch(Merch merch){
+        if (merchs.contains(merch)){
+            merchs.remove(merch);
+        }
+        else {System.out.println("Ce merchs n'est pas présent");}
+    }
+
     public List<Merch> getMerchs(){
         return this.merchs;
+    }
+
+    public void ajouterEquipe(Equipe equipe){
+        if (equipes.contains(equipe)){
+            System.out.println("Cette equipe est déjà présente");
+        }
+        else {equipes.add(equipe);}
+    }
+
+    public void suprimerEquipe(Equipe equipe){
+        if (equipes.contains(equipe)){
+            merchs.remove(equipe);
+        }
+        else {
+            System.out.println("Cette equipes n'est pas présente");}
+    }
+
+    public List<Equipe> getEquipes(){
+        return this.equipes;
     }
 
     /**

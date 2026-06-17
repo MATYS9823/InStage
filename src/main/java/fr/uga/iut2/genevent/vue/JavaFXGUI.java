@@ -85,8 +85,11 @@ public class JavaFXGUI extends IHM {
     @FXML private VBox merchTilePane;
 
 
-    // vhamp vue dashboard
     @FXML private VBox sideMenuD;
+
+    @FXML private TextField tfNomEquipe;
+    @FXML private TextField tfCategorieEquipe;
+    @FXML private VBox staffTilePane;
 
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
@@ -247,7 +250,6 @@ public class JavaFXGUI extends IHM {
                     merchTilePane.getChildren().add(creerCarteMerch(m));
                 }
             }
-
         }catch (IOException exc){
             throw new RuntimeException(exc);
         }
@@ -275,6 +277,36 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    private void allerVerscreerStaff() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-staff-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    @FXML
+    private void allerVersStaff() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("staff-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+
+            if (staffTilePane != null && controleur.getConcertSelectionne() != null) {
+                staffTilePane.getChildren().clear();
+                for (fr.uga.iut2.genevent.modele.Equipe e : controleur.getConcertSelectionne().getEquipes()) {
+                    staffTilePane.getChildren().add(creerCarteEquipe(e));
+                }
+            }
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -426,6 +458,8 @@ public class JavaFXGUI extends IHM {
         this.newOrgOkButton.getScene().getWindow().hide();
     }
 
+
+
     @FXML
     private void createNewConcertAction() {
         // Validation basique
@@ -487,6 +521,22 @@ public class JavaFXGUI extends IHM {
 
         controleur.creerMerch(data);
         allerVersMerch();
+    }
+
+    @FXML
+    private void createNewStaffAction() {
+        if (tfNomEquipe.getText().isBlank()) {
+            informerUtilisateur("Merci de renseigner le nom de l'équipe.", false);
+            return;
+        }
+
+        IHM.InfosMerch data = new IHM.InfosMerch(
+                tfCategorieEquipe.getText().strip(),  // localisation = catégorie
+                tfNomEquipe.getText().strip()          // nom
+        );
+
+        controleur.creerEquipe(data);
+        allerVersStaff();
     }
 
     private VBox creerCarteConcert(Concert c) {
@@ -627,6 +677,57 @@ public class JavaFXGUI extends IHM {
         return carte;
     }
 
+    private VBox creerCarteEquipe(fr.uga.iut2.genevent.modele.Equipe e) {
+        Label nom = new Label(e.getNom());
+        nom.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+
+        Label categorie = new Label("🏷 " + e.getCategorie());
+        categorie.setStyle("-fx-font-size: 14px; -fx-font-style: italic; -fx-text-fill: #7F8C8D;");
+
+        // Personnel : on liste chaque membre sous forme de petit badge
+        HBox personnelBox = new HBox(8);
+        personnelBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        if (e.getPersonnels().isEmpty()) {
+            Label aucun = new Label("Aucun personnel assigné");
+            aucun.setStyle("-fx-font-size: 13px; -fx-text-fill: #AAAAAA; -fx-font-style: italic;");
+            personnelBox.getChildren().add(aucun);
+        } else {
+            for (String membre : e.getPersonnels()) {
+                Label badge = new Label("👤 " + membre);
+                badge.setStyle(
+                        "-fx-background-color: #F0F0F0; -fx-background-radius: 15; " +
+                                "-fx-padding: 4 12 4 8; -fx-font-size: 13px; -fx-text-fill: #333333;"
+                );
+                personnelBox.getChildren().add(badge);
+            }
+        }
+
+        Button btnSupprimer = new Button("✕");
+        btnSupprimer.setOnAction(ev -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setContentText("Supprimer l'équipe \"" + e.getNom() + "\" ?");
+            alert.showAndWait().ifPresent(reponse -> {
+                if (reponse == ButtonType.OK) {
+                    // controleur.supprimerEquipe(e); // à brancher plus tard
+                    allerVersStaff();
+                }
+            });
+        });
+
+        Region headerSpacer = new Region();
+        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+
+        VBox carte = new VBox(12, header, categorie, personnelBox);
+        carte.setStyle(
+                "-fx-background-color: #FFFFFF; -fx-background-radius: 18; -fx-padding: 20; " +
+                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+        );
+        carte.setPrefSize(360, 180);
+        return carte;
+    }
+
     @FXML
     private void cancelNewOrganisateurAction() {
         this.newOrgCancelButton.getScene().getWindow().hide();
@@ -747,18 +848,8 @@ public class JavaFXGUI extends IHM {
     @FXML private VBox sideMenuStaff;
     @FXML private Region scrimStaff;
 
-    // Navigation vers la page Staff
-    @FXML
-    private void allerVersStaff() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("staff-view.fxml"));
-            loader.setController(this);
-            Scene scene = new Scene(loader.load());
-            primaryStage.setScene(scene);
-        } catch (IOException exc) {
-            throw new RuntimeException(exc);
-        }
-    }
+
+
 
     // Gestion de la visibilité du volet latéral Staff (Inactif par défaut)
     @FXML
@@ -790,7 +881,7 @@ public class JavaFXGUI extends IHM {
     // Action pour le bouton global "Nouvelle équipe +"
     @FXML
     private void ajouterStaffAction() {
-        System.out.println("Ouverture du formulaire de création d'une équipe de staff...");
+        allerVerscreerStaff();
     }
 
 

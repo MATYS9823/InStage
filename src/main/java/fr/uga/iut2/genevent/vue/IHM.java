@@ -57,6 +57,16 @@ public abstract class IHM {
         }
     }
 
+    public static class InfosEquipe {
+        public final String nom;
+        public final String categorie;
+
+        public InfosEquipe(final String nom, final String categorie) {
+            this.nom = nom;
+            this.categorie = categorie;
+        }
+    }
+
     /**
      * Classe conteneur pour les informations saisies pour un nouvel
      * {@link Evenement}.
