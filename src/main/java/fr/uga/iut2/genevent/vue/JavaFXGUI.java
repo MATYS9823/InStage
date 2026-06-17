@@ -1,9 +1,7 @@
 package fr.uga.iut2.genevent.vue;
 import fr.uga.iut2.genevent.controleur.Controleur;
 
-import fr.uga.iut2.genevent.modele.Materiel;
-import fr.uga.iut2.genevent.modele.Merch;
-import fr.uga.iut2.genevent.modele.Organisateur;
+import fr.uga.iut2.genevent.modele.*;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -14,7 +12,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-import fr.uga.iut2.genevent.modele.Concert;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -93,6 +90,12 @@ public class JavaFXGUI extends IHM {
     @FXML private VBox staffTilePane;
 
 
+
+    @FXML private TextField tfNomBuvette;
+    @FXML private TextField tfLocalisationBuvette;
+    @FXML private VBox buvetteTilePane;
+    @FXML private VBox sideMenuBuvette;
+    @FXML private Region scrimBuvette;
 
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
@@ -201,6 +204,12 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            if (buvetteTilePane != null && controleur.getConcertSelectionne() != null) {
+                buvetteTilePane.getChildren().clear();
+                for (Buvette b : controleur.getConcertSelectionne().getBuvettes()) {
+                    buvetteTilePane.getChildren().add(creerCarteBuvette(b));
+                }
+            }
 
         }catch (IOException exc){
             throw new RuntimeException(exc);
@@ -321,6 +330,20 @@ public class JavaFXGUI extends IHM {
             throw new RuntimeException(exc);
         }
     }
+
+    private void allerVerscreerBuvette() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-buvette-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+
 
 
 
@@ -549,6 +572,35 @@ public class JavaFXGUI extends IHM {
         allerVersStaff();
     }
 
+    @FXML
+    private void creerCarteAction() {
+        allerVerscreerBuvette();
+    }
+
+    @FXML
+    private void createNewBuvetteAction() {
+        if (tfNomBuvette.getText().isBlank()) {
+            informerUtilisateur("Merci de renseigner le nom de la buvette.", false);
+            return;
+        }
+        IHM.InfosBuvette data = new IHM.InfosBuvette(
+                tfLocalisationBuvette.getText().strip(),
+                tfNomBuvette.getText().strip()
+        );
+        controleur.creerBuvette(data);
+        allerVersBuvette();
+    }
+
+    // Gestion du volet latéral spécifique à la page Buvette
+    @FXML
+    public void toggleMenuBuvette() {
+        boolean isOpen = sideMenuBuvette.isVisible();
+        sideMenuBuvette.setVisible(!isOpen);
+        scrimBuvette.setVisible(!isOpen);
+    }
+
+
+
     private VBox creerCarteConcert(Concert c) {
         // --- TEXTES ---
         Label nom = new Label(c.getNom());
@@ -754,6 +806,49 @@ public class JavaFXGUI extends IHM {
         carte.setOnMouseEntered(ev -> carte.setStyle(hoverStyle));
         carte.setOnMouseExited(ev -> carte.setStyle(defaultStyle));
 
+        return carte;
+    }
+
+    private VBox creerCarteBuvette(Buvette b) {
+        Label nom = new Label(b.getNom());
+        nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
+
+        Label localisation = new Label("📍 " + b.getLocalisation());
+        localisation.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
+
+        HBox equipesBox = new HBox(8);
+        equipesBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        if (b.getEquipes().isEmpty()) {
+            Label aucune = new Label("Aucune équipe assignée");
+            aucune.setStyle("-fx-font-size: 13px; -fx-text-fill: #AAAAAA; -fx-font-style: italic;");
+            equipesBox.getChildren().add(aucune);
+        } else {
+            for (fr.uga.iut2.genevent.modele.Equipe equipe : b.getEquipes()) {
+                Label badge = new Label(equipe.getNom());
+                badge.setStyle("-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
+                equipesBox.getChildren().add(badge);
+            }
+        }
+
+        // CROIX DE SUPPRESSION
+        Button btnSupprimer = new Button("✕");
+        btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
+        btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnMouseExited(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnAction(ev -> {
+            // Logique de suppression
+        });
+
+        Region headerSpacer = new Region();
+        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+
+        Region vSpacer = new Region();
+        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+
+        VBox carte = new VBox(15, header, localisation, vSpacer, equipesBox);
+        // ... mêmes styles/hover que creerCarteEquipe
         return carte;
     }
 

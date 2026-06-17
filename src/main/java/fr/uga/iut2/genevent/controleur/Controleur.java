@@ -155,6 +155,18 @@ public class Controleur {
         );
     }
 
+    public void creerBuvette(IHM.InfosBuvette infosBuvette){
+        this.genevent.nouvelBuvette(
+                infosBuvette.localisation,
+                infosBuvette.nom,
+                this.concertSelectionne.getNom()
+        );
+        this.ihm.informerUtilisateur(
+                "Nouvel buvette" + infosBuvette.nom,
+                true
+        );
+    }
+
     public void supprimerConcert(Concert concert) {
         if (!this.estConnecte()) {
             this.ihm.informerUtilisateur("Vous devez être connecté pour supprimer un concert.", false);

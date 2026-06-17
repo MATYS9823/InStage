@@ -1,16 +1,17 @@
 package fr.uga.iut2.genevent.modele;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Buvette {
+public class Buvette implements Serializable {
     private String localisation;
     private String nom;
     private List<Equipe> equipes=new ArrayList<>();
     private Carte carte;
 
 
-    public Buvette(String nom, String localisation) {
+    public Buvette( String localisation, String nom) {
         this.nom = nom;
         this.localisation = localisation;
     }

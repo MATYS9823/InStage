@@ -1,9 +1,10 @@
 package fr.uga.iut2.genevent.modele;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Carte {
+public class Carte implements Serializable {
     private String theme;
     private String nom;
     private List<Produit> produits=new ArrayList<>();

@@ -67,6 +67,16 @@ public abstract class IHM {
         }
     }
 
+    public static class InfosBuvette {
+        public final String localisation;
+        public final String nom;
+
+        public InfosBuvette(String localisation, String nom) {
+            this.localisation = localisation;
+            this.nom = nom;
+        }
+    }
+
     /**
      * Classe conteneur pour les informations saisies pour un nouvel
      * {@link Evenement}.
