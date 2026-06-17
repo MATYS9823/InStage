@@ -92,6 +92,8 @@ public class JavaFXGUI extends IHM {
     @FXML private TextField tfCategorieEquipe;
     @FXML private VBox staffTilePane;
 
+
+
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
         this.eolBarrier = new CountDownLatch(1);
@@ -548,151 +550,169 @@ public class JavaFXGUI extends IHM {
     }
 
     private VBox creerCarteConcert(Concert c) {
-        // --- ÉLÉMENTS DE TEXTE ---
+        // --- TEXTES ---
         Label nom = new Label(c.getNom());
-        nom.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+        nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
-        Label artiste = new Label(c.getArtiste());
-        artiste.setStyle("-fx-font-size: 14px; -fx-font-style: italic; -fx-text-fill: #7F8C8D;");
+        Label artiste = new Label("Artiste : " + c.getArtiste());
+        artiste.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
         Label lieu = new Label("📍 " + c.getLieu());
-        lieu.setStyle("-fx-text-fill: #34495E; -fx-font-size: 13px;");
+        lieu.setStyle("-fx-font-size: 14px; -fx-text-fill: #555555;");
 
         String dateStr = c.getDate_debut() != null
                 ? c.getDate_debut().format(java.time.format.DateTimeFormatter.ofPattern("dd MMMM yyyy", java.util.Locale.FRANCE))
                 : "Date inconnue";
         Label date = new Label("📅 " + dateStr);
-        date.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #2980B9;");
+        date.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
-        // --- BOUTONS INTERACTIFS ---
-        // Bouton Supprimer (Top Right)
+        // --- CROIX DE SUPPRESSION (EN HAUT À DROITE) ---
         Button btnSupprimer = new Button("✕");
+        btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
+        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;")); // Devient rouge
+        btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation de suppression");
             alert.setContentText("Supprimer le concert \"" + c.getNom() + "\" ?");
             alert.showAndWait().ifPresent(reponse -> {
                 if (reponse == ButtonType.OK) {
-                    controleur.supprimerConcert(c);   // à ajouter dans Controleur/modèle
-                    allerVersMesConcerts();           // recharge la vue pour rafraîchir les cartes
+                    controleur.supprimerConcert(c);
+                    allerVersMesConcerts();
                 }
             });
         });
-        // Bouton Modifier (Bottom Right)
-        Button btnModifier = new Button("Modifier");
+
+        // --- BOUTON MODIFIER ---
+        Button btnModifier = new Button("Modifier ✍");
+        btnModifier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
+        btnModifier.setOnMouseEntered(e -> btnModifier.setStyle("-fx-background-color: #3A3A3C; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
+        btnModifier.setOnMouseExited(e -> btnModifier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
         btnModifier.setOnAction(e -> {
             controleur.selectionnerConcert(c);
-            allerVersdashboard();});
+            allerVersdashboard();
+        });
+
+        // --- ASSEMBLAGE DE LA CARTE ---
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
         header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
 
-        // Contenu central : Artiste et Lieu
         VBox corpsContenu = new VBox(5, artiste, lieu);
 
-        // Footer : Date à gauche, bouton modifier à droite
         Region footerSpacer = new Region();
         HBox.setHgrow(footerSpacer, javafx.scene.layout.Priority.ALWAYS);
         HBox footer = new HBox(10, date, footerSpacer, btnModifier);
         footer.setAlignment(javafx.geometry.Pos.BOTTOM_CENTER);
 
-        // Spacer vertical pour pousser le footer vers le bas
         Region vSpacer = new Region();
         VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
 
-        // Assemblage final de la carte
-        VBox carte = new VBox(12, header, corpsContenu, vSpacer, footer);
-        // Style de la carte : Fond blanc/ombragé plus moderne qu'un gris brut
-        carte.setStyle(
-                "-fx-background-color: #FFFFFF; " +
-                        "-fx-background-radius: 18; " +
-                        "-fx-padding: 20; " +
-                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
-        );
-        carte.setPrefSize(360, 200);
+        VBox carte = new VBox(15, header, corpsContenu, vSpacer, footer);
+
+        // --- STYLE DE LA CARTE (Fond blanc, bordure dynamique) ---
+        String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
+        String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
+
+        carte.setStyle(defaultStyle);
+        carte.setPrefSize(350, 200);
+
+        carte.setOnMouseEntered(e -> carte.setStyle(hoverStyle));
+        carte.setOnMouseExited(e -> carte.setStyle(defaultStyle));
 
         return carte;
     }
 
-
     private VBox creerCarteMateriel(Materiel m) {
         Label nom = new Label(m.getNom());
-        nom.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+        nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
         Label type = new Label(m.getTypeEquipement());
-        type.setStyle("-fx-font-size: 14px; -fx-font-style: italic; -fx-text-fill: #7F8C8D;");
+        type.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
         Label fournisseur = new Label("🏭 " + m.getFournisseur());
-        fournisseur.setStyle("-fx-text-fill: #34495E; -fx-font-size: 13px;");
+        fournisseur.setStyle("-fx-font-size: 14px; -fx-text-fill: #555555;");
 
         Label prix = new Label("💶 " + m.getPrix() + " €");
-        prix.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #2980B9;");
+        prix.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
+        // CROIX DE SUPPRESSION
         Button btnSupprimer = new Button("✕");
+        btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
+        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation de suppression");
-            alert.setContentText("Supprimer le matériel \"" + m.getNom() + "\" ?");
-            alert.showAndWait().ifPresent(reponse -> {
-  /*              if (reponse == ButtonType.OK) {
-                    controleur.supprimerMateriel(m);   // à créer côté Controleur/modèle
-                    allerVersMateriel();                // recharge la vue
-                }*/
-            });
+            // Logique de suppression
         });
 
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
 
-        VBox carte = new VBox(12, header, type, fournisseur, prix);
-        carte.setStyle(
-                "-fx-background-color: #FFFFFF; -fx-background-radius: 18; -fx-padding: 20; " +
-                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
-        );
-        carte.setPrefSize(360, 200);
+        VBox corps = new VBox(5, type, fournisseur);
+
+        Region vSpacer = new Region();
+        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+
+        VBox carte = new VBox(15, header, corps, vSpacer, prix);
+
+        String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
+        String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
+
+        carte.setStyle(defaultStyle);
+        carte.setPrefSize(350, 200);
+        carte.setOnMouseEntered(e -> carte.setStyle(hoverStyle));
+        carte.setOnMouseExited(e -> carte.setStyle(defaultStyle));
+
         return carte;
     }
 
     private VBox creerCarteMerch(Merch m) {
         Label nom = new Label(m.getNom());
-        nom.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+        nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
         Label localisation = new Label("📍 " + m.getLocalisation());
-        localisation.setStyle("-fx-text-fill: #34495E; -fx-font-size: 13px;");
+        localisation.setStyle("-fx-font-size: 14px; -fx-text-fill: #555555;");
 
+        // CROIX DE SUPPRESSION
         Button btnSupprimer = new Button("✕");
+        btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
+        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation de suppression");
-            alert.setContentText("Supprimer le merch \"" + m.getNom() + "\" ?");
-            alert.showAndWait().ifPresent(reponse -> {
-                // à brancher plus tard : controleur.supprimerMerch(m); puis allerVersMerch();
-            });
+            // Logique de suppression
         });
 
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
 
-        VBox carte = new VBox(12, header, localisation);
-        carte.setStyle(
-                "-fx-background-color: #FFFFFF; -fx-background-radius: 18; -fx-padding: 20; " +
-                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
-        );
-        carte.setPrefSize(360, 200);
+        Region vSpacer = new Region();
+        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+
+        VBox carte = new VBox(15, header, vSpacer, localisation);
+
+        String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
+        String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
+
+        carte.setStyle(defaultStyle);
+        carte.setPrefSize(350, 200);
+        carte.setOnMouseEntered(e -> carte.setStyle(hoverStyle));
+        carte.setOnMouseExited(e -> carte.setStyle(defaultStyle));
+
         return carte;
     }
 
     private VBox creerCarteEquipe(fr.uga.iut2.genevent.modele.Equipe e) {
         Label nom = new Label(e.getNom());
-        nom.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+        nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
         Label categorie = new Label("🏷 " + e.getCategorie());
-        categorie.setStyle("-fx-font-size: 14px; -fx-font-style: italic; -fx-text-fill: #7F8C8D;");
+        categorie.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
-        // Personnel : on liste chaque membre sous forme de petit badge
         HBox personnelBox = new HBox(8);
         personnelBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         if (e.getPersonnels().isEmpty()) {
@@ -701,38 +721,39 @@ public class JavaFXGUI extends IHM {
             personnelBox.getChildren().add(aucun);
         } else {
             for (String membre : e.getPersonnels()) {
-                Label badge = new Label("👤 " + membre);
-                badge.setStyle(
-                        "-fx-background-color: #F0F0F0; -fx-background-radius: 15; " +
-                                "-fx-padding: 4 12 4 8; -fx-font-size: 13px; -fx-text-fill: #333333;"
-                );
+                Label badge = new Label(membre);
+                badge.setStyle("-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
                 personnelBox.getChildren().add(badge);
             }
         }
 
+        // CROIX DE SUPPRESSION
         Button btnSupprimer = new Button("✕");
+        btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
+        btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnMouseExited(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(ev -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation de suppression");
-            alert.setContentText("Supprimer l'équipe \"" + e.getNom() + "\" ?");
-            alert.showAndWait().ifPresent(reponse -> {
-                if (reponse == ButtonType.OK) {
-                    // controleur.supprimerEquipe(e); // à brancher plus tard
-                    allerVersStaff();
-                }
-            });
+            // Logique de suppression
         });
 
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
 
-        VBox carte = new VBox(12, header, categorie, personnelBox);
-        carte.setStyle(
-                "-fx-background-color: #FFFFFF; -fx-background-radius: 18; -fx-padding: 20; " +
-                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
-        );
-        carte.setPrefSize(360, 180);
+        Region vSpacer = new Region();
+        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+
+        VBox carte = new VBox(15, header, categorie, vSpacer, personnelBox);
+
+        String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
+        String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
+
+        carte.setStyle(defaultStyle);
+        carte.setPrefSize(350, 200);
+        carte.setOnMouseEntered(ev -> carte.setStyle(hoverStyle));
+        carte.setOnMouseExited(ev -> carte.setStyle(defaultStyle));
+
         return carte;
     }
 

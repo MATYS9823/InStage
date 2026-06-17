@@ -185,3 +185,59 @@
 .action-btn-secondary:hover {
     -fx-background-color: #C7C7CC;
 }
+
+.concert-card {
+    -fx-background-color: #F2F2F7;
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+    -fx-pref-width: 320; /* Pour s'aligner joliment dans le TilePane */
+}
+
+/* Petit effet de soulèvement au survol de la souris */
+.concert-card:hover {
+    -fx-background-color: #E5E5EA;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.concert-title {
+    -fx-text-fill: #000000;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.concert-info {
+    -fx-text-fill: #555555;
+    -fx-font-size: 14px;
+}
+
+/* Suppression du fond gris natif des ScrollPane JavaFX */
+.scroll-pane {
+    -fx-background: #FFFFFF;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Fond très clair pour créer du contraste avec les cartes blanches */
+.main-background {
+    -fx-background-color: #F4F5F8;
+}
+
+/* Bandeau de titre qui reste en blanc pur pour délimiter */
+.title-bar-white {
+    -fx-background-color: #FFFFFF;
+}
+
+/* Nettoyage du ScrollPane natif pour laisser transparaître le fond */
+.scroll-pane {
+    -fx-background: #F4F5F8;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
