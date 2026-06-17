@@ -82,14 +82,14 @@
                                     </children>
                                 </HBox>
 
-                                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersStaff" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                                     <children>
                                         <Label text="👤" style="-fx-font-size: 20px; -fx-text-fill: white;" />
                                         <Label text="Staff" style="-fx-font-size: 16px; -fx-text-fill: white;" />
                                     </children>
                                 </HBox>
 
-                                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMateriel" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                                     <children>
                                         <Label text="📦" style="-fx-font-size: 20px; -fx-text-fill: white;" />
                                         <Label text="Matériel" style="-fx-font-size: 16px; -fx-text-fill: white;" />

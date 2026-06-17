@@ -125,13 +125,13 @@
         </HBox>
 
         <VBox spacing="15.0" style="-fx-padding: 10 0 20 0;">
-            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="🏠 Vos concerts" />
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersBuvette" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="🍸 Buvette" />
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMerch" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="📊 Merch" />
             </HBox>
 
@@ -139,7 +139,7 @@
                 <Label style="-fx-text-fill: black; -fx-font-size: 16px; -fx-font-weight: bold;" text="👤 Staff" />
             </HBox>
 
-            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMateriel" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="📦 Matériel" />
             </HBox>
         </VBox>
