@@ -66,16 +66,16 @@
         </HBox>
 
         <VBox spacing="15.0" style="-fx-padding: 10 0 20 0;">
-            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="🏠 Vos concerts" />
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersBuvette" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="🍸 Buvette" />
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="📊 Merch" />
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMerch" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="👕 Merch" />
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersStaff" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="👤 Staff" />
             </HBox>
 
@@ -87,7 +87,7 @@
         <Region VBox.vgrow="ALWAYS" />
 
         <VBox alignment="CENTER" style="-fx-padding: 20;">
-            <Button onAction="#allerVerscreerMateriels" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
+            <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
         </VBox>
     </VBox>
 
