@@ -2,6 +2,7 @@ package fr.uga.iut2.genevent.vue;
 import fr.uga.iut2.genevent.controleur.Controleur;
 
 import fr.uga.iut2.genevent.modele.Materiel;
+import fr.uga.iut2.genevent.modele.Merch;
 import fr.uga.iut2.genevent.modele.Organisateur;
 import javafx.event.ActionEvent;
 import java.io.IOException;
@@ -78,6 +79,10 @@ public class JavaFXGUI extends IHM {
     @FXML private TextField tfFournisseur;
 
     @FXML private VBox materielTilePane;
+
+    @FXML private TextField tfLocalisationMerch;
+    @FXML private TextField tfNomMerch;
+    @FXML private VBox merchTilePane;
 
 
     // vhamp vue dashboard
@@ -236,6 +241,12 @@ public class JavaFXGUI extends IHM {
                 welcomeLabel.setText(controleur.getConcertSelectionne().getNom());
                 artistelabel.setText(controleur.getConcertSelectionne().getArtiste());
             }
+            if (merchTilePane != null && controleur.getConcertSelectionne() != null) {
+                merchTilePane.getChildren().clear();
+                for (Merch m : controleur.getConcertSelectionne().getMerchs()) {
+                    merchTilePane.getChildren().add(creerCarteMerch(m));
+                }
+            }
 
         }catch (IOException exc){
             throw new RuntimeException(exc);
@@ -254,6 +265,17 @@ public class JavaFXGUI extends IHM {
             }
 
         }catch (IOException exc){
+            throw new RuntimeException(exc);
+        }
+    }
+
+    private void allerVerscreerMerch(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-merch-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
     }
@@ -451,6 +473,22 @@ public class JavaFXGUI extends IHM {
         allerVersMateriel();
     }
 
+    @FXML
+    private void createNewMerchAction() {
+        if (tfNomMerch.getText().isBlank()) {
+            informerUtilisateur("Merci de remplir au moins le nom.", false);
+            return;
+        }
+
+        IHM.InfosMerch data = new IHM.InfosMerch(
+                tfLocalisationMerch.getText().strip(),
+                tfNomMerch.getText().strip()
+        );
+
+        controleur.creerMerch(data);
+        allerVersMerch();
+    }
+
     private VBox creerCarteConcert(Concert c) {
         // --- ÉLÉMENTS DE TEXTE ---
         Label nom = new Label(c.getNom());
@@ -559,6 +597,36 @@ public class JavaFXGUI extends IHM {
         return carte;
     }
 
+    private VBox creerCarteMerch(Merch m) {
+        Label nom = new Label(m.getNom());
+        nom.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+
+        Label localisation = new Label("📍 " + m.getLocalisation());
+        localisation.setStyle("-fx-text-fill: #34495E; -fx-font-size: 13px;");
+
+        Button btnSupprimer = new Button("✕");
+        btnSupprimer.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setContentText("Supprimer le merch \"" + m.getNom() + "\" ?");
+            alert.showAndWait().ifPresent(reponse -> {
+                // à brancher plus tard : controleur.supprimerMerch(m); puis allerVersMerch();
+            });
+        });
+
+        Region headerSpacer = new Region();
+        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+
+        VBox carte = new VBox(12, header, localisation);
+        carte.setStyle(
+                "-fx-background-color: #FFFFFF; -fx-background-radius: 18; -fx-padding: 20; " +
+                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+        );
+        carte.setPrefSize(360, 200);
+        return carte;
+    }
+
     @FXML
     private void cancelNewOrganisateurAction() {
         this.newOrgCancelButton.getScene().getWindow().hide();
@@ -613,8 +681,7 @@ public class JavaFXGUI extends IHM {
     // Action pour le gros bouton "Ajout merch +"
     @FXML
     private void ajouterMerchAction() {
-        // Ouvre la fenêtre/dialogue pour créer un nouveau Merch
-        System.out.println("Ouverture du formulaire d'ajout d'un nouveau Merch...");
+        allerVerscreerMerch();
     }
 
     //Pour Matériel

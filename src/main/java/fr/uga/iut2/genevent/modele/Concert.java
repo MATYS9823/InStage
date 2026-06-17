@@ -23,8 +23,8 @@ public class Concert implements Serializable {
     private String nom;
     private Salle salle = null;
     private Merch merch;
-    private List<Materiel> materiels=new ArrayList<>();
-
+    private List<Materiel> materiels = new ArrayList<>();
+    private List<Merch> merchs = new ArrayList<>();
     public Concert(LocalDate date_debut, LocalDate date_fin, String lieu, String nom,String artistes) {
         this.date_debut = date_debut;
         this.date_fin = date_fin;
@@ -97,6 +97,18 @@ public class Concert implements Serializable {
             materiels.remove(materiel);
         }
         else {System.out.println("Ce materiel n'est pas présent");}
+    }
+
+    public void ajouterMerch(Merch merch){
+        if (merchs.contains(merch)){
+            System.out.println("Ce merch est déjà présent");
+        } else {
+            merchs.add(merch);
+        }
+    }
+
+    public List<Merch> getMerchs(){
+        return this.merchs;
     }
 
     /**

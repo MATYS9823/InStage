@@ -1,9 +1,10 @@
 package fr.uga.iut2.genevent.modele;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Merch {
+public class Merch implements Serializable {
     private String localisation;
     private String nom;
     private List<Equipe> equipes=new ArrayList<>();

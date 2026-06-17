@@ -47,6 +47,16 @@ public abstract class IHM {
         }
     }
 
+    public static class InfosMerch {
+        public final String localisation;
+        public final String nom;
+
+        public InfosMerch(String localisation, String nom) {
+            this.localisation = localisation;
+            this.nom = nom;
+        }
+    }
+
     /**
      * Classe conteneur pour les informations saisies pour un nouvel
      * {@link Evenement}.

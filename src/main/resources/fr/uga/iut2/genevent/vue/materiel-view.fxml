@@ -43,14 +43,10 @@
 
         <center>
             <VBox alignment="TOP_CENTER" spacing="15.0" style="-fx-padding: 0 40 20 40;">
-                <BorderPane style="-fx-padding: 0 40 40 0;">
-                    <center>
-                        <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Matériel" BorderPane.alignment="CENTER" />
-                    </center>
-                    <right>
-                        <Button onAction="#ajouterMaterielAction" style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Ajout matériel  +" BorderPane.alignment="CENTER" />
-                    </right>
-                </BorderPane>
+               <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 0 40 40 0;">
+                   <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Matériel" />
+                   <Button onAction="#ajouterMaterielAction" style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Ajout matériel  +" />
+               </HBox>
                 <Separator prefWidth="200.0" style="-fx-background-color: #D0D0D0;" />
 
                 <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-border-color: transparent;">
@@ -70,16 +66,16 @@
         </HBox>
 
         <VBox spacing="15.0" style="-fx-padding: 10 0 20 0;">
-            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="🏠 Vos concerts" />
             </HBox>
-            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersBuvette" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="🍸 Buvette" />
             </HBox>
-            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMerch" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="📊 Merch" />
             </HBox>
-            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersStaff" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                 <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="👤 Staff" />
             </HBox>
 

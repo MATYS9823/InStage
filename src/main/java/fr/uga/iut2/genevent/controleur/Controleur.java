@@ -129,6 +129,18 @@ public class Controleur {
         );
     }
 
+    public void creerMerch(IHM.InfosMerch infosMerch){
+        this.genevent.nouveauMerch(
+                infosMerch.localisation,
+                infosMerch.nom,
+                this.concertSelectionne.getNom()
+        );
+        this.ihm.informerUtilisateur(
+                "Nouveau merch créé : " + infosMerch.nom,
+                true
+        );
+    }
+
     public void supprimerConcert(Concert concert) {
         if (!this.estConnecte()) {
             this.ihm.informerUtilisateur("Vous devez être connecté pour supprimer un concert.", false);
