@@ -71,6 +71,11 @@ public class JavaFXGUI extends IHM {
     @FXML private TilePane concertsTilePane;
     @FXML private Label artistelabel;
 
+    @FXML private TextField tfNomMateriel;
+    @FXML private TextField tfPrixMateriel;
+    @FXML private TextField tfTypeEquipement;
+    @FXML private TextField tfFournisseur;
+
 
     // vhamp vue dashboard
     @FXML private VBox sideMenuD;
@@ -171,6 +176,31 @@ public class JavaFXGUI extends IHM {
             primaryStage.setScene(scene);
 
         }catch (IOException exc){
+            throw new RuntimeException(exc);
+        }
+    }
+
+    @FXML
+    private void allerVersBuvette(){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("buvette-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+
+        }catch (IOException exc){
+            throw new RuntimeException(exc);
+        }
+    }
+
+    @FXML
+    private void allerVerscreerMateriels(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-materiel-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        }catch (IOException exc) {
             throw new RuntimeException(exc);
         }
     }
@@ -378,6 +408,32 @@ public class JavaFXGUI extends IHM {
         allerVersMesConcerts();               // ← on navigue directement
     }
 
+    @FXML
+    private void createNewMaterielAction() {
+        if (tfNomMateriel.getText().isBlank()) {
+            informerUtilisateur("Merci de remplir au moins le nom.", false);
+            return;
+        }
+
+        int prix;
+        try {
+            prix = Integer.parseInt(tfPrixMateriel.getText().strip());
+        } catch (NumberFormatException e) {
+            informerUtilisateur("Le prix doit être un nombre entier.", false);
+            return;
+        }
+
+        IHM.InfosMateriel data = new IHM.InfosMateriel(
+                prix,
+                tfTypeEquipement.getText().strip(),
+                tfFournisseur.getText().strip(),
+                tfNomMateriel.getText().strip()
+        );
+
+        controleur.creerMateriel(data);
+        allerVersMateriel();
+    }
+
     private VBox creerCarteConcert(Concert c) {
         // --- ÉLÉMENTS DE TEXTE ---
         Label nom = new Label(c.getNom());
@@ -548,11 +604,10 @@ public class JavaFXGUI extends IHM {
     }
 
     // Action pour le bouton "Ajout matériel +"
+
     @FXML
     private void ajouterMaterielAction() {
-        System.out.println("Ouverture du formulaire d'ajout d'un nouvel équipement...");
-        // Tu pourras appeler ici une méthode qui ouvre un Stage en mode "Modality.APPLICATION_MODAL"
-        // comme tu l'as fait pour la méthode saisirOrganisateur()
+        allerVerscreerMateriels();
     }
 
 

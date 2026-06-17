@@ -17,8 +17,10 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 
-<?import com.sun.glass.ui.MenuItem?>
+
 <?import javafx.scene.control.MenuButton?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
@@ -131,7 +133,7 @@
         <Region VBox.vgrow="ALWAYS" />
 
         <VBox alignment="CENTER" style="-fx-padding: 20;">
-            <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
+            <Button onAction="#allerVerscreerMateriels" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
         </VBox>
     </VBox>
 

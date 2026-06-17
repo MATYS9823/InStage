@@ -116,7 +116,17 @@ public class Controleur {
     }
 
     public void creerMateriel(IHM.InfosMateriel infosMateriel){
-
+        this.genevent.nouveauMateriel(
+                infosMateriel.prix,
+                infosMateriel.typeEquipement,
+                infosMateriel.fournisseur,
+                infosMateriel.nom,
+                this.concertSelectionne.getNom()
+        );
+        this.ihm.informerUtilisateur(
+                "Nouveau matériel créer : "+infosMateriel.nom,
+                true
+        );
     }
 
     public void supprimerConcert(Concert concert) {
