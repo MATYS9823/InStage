@@ -98,7 +98,7 @@
                         <!-- Liens de navigation -->
                         <VBox spacing="15.0">
                             <children>
-                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersAccueil" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
                                     <children>
                                         <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="🏠" />
                                         <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Vos concerts" />
