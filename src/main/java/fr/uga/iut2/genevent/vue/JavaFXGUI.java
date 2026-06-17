@@ -272,7 +272,20 @@ public class JavaFXGUI extends IHM {
     @FXML
     private void connexionMenuItemAction() {
         // Depuis la home, ce bouton sert à se déconnecter
-        allerVersLogin();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de fermeture");
+        alert.setHeaderText(null); // Optionnel : null pour un affichage plus épuré sans en-tête
+        alert.setContentText("Êtes-vous sûr de vouloir vous déconnecter ?");
+
+        // 2. Affichage de la fenêtre et attente du choix de l'utilisateur
+        Optional<ButtonType> resultat = alert.showAndWait();
+
+        // 3. Vérification de la réponse
+        if (resultat.isPresent() && resultat.get() == ButtonType.OK) {
+            allerVersLogin();
+            };
+        // Si l'utilisateur clique sur "Annuler" ou ferme la fenêtre,
+        // le code s'arrête ici et l'application reste ouverte naturellement.
     }
 
     @FXML
