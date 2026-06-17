@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
@@ -34,10 +33,10 @@
                                     <Label onMouseClicked="#toggleMenuD" style="-fx-font-size: 32px; -fx-text-fill: #B0B0B0; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" />
                                 </left>
                                 <center>
-                                    <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Goosebump_France" BorderPane.alignment="CENTER" />
+                                    <Label fx:id="welcomeLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Goosebump_France" BorderPane.alignment="CENTER" />
                                 </center>
                                 <right>
-                                    <Label style="-fx-font-size: 20px; -fx-text-fill: #000000;" text="Travis Scott" BorderPane.alignment="CENTER" />
+                                    <Label fx:id="artistelabel" style="-fx-font-size: 20px; -fx-text-fill: #000000;" text="Travis Scott" BorderPane.alignment="CENTER" />
                                 </right>
                             </BorderPane>
                             <Separator style="-fx-background-color: #D0D0D0;" />
@@ -46,7 +45,10 @@
 
                     <center>
                         <VBox alignment="TOP_CENTER" spacing="15.0" style="-fx-padding: 20 40 20 40;">
-                            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Gestion des produits dérivés" />
+                            <StackPane>
+                                <Label alignment="CENTER" maxWidth="Infinity" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Gestion des produits dérivés" StackPane.alignment="CENTER" />
+                                <Button onAction="#ajouterMerchAction" style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Ajout merch  +" StackPane.alignment="CENTER_RIGHT" />
+                            </StackPane>
 
                             <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-border-color: transparent;">
                                 <VBox alignment="TOP_CENTER" spacing="25.0" style="-fx-padding: 10 20 20 20;">
@@ -82,9 +84,7 @@
                     </center>
 
                     <bottom>
-                        <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 0 40 40 0;">
-                            <Button onAction="#ajouterMerchAction" style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Ajout merch  +" />
-                        </HBox>
+                        <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 0 40 40 0;" />
                     </bottom>
                 </BorderPane>
 

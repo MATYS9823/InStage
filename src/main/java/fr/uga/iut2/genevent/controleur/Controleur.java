@@ -15,6 +15,7 @@ public class Controleur {
     private final GenEvent genevent;
     private final IHM ihm;
     private Organisateur organisateurConnecte;  // ← session
+    private Concert concertSelectionne;
 
     public Controleur(GenEvent genevent) {
         this.genevent = genevent;
@@ -114,6 +115,10 @@ public class Controleur {
         );
     }
 
+    public void creerMateriel(IHM.InfosMateriel infosMateriel){
+
+    }
+
     public void supprimerConcert(Concert concert) {
         if (!this.estConnecte()) {
             this.ihm.informerUtilisateur("Vous devez être connecté pour supprimer un concert.", false);
@@ -144,6 +149,18 @@ public class Controleur {
 
     public Organisateur getOrganisateur(String email) {
         return this.genevent.getOrganisateur(email);
+    }
+
+    public Concert getConcert(String nom){
+        return this.genevent.getConcertParNom(nom);
+    }
+
+    public void selectionnerConcert(Concert concert) {
+        this.concertSelectionne = concert;
+    }
+
+    public Concert getConcertSelectionne() {
+        return this.concertSelectionne;
     }
 
     public Organisateur getOrganisateurConnecte() {

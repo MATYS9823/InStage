@@ -33,6 +33,20 @@ public abstract class IHM {
         }
     }
 
+    public static class InfosMateriel{
+        public final int prix;
+        public final String typeEquipement;
+        public final String fournisseur;
+        public final String nom;
+
+        public InfosMateriel(final int prix, final String typeEquipement,final String fournisseur,final String nom){
+            this.prix=prix;
+            this.typeEquipement=typeEquipement;
+            this.fournisseur=fournisseur;
+            this.nom=nom;
+        }
+    }
+
     /**
      * Classe conteneur pour les informations saisies pour un nouvel
      * {@link Evenement}.

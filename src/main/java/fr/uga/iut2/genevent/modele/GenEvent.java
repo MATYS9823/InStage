@@ -14,12 +14,16 @@ public class GenEvent implements Serializable {
     private final Map<String, Concert> concerts;
     private final Map<String,Materiel> materiel;
 
-    private List<Salle> salles=new ArrayList<>();
+    // --- NOUVEAU : La liste des salles ---
+    private List<Salle> salles = new ArrayList<>();
 
     public GenEvent() {
         this.organisateurs = new HashMap<>();
         this.concerts = new HashMap<>();
         this.materiel = new HashMap<>();
+
+
+
         // TEMPORAIRE : On ajoute des salles par défaut au démarrage pour pouvoir tester l'interface
         initialiserSallesParDefaut();
     }
@@ -34,19 +38,22 @@ public class GenEvent implements Serializable {
         this.salles.add(new Salle("Palais des Sports", new ArrayList<Place>(), 5000, "Boulevard Clemenceau, Grenoble", 800,  45.1866, 5.7412));
     }
 
+
+
     public List<Salle> getSalles() {
-        if (this.salles == null) {
-            this.salles = new ArrayList<>();
+        if (this.salles==null){
+            this.salles=new ArrayList<>();
         }
         return this.salles;
     }
 
-    public void ajouterSalle(Salle salle){
-        // Si la liste n'a pas été initialisée (à cause d'une ancienne sauvegarde)
-        if (this.salles == null) {
-            this.salles = new ArrayList<>();
+
+    public  void ajouterSalle(Salle salle){
+        if(this.salles==null){
+            this.salles=new ArrayList<>();}
+        if(!this.salles.contains(salle)){
+            this.salles.add(salle);
         }
-        this.salles.add(salle);
     }
 
     public boolean ajouteOrganisateur(String nom, String prenom, String mdp, String email) {
@@ -59,6 +66,10 @@ public class GenEvent implements Serializable {
 
     public Organisateur getOrganisateur(String email) {
         return this.organisateurs.get(email);
+    }
+
+    public Concert getConcertParNom(String nom) {
+        return this.concerts.get(nom);
     }
 
     public Map<String, Concert> getConcerts() {
@@ -76,6 +87,12 @@ public class GenEvent implements Serializable {
         Concert concert = new Concert(dateDebut, dateFin, lieu, nom ,artistes);
         this.concerts.put(nom, concert);
         this.organisateurs.get(emailOrganisateur).creerConcert(concert);
+    }
+
+    public void nouveauMateriel(int prix, String typeEquipement, String fournisseur, String nom, String nomConcert){
+        Materiel materiel = new Materiel(prix,typeEquipement,fournisseur,nom);
+        this.materiel.put(nom,materiel);
+        this.concerts.get(nomConcert).ajouterMateriel(materiel);
     }
 
     public void supprimerConcert(Concert concert, String emailOrganisateur) {
