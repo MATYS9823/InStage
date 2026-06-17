@@ -167,6 +167,18 @@ public class Controleur {
         );
     }
 
+    public void creercarte(IHM.InfosCarte infosCarte){
+        this.genevent.nouvelcarte(
+                infosCarte.localisation,
+                infosCarte.nom,
+                this.concertSelectionne.getNom()
+        );
+        this.ihm.informerUtilisateur(
+                "Nouvel carte : " + infosCarte.nom,
+                true
+        );
+    }
+
     public void supprimerConcert(Concert concert) {
         if (!this.estConnecte()) {
             this.ihm.informerUtilisateur("Vous devez être connecté pour supprimer un concert.", false);

@@ -1,184 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="750.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
-    <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header">
-            <children>
-                <Button onAction="#toggleSidebar" styleClass="icon-button">
-                    <graphic>
-                        <SVGPath content="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="white" scaleX="1.5" scaleY="1.5" />
-                    </graphic>
-                    <HBox.margin>
-                        <Insets right="20.0" />
-                    </HBox.margin>
-                </Button>
+    <BorderPane style="-fx-background-color: #F4F4F4;">
 
-                <Button onAction="#allerVersAccueil" styleClass="icon-button">
-                    <graphic>
-                        <ImageView fitHeight="45.0" preserveRatio="true">
-                            <image>
-                                <Image url="@Logo.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
+        <top>
+            <VBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #909090; -fx-padding: 10 20 10 20;">
+                    <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 3; -fx-padding: 5 30 5 30;" text="Logo" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <MenuButton style="-fx-background-color: transparent; -fx-cursor: hand;">
+                        <graphic>
+                            <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="white" scaleX="1.3" scaleY="1.3" />
+                        </graphic>
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#connexionMenuItemAction" text="Se déconnecter" />
+                            <MenuItem mnemonicParsing="false" onAction="#quitterMenuBurgerAction" text="Quitter" />
+                        </items>
+                    </MenuButton>
+                </HBox>
 
-                <Region HBox.hgrow="ALWAYS" />
+                <BorderPane style="-fx-padding: 15 20 10 20; -fx-background-color: transparent;">
+                    <left>
+                        <Label onMouseClicked="#toggleMenuCarte" style="-fx-font-size: 32px; -fx-text-fill: #555555; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" />
+                    </left>
+                </BorderPane>
+            </VBox>
+        </top>
 
-                <MenuButton styleClass="icon-button">
-                    <graphic>
-                        <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="white" scaleX="1.5" scaleY="1.5" />
-                    </graphic>
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Se déconnecter" />
-                        <MenuItem mnemonicParsing="false" text="Quitter" />
-                    </items>
-                </MenuButton>
-            </children>
-        </HBox>
-    </top>
+        <center>
+            <VBox alignment="TOP_CENTER" spacing="15.0">
+                <padding>
+                    <Insets bottom="20.0" left="40.0" right="40.0" top="10.0" />
+                </padding>
 
-    <left>
-        <VBox fx:id="sidebar" prefWidth="70.0" spacing="15.0" styleClass="sidebar" BorderPane.alignment="CENTER">
-            <children>
-                <Button fx:id="btnConcerts" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Vos concerts">
-                    <graphic>
-                        <SVGPath content="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" scaleX="1.2" scaleY="1.2" />
-                    </graphic>
-                </Button>
-
-                <Button fx:id="btnBuvette" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn-active" text="  Buvette">
-                    <graphic>
-                        <SVGPath content="M21 5V3H3v2l8 9v5H6v2h12v-2h-5v-5l8-9zM7.43 7L5.66 5h12.69l-1.78 2H7.43z" scaleX="1.2" scaleY="1.2" />
-                    </graphic>
-                </Button>
-
-                <Button fx:id="btnMerch" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Merch">
-                    <graphic>
-                        <SVGPath content="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z" scaleX="1.2" scaleY="1.2" />
-                    </graphic>
-                </Button>
-
-                <Button fx:id="btnStaff" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Staff">
-                    <graphic>
-                        <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" scaleX="1.2" scaleY="1.2" />
-                    </graphic>
-                </Button>
-
-                <Button fx:id="btnMateriel" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Matériel">
-                    <graphic>
-                        <SVGPath content="M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z" scaleX="1.2" scaleY="1.2" />
-                    </graphic>
-                </Button>
-
-                <Region VBox.vgrow="ALWAYS" />
-
-                <Button fx:id="btnGoosebump" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Goosebump_France">
-                    <graphic>
-                        <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" scaleX="1.2" scaleY="1.2" />
-                    </graphic>
-                </Button>
-            </children>
-        </VBox>
-    </left>
-
-    <center>
-        <VBox spacing="20.0" BorderPane.alignment="CENTER">
-            <padding>
-                <Insets bottom="40.0" left="60.0" right="60.0" top="40.0" />
-            </padding>
-            <children>
                 <BorderPane>
                     <center>
-                        <Label styleClass="text-dark" text="Nom_buvette" BorderPane.alignment="CENTER">
-                            <font>
-                                <Font name="System Bold" size="36.0" />
-                            </font>
-                        </Label>
+                        <Label fx:id="welcomeLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Nom_buvette" BorderPane.alignment="CENTER" />
                     </center>
                     <right>
-                        <Button styleClass="custom-button" text="Créer une carte ➕" BorderPane.alignment="CENTER">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </Button>
+                        <Button style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Créer une carte  +" BorderPane.alignment="CENTER" />
                     </right>
                 </BorderPane>
 
-                <Separator />
+                <Separator prefWidth="200.0" style="-fx-background-color: #D0D0D0;" />
 
-                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-control-inner-background: #FFFFFF;">
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-border-color: transparent;">
                     <content>
-                        <VBox alignment="TOP_CENTER" spacing="30.0">
-                            <padding>
-                                <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
-                            </padding>
-                            <children>
+                        <VBox fx:id="carteTilePane" alignment="TOP_CENTER" spacing="30.0" style="-fx-padding: 20;">
 
-                                <VBox spacing="15.0" styleClass="card-pane">
-                                    <children>
-                                        <Label alignment="CENTER" maxWidth="Infinity" styleClass="text-dark" text="Carte : &quot;Utopia&quot;">
-                                            <font>
-                                                <Font name="System Bold" size="22.0" />
-                                            </font>
-                                        </Label>
+                            <!-- Carte d'exemple, à remplacer/dupliquer dynamiquement depuis le Java -->
+                            <VBox spacing="15.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);">
+                                <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Carte : &quot;Utopia&quot;" />
+                                <Label style="-fx-font-size: 16px; -fx-text-fill: #555555;" text="Thème : Amérique" />
 
-                                        <Label styleClass="text-dark" text="Thème : Amerique">
-                                            <font>
-                                                <Font size="16.0" />
-                                            </font>
-                                        </Label>
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #555555;" text="Produits :" />
+                                    <HBox spacing="8.0">
+                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Coca Cola" />
+                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Hot-Dog" />
+                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Bière" />
+                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Chips" />
+                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Pop-Corn" />
+                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Ice-tea" />
+                                    </HBox>
+                                </HBox>
 
-                                        <HBox alignment="CENTER_LEFT" spacing="15.0">
-                                            <children>
-                                                <Label styleClass="text-dark" text="Produits :">
-                                                    <font>
-                                                        <Font size="16.0" />
-                                                    </font>
-                                                </Label>
-                                                <HBox spacing="8.0">
-                                                    <children>
-                                                        <Label styleClass="pill-badge" text="Coca Cola" />
-                                                        <Label styleClass="pill-badge" text="Hot-Dog" />
-                                                        <Label styleClass="pill-badge" text="Bière" />
-                                                        <Label styleClass="pill-badge" text="Chips" />
-                                                        <Label styleClass="pill-badge" text="Pop-Corn" />
-                                                        <Label styleClass="pill-badge" text="Ice-tea" />
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                        </HBox>
+                                <HBox alignment="BOTTOM_RIGHT" spacing="15.0">
+                                    <Button style="-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;" text="Modifier ✍">
+                                        <graphic>
+                                            <SVGPath content="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="white" />
+                                        </graphic>
+                                    </Button>
+                                    <Button style="-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-weight: bold; -fx-background-radius: 20; -fx-border-color: #E74C3C; -fx-border-radius: 20; -fx-border-width: 1; -fx-cursor: hand; -fx-padding: 8 16 8 16;" text="Supprimer 🗑">
+                                        <graphic>
+                                            <SVGPath content="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="#E74C3C" />
+                                        </graphic>
+                                    </Button>
+                                </HBox>
+                            </VBox>
 
-                                        <HBox alignment="BOTTOM_RIGHT" spacing="15.0">
-                                            <children>
-                                                <Button styleClass="action-btn-secondary" text="Modifier ✍">
-                                                    <graphic>
-                                                        <SVGPath content="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                                                    </graphic>
-                                                </Button>
-                                                <Button styleClass="action-btn-secondary" text="Supprimer 🗑">
-                                                    <graphic>
-                                                        <SVGPath content="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
-                                                    </graphic>
-                                                </Button>
-                                            </children>
-                                        </HBox>
-                                    </children>
-                                </VBox>
-                            </children>
                         </VBox>
                     </content>
                 </ScrollPane>
-            </children>
-        </VBox>
-    </center>
-</BorderPane>
+
+            </VBox>
+        </center>
+
+    </BorderPane>
+
+    <Region fx:id="scrimCarte" onMouseClicked="#toggleMenuCarte" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
+
+    <VBox fx:id="sideMenuCarte" maxWidth="280.0" prefWidth="280.0" style="-fx-background-color: #555555;" visible="false" StackPane.alignment="CENTER_LEFT">
+        <children>
+
+            <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
+                <children>
+                    <Label onMouseClicked="#toggleMenuCarte" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
+                </children>
+            </HBox>
+
+            <VBox spacing="15.0">
+                <children>
+                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                        <children>
+                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="🏠" />
+                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Vos concerts" />
+                        </children>
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT">
+                        <children>
+                            <Region minWidth="4.0" prefHeight="35.0" style="-fx-background-color: white; -fx-background-radius: 3;">
+                                <HBox.margin>
+                                    <Insets left="15.0" right="11.0" />
+                                </HBox.margin>
+                            </Region>
+                            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersBuvette" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 10 40 10 15; -fx-cursor: hand;">
+                                <children>
+                                    <Label style="-fx-font-size: 20px; -fx-text-fill: black;" text="🍸" />
+                                    <Label style="-fx-font-size: 16px; -fx-text-fill: black; -fx-font-weight: bold;" text="Buvette" />
+                                </children>
+                            </HBox>
+                        </children>
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMerch" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                        <children>
+                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="👕" />
+                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Merch" />
+                        </children>
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersStaff" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                        <children>
+                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="👤" />
+                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Staff" />
+                        </children>
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMateriel" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                        <children>
+                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="📦" />
+                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Matériel" />
+                        </children>
+                    </HBox>
+                </children>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <VBox alignment="CENTER" style="-fx-padding: 20;">
+                <children>
+                    <Button maxWidth="Infinity" style="-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: black; -fx-padding: 10;" text="Goosebump_France" />
+                </children>
+            </VBox>
+        </children>
+    </VBox>
+
+</StackPane>

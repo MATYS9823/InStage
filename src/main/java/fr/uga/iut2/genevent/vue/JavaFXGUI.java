@@ -5,27 +5,23 @@ import fr.uga.iut2.genevent.modele.*;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import org.apache.commons.validator.routines.EmailValidator;
-import java.util.List;
 
 
 public class JavaFXGUI extends IHM {
@@ -35,7 +31,7 @@ public class JavaFXGUI extends IHM {
 
     // Stage principal, gardé pour changer de scène
     private Stage primaryStage;
-    private final List<IHM.InfosNouveauConcert> concertsSauvegardes = new ArrayList<InfosNouveauConcert>();
+    private final List<InfosNouveauConcert> concertsSauvegardes = new ArrayList<InfosNouveauConcert>();
 
     // champs vue connexion
     @FXML private TextField loginEmailTextField;
@@ -96,6 +92,13 @@ public class JavaFXGUI extends IHM {
     @FXML private TextField tfNomEquipe;
     @FXML private TextField tfCategorieEquipe;
     @FXML private VBox staffTilePane;
+
+    @FXML private VBox sideMenuCarte;
+    @FXML private Region scrimCarte;
+    @FXML private VBox carteTilePane;
+
+
+
 
 
 
@@ -312,8 +315,8 @@ public class JavaFXGUI extends IHM {
                     dashboardStaffCountLabel.setText("Nombre d'équipe: " + concert.getEquipes().size());
                 }
                 if (dashboardStaffCategoriesLabel != null) {
-                    java.util.Set<String> categories = new java.util.HashSet<>();
-                    for (fr.uga.iut2.genevent.modele.Equipe e : concert.getEquipes()) {
+                    Set<String> categories = new HashSet<>();
+                    for (Equipe e : concert.getEquipes()) {
                         categories.add(e.getNom()); // ou e.getLocalisation() selon l'usage
                     }
                     if (categories.isEmpty()) {
@@ -325,8 +328,8 @@ public class JavaFXGUI extends IHM {
 
                 // Matériel
                 if (dashboardMaterielCategoriesLabel != null) {
-                    java.util.Set<String> types = new java.util.HashSet<>();
-                    for (fr.uga.iut2.genevent.modele.Materiel m : concert.getMateriels()) {
+                    Set<String> types = new HashSet<>();
+                    for (Materiel m : concert.getMateriels()) {
                         types.add(m.getTypeEquipement());
                     }
                     if (types.isEmpty()) {
@@ -374,7 +377,7 @@ public class JavaFXGUI extends IHM {
 
             if (staffTilePane != null && controleur.getConcertSelectionne() != null) {
                 staffTilePane.getChildren().clear();
-                for (fr.uga.iut2.genevent.modele.Equipe e : controleur.getConcertSelectionne().getEquipes()) {
+                for (Equipe e : controleur.getConcertSelectionne().getEquipes()) {
                     staffTilePane.getChildren().add(creerCarteEquipe(e));
                 }
             }
@@ -391,6 +394,17 @@ public class JavaFXGUI extends IHM {
             primaryStage.setScene(scene);
 
         } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    private void allerVersCarte(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("manage-carte-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        }catch (IOException exc) {
             throw new RuntimeException(exc);
         }
     }
@@ -450,7 +464,7 @@ public class JavaFXGUI extends IHM {
             // L'utilisateur a cliqué sur "OK", on lance la procédure de fermeture
             Platform.runLater(() -> {
                 // On récupère TOUTES les fenêtres ouvertes (principale + popups) et on les ferme
-                new java.util.ArrayList<>(javafx.stage.Window.getWindows()).forEach(window -> {
+                new ArrayList<>(Window.getWindows()).forEach(window -> {
                     if (window instanceof Stage) {
                         ((Stage) window).close();
                     }
@@ -505,7 +519,7 @@ public class JavaFXGUI extends IHM {
 
     @FXML
     private void loginAction() {
-        IHM.InfosConnexion data = new IHM.InfosConnexion(
+        InfosConnexion data = new InfosConnexion(
                 this.loginEmailTextField.getText().strip().toLowerCase(),
                 this.loginMdpField.getText()
         );
@@ -529,11 +543,13 @@ public class JavaFXGUI extends IHM {
         this.loginOkButton.setDisable(!isValid);
     }
 
+
+
     // ---- Vue nouvel organisateur ----
 
     @FXML
     private void createNewOrganisateurAction() {
-        IHM.InfosOrganisateur data = new IHM.InfosOrganisateur(
+        InfosOrganisateur data = new InfosOrganisateur(
                 this.newOrgEmailTextField.getText().strip().toLowerCase(),  // email
                 this.newOrgSurnameTextField.getText().strip(),              // nom
                 this.newOrgForenameTextField.getText().strip(),             // prenom
@@ -553,7 +569,7 @@ public class JavaFXGUI extends IHM {
             return;
         }
 
-        IHM.InfosNouveauConcert data = new IHM.InfosNouveauConcert(
+        InfosNouveauConcert data = new InfosNouveauConcert(
                 tfNomconcert.getText().strip(),
                 dpDateDebut.getValue(),
                 dpDateFin.getValue() != null ? dpDateFin.getValue() : dpDateDebut.getValue(),
@@ -581,7 +597,7 @@ public class JavaFXGUI extends IHM {
             return;
         }
 
-        IHM.InfosMateriel data = new IHM.InfosMateriel(
+        InfosMateriel data = new InfosMateriel(
                 prix,
                 tfTypeEquipement.getText().strip(),
                 tfFournisseur.getText().strip(),
@@ -599,7 +615,7 @@ public class JavaFXGUI extends IHM {
             return;
         }
 
-        IHM.InfosMerch data = new IHM.InfosMerch(
+        InfosMerch data = new InfosMerch(
                 tfLocalisationMerch.getText().strip(),
                 tfNomMerch.getText().strip()
         );
@@ -615,7 +631,7 @@ public class JavaFXGUI extends IHM {
             return;
         }
 
-        IHM.InfosMerch data = new IHM.InfosMerch(
+        InfosMerch data = new InfosMerch(
                 tfCategorieEquipe.getText().strip(),  // localisation = catégorie
                 tfNomEquipe.getText().strip()          // nom
         );
@@ -635,7 +651,7 @@ public class JavaFXGUI extends IHM {
             informerUtilisateur("Merci de renseigner le nom de la buvette.", false);
             return;
         }
-        IHM.InfosBuvette data = new IHM.InfosBuvette(
+        InfosBuvette data = new InfosBuvette(
                 tfLocalisationBuvette.getText().strip(),
                 tfNomBuvette.getText().strip()
         );
@@ -649,6 +665,13 @@ public class JavaFXGUI extends IHM {
         boolean isOpen = sideMenuBuvette.isVisible();
         sideMenuBuvette.setVisible(!isOpen);
         scrimBuvette.setVisible(!isOpen);
+    }
+
+    @FXML
+    public void toggleMenuCarte() {
+        boolean isOpen = sideMenuCarte.isVisible();
+        sideMenuCarte.setVisible(!isOpen);
+        scrimCarte.setVisible(!isOpen);
     }
 
 
@@ -665,7 +688,7 @@ public class JavaFXGUI extends IHM {
         lieu.setStyle("-fx-font-size: 14px; -fx-text-fill: #555555;");
 
         String dateStr = c.getDate_debut() != null
-                ? c.getDate_debut().format(java.time.format.DateTimeFormatter.ofPattern("dd MMMM yyyy", java.util.Locale.FRANCE))
+                ? c.getDate_debut().format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRANCE))
                 : "Date inconnue";
         Label date = new Label("📅 " + dateStr);
         date.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #000000;");
@@ -699,19 +722,19 @@ public class JavaFXGUI extends IHM {
 
         // --- ASSEMBLAGE DE LA CARTE ---
         Region headerSpacer = new Region();
-        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox.setHgrow(headerSpacer, Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
-        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        header.setAlignment(Pos.TOP_CENTER);
 
         VBox corpsContenu = new VBox(5, artiste, lieu);
 
         Region footerSpacer = new Region();
-        HBox.setHgrow(footerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox.setHgrow(footerSpacer, Priority.ALWAYS);
         HBox footer = new HBox(10, date, footerSpacer, btnModifier);
-        footer.setAlignment(javafx.geometry.Pos.BOTTOM_CENTER);
+        footer.setAlignment(Pos.BOTTOM_CENTER);
 
         Region vSpacer = new Region();
-        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+        VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
         VBox carte = new VBox(15, header, corpsContenu, vSpacer, footer);
 
@@ -751,14 +774,14 @@ public class JavaFXGUI extends IHM {
         });
 
         Region headerSpacer = new Region();
-        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox.setHgrow(headerSpacer, Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
-        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        header.setAlignment(Pos.TOP_CENTER);
 
         VBox corps = new VBox(5, type, fournisseur);
 
         Region vSpacer = new Region();
-        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+        VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
         VBox carte = new VBox(15, header, corps, vSpacer, prix);
 
@@ -790,12 +813,12 @@ public class JavaFXGUI extends IHM {
         });
 
         Region headerSpacer = new Region();
-        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox.setHgrow(headerSpacer, Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
-        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        header.setAlignment(Pos.TOP_CENTER);
 
         Region vSpacer = new Region();
-        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+        VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
         VBox carte = new VBox(15, header, vSpacer, localisation);
 
@@ -810,7 +833,7 @@ public class JavaFXGUI extends IHM {
         return carte;
     }
 
-    private VBox creerCarteEquipe(fr.uga.iut2.genevent.modele.Equipe e) {
+    private VBox creerCarteEquipe(Equipe e) {
         Label nom = new Label(e.getNom());
         nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
@@ -818,7 +841,7 @@ public class JavaFXGUI extends IHM {
         categorie.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
         HBox personnelBox = new HBox(8);
-        personnelBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        personnelBox.setAlignment(Pos.CENTER_LEFT);
         if (e.getPersonnels().isEmpty()) {
             Label aucun = new Label("Aucun personnel assigné");
             aucun.setStyle("-fx-font-size: 13px; -fx-text-fill: #AAAAAA; -fx-font-style: italic;");
@@ -841,12 +864,12 @@ public class JavaFXGUI extends IHM {
         });
 
         Region headerSpacer = new Region();
-        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox.setHgrow(headerSpacer, Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
-        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        header.setAlignment(Pos.TOP_CENTER);
 
         Region vSpacer = new Region();
-        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+        VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
         VBox carte = new VBox(15, header, categorie, vSpacer, personnelBox);
 
@@ -869,13 +892,13 @@ public class JavaFXGUI extends IHM {
         localisation.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
         HBox equipesBox = new HBox(8);
-        equipesBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        equipesBox.setAlignment(Pos.CENTER_LEFT);
         if (b.getEquipes().isEmpty()) {
             Label aucune = new Label("Aucune équipe assignée");
             aucune.setStyle("-fx-font-size: 13px; -fx-text-fill: #AAAAAA; -fx-font-style: italic;");
             equipesBox.getChildren().add(aucune);
         } else {
-            for (fr.uga.iut2.genevent.modele.Equipe equipe : b.getEquipes()) {
+            for (Equipe equipe : b.getEquipes()) {
                 Label badge = new Label(equipe.getNom());
                 badge.setStyle("-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
                 equipesBox.getChildren().add(badge);
@@ -892,12 +915,12 @@ public class JavaFXGUI extends IHM {
         });
 
         Region headerSpacer = new Region();
-        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox.setHgrow(headerSpacer, Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
-        header.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        header.setAlignment(Pos.TOP_CENTER);
 
         Region vSpacer = new Region();
-        VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
+        VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
         // BOUTON "APPLIQUER CARTE"
         Button btnAppliquerCarte = new Button("Appliquer carte");
@@ -906,7 +929,7 @@ public class JavaFXGUI extends IHM {
         btnAppliquerCarte.setOnMouseEntered(ev -> btnAppliquerCarte.setStyle("-fx-background-color: #3A3A3C; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
         btnAppliquerCarte.setOnMouseExited(ev -> btnAppliquerCarte.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
         btnAppliquerCarte.setOnAction(ev -> {
-            // ---> Logique pour appliquer la carte (menu) à cette buvette <---
+            allerVersCarte();
         });
 
         VBox carte = new VBox(15, header, localisation, vSpacer, equipesBox, btnAppliquerCarte);
@@ -963,7 +986,7 @@ public class JavaFXGUI extends IHM {
         alert.setContentText("Attention, voulez-vous vraiment supprimer ce merch ? Cette action est irréversible.");
 
         // On capture le choix de l'utilisateur
-        java.util.Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // ---> METS ICI TON CODE POUR SUPPRIMER LE MERCH DU MODÈLE <---
 
@@ -1021,7 +1044,7 @@ public class JavaFXGUI extends IHM {
         alert.setHeaderText("Suppression du Matériel");
         alert.setContentText("Attention, voulez-vous vraiment supprimer cet équipement de la liste ? Cette action est irréversible.");
 
-        java.util.Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // ---> METS ICI TON CODE POUR SUPPRIMER LE MATÉRIEL DU MODÈLE <---
 
@@ -1062,7 +1085,7 @@ public class JavaFXGUI extends IHM {
         alert.setHeaderText("Suppression d'une équipe de staff");
         alert.setContentText("Attention, voulez-vous vraiment supprimer cette équipe ? Cette action retirera tous les membres assignés.");
 
-        java.util.Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // ---> Insérer ici le code pour mettre à jour la liste dans le modèle <---
 

@@ -15,7 +15,8 @@ public class GenEvent implements Serializable {
     private final Map<String,Materiel> materiel;
     private final Map<String,Merch> merch;
     private final Map<String,Equipe> equipe;
-    private final Map<String,Buvette> buvette ;
+    private final Map<String,Buvette> buvette;
+    private final Map<String,Carte> carte;
 
     private List<Salle> salles = new ArrayList<>();
 
@@ -26,6 +27,7 @@ public class GenEvent implements Serializable {
         this.merch = new HashMap<>();
         this.equipe = new HashMap<>();
         this.buvette = new HashMap<>();
+        this.carte = new HashMap<>();
 
 
 
@@ -121,6 +123,12 @@ public class GenEvent implements Serializable {
         Buvette buvette = new Buvette(localisation,nom);
         this.buvette.put(nom,buvette);
         this.concerts.get(nomConcert).ajouterBuvette(buvette);
+    }
+
+    public void nouvelcarte(String theme,String nom, String nomConcert){
+        Carte carte = new Carte(theme,nom);
+        this.carte.put(nom,carte);
+        this.concerts.get(nomConcert).ajouterCarte(carte);
     }
 
     public void supprimerConcert(Concert concert, String emailOrganisateur) {
