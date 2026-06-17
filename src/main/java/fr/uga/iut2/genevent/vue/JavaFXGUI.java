@@ -1203,10 +1203,4 @@ public class JavaFXGUI extends IHM {
             throw new RuntimeException(exc);
         }
     }
-
-
-
-
-
-
 }

@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header">
@@ -97,47 +97,48 @@
                     </center>
                 </BorderPane>
 
+                <!-- CALQUE ASSOMBRISSANT (SCRIM) -->
                 <Region fx:id="scrim" onMouseClicked="#toggleMenu" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
 
-                <HBox fx:id="sideMenu" maxWidth="300.0" visible="false" StackPane.alignment="CENTER_LEFT">
+                <!-- MENU LATÉRAL COULISSANT (SIDE MENU) -->
+                <HBox fx:id="sideMenu" maxWidth="280.0" visible="false" StackPane.alignment="CENTER_LEFT">
                     <children>
-                        <VBox prefWidth="300.0" spacing="20.0" styleClass="sidebar">
+                        <VBox prefWidth="280.0" style="-fx-background-color: #555555;">
                             <children>
-                                <HBox alignment="TOP_RIGHT">
+
+                                <!-- Bouton Fermer (×) -->
+                                <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
                                     <children>
-                                        <Label onMouseClicked="#toggleMenu" style="-fx-text-fill: white; -fx-cursor: hand;" text="×">
-                                            <font>
-                                                <Font name="System Bold" size="36.0" />
-                                            </font>
-                                        </Label>
+                                        <Label onMouseClicked="#toggleMenu" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
                                     </children>
                                 </HBox>
 
                                 <VBox spacing="10.0">
                                     <children>
-                                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#allerVersAccueil" styleClass="sidebar-btn" text="🏠  Accueil">
+                                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#allerVersAccueil" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 10 20 10 30;" text="🏠  Accueil">
                                             <font>
-                                                <Font size="18.0" />
+                                                <Font size="16.0" />
                                             </font>
                                         </Button>
 
-                                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#allerVersRechercheSalles" styleClass="sidebar-btn" text="🔍  Rechercher une salle">
+                                        <Button alignment="BASELINE_LEFT" maxWidth="Infinity" onAction="#allerVersRechercheSalles" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 10 20 10 30;" text="🔍  Rechercher une salle">
                                             <font>
-                                                <Font size="18.0" />
+                                                <Font size="16.0" />
                                             </font>
                                         </Button>
 
+                                        <!-- Onglet Actif (Mes concerts) -->
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
                                                 <Region minWidth="4.0" prefHeight="35.0" style="-fx-background-color: white; -fx-background-radius: 3;">
                                                     <HBox.margin>
-                                                        <Insets left="-15.0" right="11.0" />
+                                                        <Insets left="15.0" right="11.0" />
                                                     </HBox.margin>
                                                 </Region>
 
-                                                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" styleClass="sidebar-btn-active" text=" Mes concerts" HBox.hgrow="ALWAYS">
+                                                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" style="-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: black; -fx-cursor: default; -fx-padding: 10 20 10 15;" text=" Mes concerts" HBox.hgrow="ALWAYS">
                                                     <font>
-                                                        <Font name="System Bold" size="18.0" />
+                                                        <Font name="System Bold" size="16.0" />
                                                     </font>
                                                     <graphic>
                                                         <SVGPath content="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="BLACK" scaleX="1.2" scaleY="1.2" />
