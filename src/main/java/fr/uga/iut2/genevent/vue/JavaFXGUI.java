@@ -84,6 +84,14 @@ public class JavaFXGUI extends IHM {
 
 
     @FXML private VBox sideMenuD;
+    @FXML private Label dashboardConcertLabel;
+    @FXML private Label dashboardArtisteLabel;
+    @FXML private Label dashboardBuvetteNomLabel;
+    @FXML private Label dashboardBuvetteThemeLabel;
+    @FXML private Label dashboardMerchNomLabel;
+    @FXML private Label dashboardStaffCountLabel;
+    @FXML private Label dashboardStaffCategoriesLabel;
+    @FXML private Label dashboardMaterielCategoriesLabel;
 
     @FXML private TextField tfNomEquipe;
     @FXML private TextField tfCategorieEquipe;
@@ -280,9 +288,53 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
-            if (controleur.getConcertSelectionne() != null) {
-                welcomeLabel.setText(controleur.getConcertSelectionne().getNom());
-                artistelabel.setText(controleur.getConcertSelectionne().getArtiste());
+
+            Concert concert = controleur.getConcertSelectionne();
+            if (concert != null) {
+                // Mise à jour de l'en-tête
+                if (dashboardConcertLabel != null) dashboardConcertLabel.setText(concert.getNom());
+                if (dashboardArtisteLabel != null) dashboardArtisteLabel.setText(concert.getArtiste());
+
+                // Mise à jour de la section Buvette (utilisation du premier merch comme buvette par défaut si besoin, ou adaptation future)
+                // Pour l'instant, on laisse les valeurs par défaut si non géré explicitement dans le modèle Concert
+                
+                // Merch
+                if (dashboardMerchNomLabel != null) {
+                    if (!concert.getMerchs().isEmpty()) {
+                        dashboardMerchNomLabel.setText(concert.getMerchs().get(0).getNom());
+                    } else {
+                        dashboardMerchNomLabel.setText("Aucun merchandising");
+                    }
+                }
+
+                // Personnel
+                if (dashboardStaffCountLabel != null) {
+                    dashboardStaffCountLabel.setText("Nombre d'équipe: " + concert.getEquipes().size());
+                }
+                if (dashboardStaffCategoriesLabel != null) {
+                    java.util.Set<String> categories = new java.util.HashSet<>();
+                    for (fr.uga.iut2.genevent.modele.Equipe e : concert.getEquipes()) {
+                        categories.add(e.getNom()); // ou e.getLocalisation() selon l'usage
+                    }
+                    if (categories.isEmpty()) {
+                        dashboardStaffCategoriesLabel.setText("Aucune équipe");
+                    } else {
+                        dashboardStaffCategoriesLabel.setText(String.join(", ", categories));
+                    }
+                }
+
+                // Matériel
+                if (dashboardMaterielCategoriesLabel != null) {
+                    java.util.Set<String> types = new java.util.HashSet<>();
+                    for (fr.uga.iut2.genevent.modele.Materiel m : concert.getMateriels()) {
+                        types.add(m.getTypeEquipement());
+                    }
+                    if (types.isEmpty()) {
+                        dashboardMaterielCategoriesLabel.setText("Aucun matériel");
+                    } else {
+                        dashboardMaterielCategoriesLabel.setText(String.join(", ", types));
+                    }
+                }
             }
 
         }catch (IOException exc){
@@ -361,7 +413,7 @@ public class JavaFXGUI extends IHM {
         // Depuis la home, ce bouton sert à se déconnecter
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation de fermeture");
-        alert.setHeaderText(null); // Optionnel : null pour un affichage plus épuré sans en-tête
+        alert.setHeaderText(null);
         alert.setContentText("Êtes-vous sûr de vouloir vous déconnecter ?");
 
         // 2. Affichage de la fenêtre et attente du choix de l'utilisateur
@@ -370,7 +422,7 @@ public class JavaFXGUI extends IHM {
         // 3. Vérification de la réponse
         if (resultat.isPresent() && resultat.get() == ButtonType.OK) {
             allerVersLogin();
-            };
+        };
         // Si l'utilisateur clique sur "Annuler" ou ferme la fenêtre,
         // le code s'arrête ici et l'application reste ouverte naturellement.
     }

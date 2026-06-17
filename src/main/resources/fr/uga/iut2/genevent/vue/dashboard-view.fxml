@@ -11,9 +11,15 @@
         <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #909090; -fx-padding: 10 20 10 20;">
             <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 3; -fx-padding: 5 30 5 30;" text="Logo" />
             <Region HBox.hgrow="ALWAYS" />
-            <StackPane prefHeight="35.0" prefWidth="35.0" style="-fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 50%; -fx-padding: 5;">
-                <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
-            </StackPane>
+            <MenuButton style="-fx-background-color: transparent; -fx-cursor: hand;">
+                <graphic>
+                    <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="white" scaleX="1.3" scaleY="1.3" />
+                </graphic>
+                <items>
+                    <MenuItem mnemonicParsing="false" onAction="#connexionMenuItemAction" text="Se déconnecter" />
+                    <MenuItem mnemonicParsing="false" onAction="#quitterMenuBurgerAction" text="Quitter" />
+                </items>
+            </MenuButton>
         </HBox>
     </top>
 
@@ -28,10 +34,10 @@
                                 <Label onMouseClicked="#toggleMenuD" style="-fx-font-size: 32px; -fx-text-fill: #B0B0B0; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" />
                             </left>
                             <center>
-                                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Goosebump_France" BorderPane.alignment="CENTER" />
+                                <Label fx:id="dashboardConcertLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Goosebump_France" BorderPane.alignment="CENTER" />
                             </center>
                             <right>
-                                <Label style="-fx-font-size: 24px; -fx-text-fill: #000000;" text="Travis Scott" BorderPane.alignment="CENTER" />
+                                <Label fx:id="dashboardArtisteLabel" style="-fx-font-size: 24px; -fx-text-fill: #000000;" text="Travis Scott" BorderPane.alignment="CENTER" />
                             </right>
                         </BorderPane>
                         <Separator prefWidth="200.0" style="-fx-background-color: #D0D0D0;" />
@@ -51,8 +57,8 @@
                         <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: black;" text="Ma buvette" />
                             <VBox alignment="CENTER" prefHeight="180.0" spacing="15.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20;">
-                                <Label style="-fx-font-size: 18px;" text="Utopia" />
-                                <Label style="-fx-font-size: 14px; -fx-font-style: italic;" text="Thème: Amerique" />
+                                <Label fx:id="dashboardBuvetteNomLabel" style="-fx-font-size: 18px;" text="Utopia" />
+                                <Label fx:id="dashboardBuvetteThemeLabel" style="-fx-font-size: 14px; -fx-font-style: italic;" text="Thème: Amerique" />
                                 <Button onAction="#allerVersBuvette" style="-fx-background-color: #AEAEAE; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 25 8 25; -fx-cursor: hand;" text="Voir plus" />
                             </VBox>
                         </VBox>
@@ -60,7 +66,7 @@
                         <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
                             <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: black;" text="Merchandising" />
                             <VBox alignment="CENTER" prefHeight="180.0" spacing="15.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20;">
-                                <Label style="-fx-font-size: 18px;" text="Utopia_store" />
+                                <Label fx:id="dashboardMerchNomLabel" style="-fx-font-size: 18px;" text="Utopia_store" />
                                 <Button onAction="#allerVersMerch" style="-fx-background-color: #AEAEAE; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 20 8 20; -fx-cursor: hand;" text="Voir les produits" />
                             </VBox>
                         </VBox>
@@ -68,9 +74,9 @@
                         <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
                             <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: black;" text="Personnel" />
                             <VBox alignment="CENTER" prefHeight="180.0" spacing="5.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 10;">
-                                <Label style="-fx-font-size: 16px;" text="Nombre d'équipe: 5" />
+                                <Label fx:id="dashboardStaffCountLabel" style="-fx-font-size: 16px;" text="Nombre d'équipe: 5" />
                                 <Label style="-fx-font-size: 16px;" text="Catégorie:" />
-                                <Label style="-fx-font-size: 16px;" text="Sécurité,Buvette,Merch" />
+                                <Label fx:id="dashboardStaffCategoriesLabel" style="-fx-font-size: 16px;" text="Sécurité,Buvette,Merch" />
                                 <Button onMouseClicked="#allerVersStaff" style="-fx-background-color: #AEAEAE; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 25 8 25; -fx-cursor: hand;" text="Voir les équipes">
                                     <VBox.margin><Insets top="15.0" /></VBox.margin>
                                 </Button>
@@ -81,7 +87,7 @@
                             <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: black;" text="Matériel" />
                             <VBox alignment="CENTER" prefHeight="180.0" spacing="5.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 10;">
                                 <Label style="-fx-font-size: 16px;" text="Catégorie:" />
-                                <Label style="-fx-font-size: 16px;" text="Son,Lumière,Sécurité" />
+                                <Label fx:id="dashboardMaterielCategoriesLabel" style="-fx-font-size: 16px;" text="Son,Lumière,Sécurité" />
                                 <Button onAction="#allerVersMateriel" style="-fx-background-color: #AEAEAE; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 15 8 15; -fx-cursor: hand;" text="Voir la liste logistique">
                                     <VBox.margin><Insets top="15.0" /></VBox.margin>
                                 </Button>
