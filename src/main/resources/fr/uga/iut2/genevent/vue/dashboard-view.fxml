@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: white;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #909090; -fx-padding: 10 20 10 20;">
@@ -98,13 +98,13 @@
                     <Label onMouseClicked="#toggleMenuD" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
                 </HBox>
 
-                <VBox spacing="40.0" style="-fx-padding: 20 20 20 40;">
+                <VBox spacing="20.0" style="-fx-padding: 20 20 20 40;">
                     <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersAccueil" spacing="15.0" style="-fx-cursor: hand;">
                         <SVGPath content="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
                         <Label style="-fx-text-fill: white; -fx-font-size: 18px;" text="Accueil" />
                     </HBox>
 
-                    <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-cursor: hand;">
+                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersRechercheSalles" spacing="15.0" style="-fx-cursor: hand;">
                         <SVGPath content="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
                         <Label style="-fx-text-fill: white; -fx-font-size: 18px;" text="Rechercher une salle" />
                     </HBox>
