@@ -899,10 +899,29 @@ public class JavaFXGUI extends IHM {
         Region vSpacer = new Region();
         VBox.setVgrow(vSpacer, javafx.scene.layout.Priority.ALWAYS);
 
-        VBox carte = new VBox(15, header, localisation, vSpacer, equipesBox);
-        // ... mêmes styles/hover que creerCarteEquipe
+        // BOUTON "APPLIQUER CARTE"
+        Button btnAppliquerCarte = new Button("Appliquer carte");
+        btnAppliquerCarte.setMaxWidth(Double.MAX_VALUE);
+        btnAppliquerCarte.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
+        btnAppliquerCarte.setOnMouseEntered(ev -> btnAppliquerCarte.setStyle("-fx-background-color: #3A3A3C; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
+        btnAppliquerCarte.setOnMouseExited(ev -> btnAppliquerCarte.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
+        btnAppliquerCarte.setOnAction(ev -> {
+            // ---> Logique pour appliquer la carte (menu) à cette buvette <---
+        });
+
+        VBox carte = new VBox(15, header, localisation, vSpacer, equipesBox, btnAppliquerCarte);
+
+        String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
+        String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
+
+        carte.setStyle(defaultStyle);
+        carte.setPrefSize(350, 220);
+        carte.setOnMouseEntered(ev -> carte.setStyle(hoverStyle));
+        carte.setOnMouseExited(ev -> carte.setStyle(defaultStyle));
+
         return carte;
     }
+
 
     @FXML
     private void cancelNewOrganisateurAction() {

@@ -27,6 +27,7 @@ public class Concert implements Serializable {
     private List<Merch> merchs = new ArrayList<>();
     private List<Equipe > equipes = new ArrayList<>();
     private List<Buvette> buvettes = new ArrayList<>();
+    private List<Carte> cartes = new ArrayList<>();
     public Concert(LocalDate date_debut, LocalDate date_fin, String lieu, String nom,String artistes) {
         this.date_debut = date_debut;
         this.date_fin = date_fin;
@@ -148,7 +149,7 @@ public class Concert implements Serializable {
 
     public void suprimerBuvette(Buvette buvette) {
         if (buvettes.contains(buvette)) {
-            merchs.remove(buvette);
+            buvettes.remove(buvette);
         } else {
             System.out.println("Cette buvette n'est pas présente");
         }
@@ -156,6 +157,26 @@ public class Concert implements Serializable {
 
     public List<Buvette> getBuvettes(){
         return this.buvettes;
+    }
+
+    public void ajouterCarte(Carte carte){
+        if (cartes.contains(carte)){
+            System.out.println("Cette Carte est déjà présente");
+        }
+        else {cartes.add(carte);}
+    }
+
+    public void suprimerCarte(Carte carte){
+        if (cartes.contains(carte)){
+            cartes.remove(carte);
+        }
+        else {
+            System.out.println("cette carte n'st pas présente");
+        }
+    }
+
+    public List<Carte> getCartes(){
+        return this.cartes;
     }
 
     /**
