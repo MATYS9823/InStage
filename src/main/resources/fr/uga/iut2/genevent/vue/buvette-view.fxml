@@ -2,112 +2,183 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="720.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="750.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="55.0" style="-fx-background-color: #909090; -fx-padding: 10 20 10 20;">
+        <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header">
             <children>
-                <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 3; -fx-padding: 5 30 5 30;" text="Logo" />
+                <Button onAction="#toggleSidebar" styleClass="icon-button">
+                    <graphic>
+                        <SVGPath content="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="white" scaleX="1.5" scaleY="1.5" />
+                    </graphic>
+                    <HBox.margin>
+                        <Insets right="20.0" />
+                    </HBox.margin>
+                </Button>
+
+                <Button onAction="#allerVersAccueil" styleClass="icon-button">
+                    <graphic>
+                        <ImageView fitHeight="45.0" preserveRatio="true">
+                            <image>
+                                <Image url="@Logo.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
                 <Region HBox.hgrow="ALWAYS" />
-                <StackPane prefHeight="35.0" prefWidth="35.0" style="-fx-border-color: white; -fx-border-width: 1.5; -fx-border-radius: 50%; -fx-padding: 5;">
-                    <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="WHITE" scaleX="1.2" scaleY="1.2" />
-                </StackPane>
+
+                <MenuButton styleClass="icon-button">
+                    <graphic>
+                        <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="white" scaleX="1.5" scaleY="1.5" />
+                    </graphic>
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Se déconnecter" />
+                        <MenuItem mnemonicParsing="false" text="Quitter" />
+                    </items>
+                </MenuButton>
             </children>
         </HBox>
     </top>
 
-    <center>
-        <StackPane>
+    <left>
+        <VBox fx:id="sidebar" prefWidth="70.0" spacing="15.0" styleClass="sidebar" BorderPane.alignment="CENTER">
             <children>
-                <BorderPane style="-fx-background-color: white;">
-                    <top>
-                        <VBox>
-                            <children>
-                                <HBox alignment="CENTER_LEFT" style="-fx-padding: 15 20 10 20;">
-                                    <children>
-                                        <Label onMouseClicked="#toggleMenuD" style="-fx-font-size: 32px; -fx-text-fill: #B0B0B0; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" />
-                                        <Region HBox.hgrow="ALWAYS" />
-                                        <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Ma buvette" />
-                                        <Region HBox.hgrow="ALWAYS" />
-                                        <Region prefWidth="40.0" /> </children>
-                                </HBox>
-                                <Separator prefWidth="200.0" style="-fx-background-color: #D0D0D0;" />
-                            </children>
-                        </VBox>
-                    </top>
+                <Button fx:id="btnConcerts" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Vos concerts">
+                    <graphic>
+                        <SVGPath content="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" scaleX="1.2" scaleY="1.2" />
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnBuvette" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn-active" text="  Buvette">
+                    <graphic>
+                        <SVGPath content="M21 5V3H3v2l8 9v5H6v2h12v-2h-5v-5l8-9zM7.43 7L5.66 5h12.69l-1.78 2H7.43z" scaleX="1.2" scaleY="1.2" />
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnMerch" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Merch">
+                    <graphic>
+                        <SVGPath content="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z" scaleX="1.2" scaleY="1.2" />
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnStaff" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Staff">
+                    <graphic>
+                        <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" scaleX="1.2" scaleY="1.2" />
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnMateriel" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Matériel">
+                    <graphic>
+                        <SVGPath content="M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z" scaleX="1.2" scaleY="1.2" />
+                    </graphic>
+                </Button>
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <Button fx:id="btnGoosebump" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" styleClass="sidebar-btn" text="  Goosebump_France">
+                    <graphic>
+                        <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" scaleX="1.2" scaleY="1.2" />
+                    </graphic>
+                </Button>
+            </children>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="20.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="40.0" left="60.0" right="60.0" top="40.0" />
+            </padding>
+            <children>
+                <BorderPane>
                     <center>
-                        <VBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
-                            <children>
-                                <Label text="Vous ne possédez pas de buvette&#10;pour le moment." textAlignment="CENTER" style="-fx-font-size: 24px; -fx-font-style: italic; -fx-text-fill: #A0A0A0;" />
-                                <Label text="Si vous conservez ce choix&#10;aucune buvette ne sera présente&#10;pour ce concert" textAlignment="CENTER" style="-fx-font-size: 24px; -fx-font-style: italic; -fx-text-fill: #A0A0A0;" />
-                                <Button prefHeight="50.0" prefWidth="180.0" style="-fx-background-color: #C0C0C0; -fx-background-radius: 30; -fx-text-fill: black; -fx-font-size: 18px; -fx-cursor: hand;" text="Créer   ➕" />
-                            </children>
-                        </VBox>
+                        <Label styleClass="text-dark" text="Nom_buvette" BorderPane.alignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="36.0" />
+                            </font>
+                        </Label>
                     </center>
+                    <right>
+                        <Button styleClass="custom-button" text="Créer une carte ➕" BorderPane.alignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                    </right>
                 </BorderPane>
 
-                <Region fx:id="scrim" onMouseClicked="#toggleMenuD" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
+                <Separator />
 
-                <VBox fx:id="sideMenuD" maxWidth="280.0" prefWidth="280.0" style="-fx-background-color: #555555;" visible="false" StackPane.alignment="CENTER_LEFT">
-                    <children>
-                        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-control-inner-background: #FFFFFF;">
+                    <content>
+                        <VBox alignment="TOP_CENTER" spacing="30.0">
+                            <padding>
+                                <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
+                            </padding>
                             <children>
-                                <Label onMouseClicked="#toggleMenuD" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
-                            </children>
-                        </HBox>
 
-                        <VBox spacing="15.0">
-                            <children>
-                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                                <VBox spacing="15.0" styleClass="card-pane">
                                     <children>
-                                        <Label text="🏠" style="-fx-font-size: 20px; -fx-text-fill: white;" />
-                                        <Label text="Vos concerts" style="-fx-font-size: 16px; -fx-text-fill: white;" />
-                                    </children>
-                                </HBox>
+                                        <Label alignment="CENTER" maxWidth="Infinity" styleClass="text-dark" text="Carte : &quot;Utopia&quot;">
+                                            <font>
+                                                <Font name="System Bold" size="22.0" />
+                                            </font>
+                                        </Label>
 
-                                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 0 30 30 0; -fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                                    <children>
-                                        <Label text="🍷" style="-fx-font-size: 20px; -fx-text-fill: black;" />
-                                        <Label text="Buvette" style="-fx-font-size: 16px; -fx-text-fill: black; -fx-font-weight: bold;" />
-                                    </children>
-                                </HBox>
+                                        <Label styleClass="text-dark" text="Thème : Amerique">
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </Label>
 
-                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMerch" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                                    <children>
-                                        <Label text="👕" style="-fx-font-size: 20px; -fx-text-fill: white;" />
-                                        <Label text="Merch" style="-fx-font-size: 16px; -fx-text-fill: white;" />
-                                    </children>
-                                </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                            <children>
+                                                <Label styleClass="text-dark" text="Produits :">
+                                                    <font>
+                                                        <Font size="16.0" />
+                                                    </font>
+                                                </Label>
+                                                <HBox spacing="8.0">
+                                                    <children>
+                                                        <Label styleClass="pill-badge" text="Coca Cola" />
+                                                        <Label styleClass="pill-badge" text="Hot-Dog" />
+                                                        <Label styleClass="pill-badge" text="Bière" />
+                                                        <Label styleClass="pill-badge" text="Chips" />
+                                                        <Label styleClass="pill-badge" text="Pop-Corn" />
+                                                        <Label styleClass="pill-badge" text="Ice-tea" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </HBox>
 
-                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersStaff" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                                    <children>
-                                        <Label text="👤" style="-fx-font-size: 20px; -fx-text-fill: white;" />
-                                        <Label text="Staff" style="-fx-font-size: 16px; -fx-text-fill: white;" />
+                                        <HBox alignment="BOTTOM_RIGHT" spacing="15.0">
+                                            <children>
+                                                <Button styleClass="action-btn-secondary" text="Modifier ✍">
+                                                    <graphic>
+                                                        <SVGPath content="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                                                    </graphic>
+                                                </Button>
+                                                <Button styleClass="action-btn-secondary" text="Supprimer 🗑">
+                                                    <graphic>
+                                                        <SVGPath content="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                                                    </graphic>
+                                                </Button>
+                                            </children>
+                                        </HBox>
                                     </children>
-                                </HBox>
-
-                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMateriel" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                                    <children>
-                                        <Label text="📦" style="-fx-font-size: 20px; -fx-text-fill: white;" />
-                                        <Label text="Matériel" style="-fx-font-size: 16px; -fx-text-fill: white;" />
-                                    </children>
-                                </HBox>
+                                </VBox>
                             </children>
                         </VBox>
-
-                        <Region VBox.vgrow="ALWAYS" />
-
-                        <VBox alignment="CENTER" style="-fx-padding: 20;">
-                            <children>
-                                <Button maxWidth="Infinity" style="-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: black; -fx-padding: 10;" text="Goosebump_France" />
-                            </children>
-                        </VBox>
-                    </children>
-                </VBox>
+                    </content>
+                </ScrollPane>
             </children>
-        </StackPane>
+        </VBox>
     </center>
 </BorderPane>

@@ -11,16 +11,6 @@
     <children>
         <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header">
             <children>
-                <Button onAction="#allerVersAccueil" styleClass="icon-button">
-                    <graphic>
-                        <ImageView fitHeight="45.0" preserveRatio="true">
-                            <image>
-                                <Image url="@logotransparent.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-
                 <Region HBox.hgrow="ALWAYS" />
 
                 <MenuButton styleClass="icon-button">

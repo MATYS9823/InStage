@@ -110,3 +110,78 @@
     -fx-border-color: #000000;
     -fx-background-color: #FFFFFF;
 }
+
+/* Conteneur du menu latéral */
+.sidebar {
+    -fx-background-color: #2C2C2E;
+    -fx-padding: 20 10 20 10;
+}
+
+/* Boutons standards du menu latéral */
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-alignment: center-left;
+    -fx-padding: 12 15 12 15;
+    -fx-background-radius: 25;
+    -fx-cursor: hand;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: #3A3A3C;
+}
+
+/* Rendre l'icône SVG blanche par défaut */
+.sidebar-btn .svg-path {
+    -fx-fill: #FFFFFF;
+}
+
+/* État actif du bouton dans le menu (ex: Buvette sélectionné) */
+.sidebar-btn-active {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #000000;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-alignment: center-left;
+    -fx-padding: 12 15 12 15;
+    -fx-background-radius: 25;
+    -fx-cursor: hand;
+}
+
+/* L'icône SVG devient noire quand le bouton est actif */
+.sidebar-btn-active .svg-path {
+    -fx-fill: #000000;
+}
+
+/* Conteneur d'une carte (Menu Utopia) */
+.card-pane {
+    -fx-background-color: #F2F2F7;
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+}
+
+/* Petits badges pour les produits (Coca, Hot-Dog...) */
+.pill-badge {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15;
+    -fx-padding: 4 12 4 12;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+
+/* Boutons secondaires (Modifier, Supprimer) */
+.action-btn-secondary {
+    -fx-background-color: #D1D1D6;
+    -fx-background-radius: 20;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8 16 8 16;
+}
+
+.action-btn-secondary:hover {
+    -fx-background-color: #C7C7CC;
+}
