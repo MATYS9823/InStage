@@ -1,16 +1,25 @@
 package fr.uga.iut2.genevent.vue;
 
 import fr.uga.iut2.genevent.controleur.Controleur;
+import fr.uga.iut2.genevent.modele.Concert;
 import fr.uga.iut2.genevent.modele.Salle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,6 +31,8 @@ public class RechercheSallesController {
     // --- Lien avec le reste de l'application ---
     private Controleur controleurPrincipal;
     private JavaFXGUI mainGUI; // Permet de naviguer vers d'autres pages si besoin
+    // Stage principal, gardé pour changer de scène
+    private Stage primaryStage;
 
     // --- Éléments FXML ---
     @FXML private TextField filtreLieu;
@@ -32,6 +43,8 @@ public class RechercheSallesController {
     @FXML private DatePicker date_fin;
     @FXML private ListView<Salle> listViewSalles;
     @FXML private WebView webViewCarte;
+    @FXML private HBox sideMenuD;
+    @FXML private Region scrim;
 
     // --- Données ---
     private List<Salle> toutesLesSalles = new ArrayList<>();
@@ -118,5 +131,40 @@ public class RechercheSallesController {
         // Ferme proprement l'application JavaFX
         javafx.application.Platform.exit();
         System.exit(0);
+    }
+
+
+    @FXML
+    public void toggleMenuD() {
+        boolean isOpen = sideMenuD.isVisible();
+        sideMenuD.setVisible(!isOpen);
+        scrim.setVisible(!isOpen);
+    }
+
+    //-----  Navigation  -----------------------------------------------------------
+
+    @FXML
+    private void allerVersAccueil() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    @FXML
+    private void allerVersMesConcerts() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("manage-concerts-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+
+        } catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
     }
 }
