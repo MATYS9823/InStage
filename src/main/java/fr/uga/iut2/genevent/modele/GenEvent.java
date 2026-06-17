@@ -14,15 +14,12 @@ public class GenEvent implements Serializable {
     private final Map<String, Concert> concerts;
     private final Map<String,Materiel> materiel;
 
-    // --- NOUVEAU : La liste des salles ---
-    private final List<Salle> salles;
+    private List<Salle> salles=new ArrayList<>();
 
     public GenEvent() {
         this.organisateurs = new HashMap<>();
         this.concerts = new HashMap<>();
         this.materiel = new HashMap<>();
-        this.salles = new ArrayList<>(); // Initialisation
-
         // TEMPORAIRE : On ajoute des salles par défaut au démarrage pour pouvoir tester l'interface
         initialiserSallesParDefaut();
     }
@@ -38,7 +35,18 @@ public class GenEvent implements Serializable {
     }
 
     public List<Salle> getSalles() {
+        if (this.salles == null) {
+            this.salles = new ArrayList<>();
+        }
         return this.salles;
+    }
+
+    public void ajouterSalle(Salle salle){
+        // Si la liste n'a pas été initialisée (à cause d'une ancienne sauvegarde)
+        if (this.salles == null) {
+            this.salles = new ArrayList<>();
+        }
+        this.salles.add(salle);
     }
 
     public boolean ajouteOrganisateur(String nom, String prenom, String mdp, String email) {
