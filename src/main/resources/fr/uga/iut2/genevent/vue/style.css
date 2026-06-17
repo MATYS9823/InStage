@@ -1,0 +1,112 @@
+/* Fond principal de l'application */
+.root-pane {
+    -fx-background-color: #FFFFFF;
+}
+
+/* Bandeau supérieur (Header) */
+.header {
+    -fx-background-color: #1C1C1E;
+    -fx-padding: 15 40 15 40;
+}
+
+/* Boutons transparents du header (Logo et Profil) */
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+/* Couleur de l'icône de profil dans le header */
+.icon-button .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+
+/* Conteneur de la liste déroulante (ContextMenu) */
+.context-menu {
+    -fx-background-color: #2C2C2E; /* Même beau noir que vos boutons */
+    -fx-background-radius: 10;
+    -fx-border-color: #1C1C1E;
+    -fx-border-radius: 10;
+    -fx-padding: 5 0 5 0;
+}
+
+/* Chaque option à l'intérieur du menu (MenuItem) */
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 8 20 8 20;
+}
+
+/* Forcer le texte des options en blanc pour un contraste parfait */
+.menu-item .label {
+    -fx-text-fill: #FFFFFF !important;
+}
+
+/* Effet de survol sur les options du menu */
+.menu-item:focused, .menu-item:hover {
+    -fx-background-color: #3A3A3C; /* Gris légèrement plus clair au survol */
+}
+
+
+/* Textes principaux de l'application */
+.text-dark {
+    -fx-text-fill: #000000;
+}
+
+/* Boutons d'action principaux (beaux tons de noir, arrondis) */
+.custom-button {
+    -fx-background-color: #2C2C2E;
+    -fx-background-radius: 35;
+    -fx-cursor: hand;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Effet de survol sur les boutons principaux */
+.custom-button:hover {
+    -fx-background-color: #3A3A3C;
+}
+
+.icon-button:hover {
+    -fx-opacity: 0.8;
+}
+
+/* Champs de saisie (TextField, PasswordField) */
+.input-field {
+    -fx-background-color: #F2F2F7;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+    -fx-text-fill: #000000;
+}
+
+.input-field:focused {
+    -fx-border-color: #000000;
+    -fx-border-radius: 10;
+    -fx-background-color: #FFFFFF;
+}
+
+/* Liens hypertextes */
+.custom-link {
+    -fx-text-fill: #000000;
+    -fx-underline: true;
+}
+
+.custom-link:hover {
+    -fx-text-fill: #555555;
+}
+
+/* Champs de date (DatePicker) */
+.date-field {
+    -fx-background-color: #F2F2F7;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.date-field > .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-padding: 5 10 5 10;
+}
+
+.date-field:focused-within {
+    -fx-border-color: #000000;
+    -fx-background-color: #FFFFFF;
+}
