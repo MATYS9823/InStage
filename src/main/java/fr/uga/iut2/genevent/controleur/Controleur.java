@@ -207,6 +207,14 @@ public class Controleur {
         return this.genevent.getSalles();
     }
 
+    public void selectionnerConcertRecent(Concert concert) {
+        this.concertSelectionne = concert;
+        // NOUVEAU : On mémorise ce concert pour l'organisateur actuel
+        if (this.organisateurConnecte != null) {
+            this.organisateurConnecte.setDernierConcertConsulte(concert);
+        }
+    }
+
     public Organisateur getOrganisateur(String email) {
         return this.genevent.getOrganisateur(email);
     }

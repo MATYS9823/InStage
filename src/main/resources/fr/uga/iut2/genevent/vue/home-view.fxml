@@ -3,6 +3,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -10,9 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.control.MenuItem?>
 
 <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -93,11 +96,21 @@
                                 <Insets left="10.0" />
                             </VBox.margin>
                         </Label>
-                        <Button maxWidth="Infinity" prefHeight="140.0" styleClass="custom-button" text="Dernier concert consulté">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Button>
+
+                        <VBox fx:id="paneDernierConcert" onMouseClicked="#reprendreDernierConcertAction" prefHeight="140.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 4);" spacing="10.0" maxWidth="Infinity">
+                            <children>
+                                <Label fx:id="lblDernierNom" text="Nom du concert" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;" />
+
+                                <Label fx:id="lblDernierArtiste" text="Artiste : -" style="-fx-font-size: 16px; -fx-text-fill: #555555;" />
+
+                                <HBox spacing="30.0" alignment="CENTER_LEFT">
+                                    <children>
+                                        <Label fx:id="lblDernierDate" text="📅 -" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #000000;" />
+                                        <Label fx:id="lblDernierLieu" text="📍 -" style="-fx-font-size: 14px; -fx-text-fill: #555555;" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
                     </children>
                     <VBox.margin>
                         <Insets top="30.0" />

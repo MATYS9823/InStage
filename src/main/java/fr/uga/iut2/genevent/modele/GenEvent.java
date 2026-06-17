@@ -92,13 +92,25 @@ public class GenEvent implements Serializable {
         return this.organisateurs;
     }
 
-    public void nouveauConcert(String nom, LocalDate dateDebut, LocalDate dateFin, String lieu,String artistes, String emailOrganisateur) {
+    public void nouveauConcert(String nom, LocalDate dateDebut, LocalDate dateFin, String lieu, String artistes, String emailOrganisateur) {
         assert !this.concerts.containsKey(nom);
         assert this.organisateurs.containsKey(emailOrganisateur);
 
         Concert concert = new Concert(dateDebut, dateFin, lieu, nom ,artistes);
         this.concerts.put(nom, concert);
         this.organisateurs.get(emailOrganisateur).creerConcert(concert);
+
+        // --- NOUVEAUTÉ : LIAISON AVEC LA SALLE ET CRÉATION DE L'OCCUPATION ---
+        // On parcours les salles existantes pour voir si le lieu correspond
+        for (Salle s : getSalles()) {
+            if (s.getNom().equalsIgnoreCase(lieu) || s.getLieu().equalsIgnoreCase(lieu)) {
+                // On associe la salle à ce concert
+                concert.setSalle(s);
+                // On ajoute l'occupation dans le planning de la salle
+                s.ajouterOccupation(dateDebut, dateFin);
+                break; // Salle trouvée et occupée, on arrête la recherche
+            }
+        }
     }
 
     public void nouveauMateriel(int prix, String typeEquipement, String fournisseur, String nom, String nomConcert){

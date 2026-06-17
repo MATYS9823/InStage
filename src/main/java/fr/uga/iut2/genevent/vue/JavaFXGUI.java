@@ -1,9 +1,13 @@
 package fr.uga.iut2.genevent.vue;
+
 import fr.uga.iut2.genevent.controleur.Controleur;
 
 import fr.uga.iut2.genevent.modele.*;
 import javafx.event.ActionEvent;
+
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -17,11 +21,19 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import org.apache.commons.validator.routines.EmailValidator;
+import java.util.List;
+
+//import pour le format agenda
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.PrintWriter;
+import java.time.format.DateTimeFormatter;
 
 
 public class JavaFXGUI extends IHM {
@@ -108,6 +120,13 @@ public class JavaFXGUI extends IHM {
     @FXML private VBox sideMenuBuvette;
     @FXML private Region scrimBuvette;
 
+    //pour collecter les dernière infos du concert recent
+    @FXML private VBox paneDernierConcert;
+    @FXML private Label lblDernierNom;
+    @FXML private Label lblDernierArtiste;
+    @FXML private Label lblDernierDate;
+    @FXML private Label lblDernierLieu;
+
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
         this.eolBarrier = new CountDownLatch(1);
@@ -138,11 +157,44 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
-            // Met à jour le label de bienvenue si présent dans le FXML
+
             if (welcomeLabel != null) {
                 welcomeLabel.setText("Bienvenue " + controleur.getOrganisateurConnecte().getPrenom()
                         + " " + controleur.getOrganisateurConnecte().getNom());
             }
+
+            // --- MISE À JOUR DE L'AFFICHAGE DIRECT DU CONCERT ---
+            if (paneDernierConcert != null) {
+                Organisateur org = controleur.getOrganisateurConnecte();
+
+                if (org != null && org.getDernierConcertConsulte() != null) {
+                    Concert dernier = org.getDernierConcertConsulte();
+
+                    // 1. On injecte directement les informations du modèle dans les Labels
+                    lblDernierNom.setText(dernier.getNom());
+                    lblDernierArtiste.setText("Artiste : " + dernier.getArtiste());
+
+                    String dateStr = dernier.getDate_debut() != null
+                            ? dernier.getDate_debut().format(java.time.format.DateTimeFormatter.ofPattern("dd MMMM yyyy", java.util.Locale.FRANCE))
+                            : "Date inconnue";
+                    lblDernierDate.setText("📅 " + dateStr);
+                    lblDernierLieu.setText("📍 " + dernier.getLieu());
+
+                    // 2. On s'assure que la carte est active et cliquable
+                    paneDernierConcert.setDisable(false);
+                    paneDernierConcert.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 4);");
+                } else {
+                    // Si aucun concert n'a été visité, on bascule en mode "vide" (grisé et non cliquable)
+                    lblDernierNom.setText("Aucun concert consulté récemment");
+                    lblDernierArtiste.setText("Ouvrez un concert depuis l'onglet 'Mes concerts' pour le voir apparaître ici.");
+                    lblDernierDate.setText("📅 -- ");
+                    lblDernierLieu.setText("📍 -- ");
+
+                    paneDernierConcert.setDisable(true); // Désactive le clic
+                    paneDernierConcert.setStyle("-fx-background-color: #F4F4F4; -fx-background-radius: 12; -fx-border-color: #DCDCDC; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-opacity: 0.6;");
+                }
+            }
+
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -202,7 +254,8 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
-
+            // ---> APPEL NOUVELLE MÉTHODE pour initialiser les dates <---
+            initialiserDatesConcert();
         }catch (IOException exc){
             throw new RuntimeException(exc);
         }
@@ -245,6 +298,9 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+
+            // ---> APPEL NOUVELLE MÉTHODE AVANT DE REMPLIR LES CHAMPS <---
+            initialiserDatesConcert();
 
             // On remplit le lieu
             if (tflieuconcert != null) {
@@ -293,6 +349,8 @@ public class JavaFXGUI extends IHM {
             primaryStage.setScene(scene);
 
             Concert concert = controleur.getConcertSelectionne();
+            controleur.selectionnerConcertRecent(concert);
+
             if (concert != null) {
                 // Mise à jour de l'en-tête
                 if (dashboardConcertLabel != null) dashboardConcertLabel.setText(concert.getNom());
@@ -409,6 +467,50 @@ public class JavaFXGUI extends IHM {
         }
     }
 
+
+    //fonction pour telecharger nos évènement en format calendar(ics)
+    private void telechargerFichierIcs(Concert c) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer le concert dans l'agenda");
+
+        // On propose un nom de fichier par défaut (sans espaces)
+        String nomFichierDefaut = c.getNom().replaceAll("\\s+", "_") + ".ics";
+        fileChooser.setInitialFileName(nomFichierDefaut);
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier iCalendar (*.ics)", "*.ics"));
+
+        // Ouvre la fenêtre de sauvegarde
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if (file != null) {
+            try (PrintWriter writer = new PrintWriter(file)) {
+                // Formatage de la date (iCal demande le format YYYYMMDD pour les dates complètes)
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+                String dateDebut = c.getDate_debut().format(formatter);
+
+                // Pour les événements sur une journée entière (sans heure), iCal requiert que la date de fin soit exclusive (+1 jour)
+                String dateFin = c.getDate_fin() != null
+                        ? c.getDate_fin().plusDays(1).format(formatter)
+                        : c.getDate_debut().plusDays(1).format(formatter);
+
+                // Écriture du fichier au standard iCalendar
+                writer.println("BEGIN:VCALENDAR");
+                writer.println("VERSION:2.0");
+                writer.println("PRODID:-//GenEvent//FR");
+                writer.println("BEGIN:VEVENT");
+                writer.println("SUMMARY:Concert " + c.getNom() + " - " + c.getArtiste());
+                writer.println("LOCATION:" + c.getLieu());
+                writer.println("DTSTART;VALUE=DATE:" + dateDebut);
+                writer.println("DTEND;VALUE=DATE:" + dateFin);
+                writer.println("DESCRIPTION:Concert de " + c.getArtiste() + " organisé via GenEvent.");
+                writer.println("END:VEVENT");
+                writer.println("END:VCALENDAR");
+
+                informerUtilisateur("Le fichier calendrier a été téléchargé avec succès !", true);
+            } catch (Exception ex) {
+                informerUtilisateur("Erreur lors de la sauvegarde : " + ex.getMessage(), false);
+            }
+        }
+    }
 
 
 
@@ -675,7 +777,6 @@ public class JavaFXGUI extends IHM {
     }
 
 
-
     private VBox creerCarteConcert(Concert c) {
         // --- TEXTES ---
         Label nom = new Label(c.getNom());
@@ -710,6 +811,13 @@ public class JavaFXGUI extends IHM {
             });
         });
 
+        // --- BOUTON CALENDRIER (iCal) ---
+        Button btnCalendrier = new Button("📅 Exporter");
+        btnCalendrier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
+        btnCalendrier.setOnMouseEntered(e -> btnCalendrier.setStyle("-fx-background-color: #3A3A3C; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
+        btnCalendrier.setOnMouseExited(e -> btnCalendrier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
+        btnCalendrier.setOnAction(e -> telechargerFichierIcs(c)); // Appel de la méthode d'export
+
         // --- BOUTON MODIFIER ---
         Button btnModifier = new Button("Modifier ✍");
         btnModifier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
@@ -729,9 +837,11 @@ public class JavaFXGUI extends IHM {
         VBox corpsContenu = new VBox(5, artiste, lieu);
 
         Region footerSpacer = new Region();
-        HBox.setHgrow(footerSpacer, Priority.ALWAYS);
-        HBox footer = new HBox(10, date, footerSpacer, btnModifier);
-        footer.setAlignment(Pos.BOTTOM_CENTER);
+        HBox.setHgrow(footerSpacer, javafx.scene.layout.Priority.ALWAYS);
+
+        // On intègre le bouton calendrier juste avant le bouton modifier dans le footer
+        HBox footer = new HBox(10, date, footerSpacer, btnCalendrier, btnModifier);
+        footer.setAlignment(javafx.geometry.Pos.BOTTOM_CENTER);
 
         Region vSpacer = new Region();
         VBox.setVgrow(vSpacer, Priority.ALWAYS);
@@ -1226,4 +1336,53 @@ public class JavaFXGUI extends IHM {
             throw new RuntimeException(exc);
         }
     }
+    //gestion des dates
+    private void initialiserDatesConcert() {
+        // Sécurité si la page n'a pas les composants chargés
+        if (dpDateDebut == null || dpDateFin == null) return;
+
+        // 1. Ajustement automatique de la date de fin quand la date de début change
+        dpDateDebut.valueProperty().addListener((observable, ancienneDate, nouvelleDate) -> {
+            if (nouvelleDate != null) {
+                LocalDate dateFinActuelle = dpDateFin.getValue();
+                if (dateFinActuelle == null || dateFinActuelle.isBefore(nouvelleDate)) {
+                    dpDateFin.setValue(nouvelleDate);
+                }
+            }
+        });
+
+        // 2. Blocage si la date de fin est antérieure à la date de début
+        dpDateFin.valueProperty().addListener((observable, ancienneDate, nouvelleDate) -> {
+            LocalDate dateDebutActuelle = dpDateDebut.getValue();
+            if (nouvelleDate != null && dateDebutActuelle != null) {
+                if (nouvelleDate.isBefore(dateDebutActuelle)) {
+                    informerUtilisateur("La date de fin ne peut pas être antérieure à la date de début !", false);
+                    javafx.application.Platform.runLater(() -> dpDateFin.setValue(dateDebutActuelle));
+                }
+            }
+        });
+
+        // 3. Griser visuellement les jours impossibles dans le calendrier de fin
+        dpDateFin.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate debut = dpDateDebut.getValue();
+                setDisable(empty || (debut != null && date.isBefore(debut)));
+            }
+        });
+    }
+
+    @FXML
+    private void reprendreDernierConcertAction() {
+        Organisateur org = controleur.getOrganisateurConnecte();
+        if (org != null && org.getDernierConcertConsulte() != null) {
+            // Sélection automatique et redirection
+            controleur.selectionnerConcert(org.getDernierConcertConsulte());
+            allerVersdashboard();
+        }
+    }
+
+
+
 }

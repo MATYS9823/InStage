@@ -12,6 +12,7 @@ public class Organisateur implements Serializable {
     private String id;
     private String email;
     private ArrayList<Concert>  concerts = new ArrayList<>();
+    private Concert dernierConcertConsulte = null;
 
     public Organisateur(String nom, String prenom, String mdp, String email) {
         this.nom = nom;
@@ -52,6 +53,15 @@ public class Organisateur implements Serializable {
     public String getEmail() {
         return email;
     }
+
+    public Concert getDernierConcertConsulte() {
+        return this.dernierConcertConsulte;
+    }
+    public void setDernierConcertConsulte(Concert concert) {
+        this.dernierConcertConsulte = concert;
+    }
+
+
 
     public ArrayList<Concert> getConcerts() {
         return concerts;
