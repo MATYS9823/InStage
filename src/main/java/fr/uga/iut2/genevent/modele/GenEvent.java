@@ -50,13 +50,18 @@ public class GenEvent implements Serializable {
         return this.salles;
     }
 
-    public void ajouterSalle(Salle salle){
+    public void ajouterSalle(Salle nouvelleSalle){
         // Si la liste n'a pas été initialisée (à cause d'une ancienne sauvegarde)
         if (this.salles == null) {
             this.salles = new ArrayList<>();
         }
-        if (!this.salles.contains(salle))
-        {this.salles.add(salle);}
+
+        // On supprime l'ancienne version de la salle si elle existe déjà
+        // (Comme ça on met à jour les données de test à chaque lancement)
+        this.salles.removeIf(s -> s.getNom().equals(nouvelleSalle.getNom()));
+
+        // On ajoute la nouvelle salle toute propre
+        this.salles.add(nouvelleSalle);
     }
 
     public boolean ajouteOrganisateur(String nom, String prenom, String mdp, String email) {

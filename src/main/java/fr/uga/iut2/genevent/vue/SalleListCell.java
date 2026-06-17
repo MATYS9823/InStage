@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class SalleListCell extends ListCell<Salle> {
 
@@ -17,12 +18,14 @@ public class SalleListCell extends ListCell<Salle> {
     @FXML private Label lblCapacite;
     @FXML private Label lblTarif;
     @FXML private Button btnSelectionner;
+    private RechercheSallesController controller;
 
     private FXMLLoader mLLoader;
     private JavaFXGUI mainGUI;
 
-    public SalleListCell(JavaFXGUI mainGUI) {
+    public SalleListCell(JavaFXGUI mainGUI, RechercheSallesController controller) {
         this.mainGUI = mainGUI;
+        this.controller = controller; // On sauvegarde le contrôleur
     }
 
     @Override
@@ -48,7 +51,10 @@ public class SalleListCell extends ListCell<Salle> {
 
                 btnSelectionner.setOnAction(event -> {
                     if (this.mainGUI != null) {
-                        this.mainGUI.allerVerscreerConcertsFromSalle(lblAdresse.getText());
+                        // On récupère les dates via le contrôleur
+                        LocalDate debut = this.controller.getDateDebut();
+                        LocalDate fin = this.controller.getDateFin();
+                        this.mainGUI.allerVerscreerConcertsFromSalle(lblAdresse.getText(), debut, fin);
                     }
                 });
             }

@@ -6,6 +6,7 @@ import fr.uga.iut2.genevent.modele.Merch;
 import fr.uga.iut2.genevent.modele.Organisateur;
 import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -216,16 +217,23 @@ public class JavaFXGUI extends IHM {
         }
     }
 
-    public void allerVerscreerConcertsFromSalle(String lieu) {
+    public void allerVerscreerConcertsFromSalle(String lieu, LocalDate debut, LocalDate fin) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("create-concert-view.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
 
-            // Une fois la vue chargée, on remplit le champ avec le lieu passé en paramètre
+            // On remplit le lieu
             if (tflieuconcert != null) {
                 tflieuconcert.setText(lieu);
+            }
+            // NOUVEAU : On remplit les dates
+            if (dpDateDebut != null && debut != null) {
+                dpDateDebut.setValue(debut);
+            }
+            if (dpDateFin != null && fin != null) {
+                dpDateFin.setValue(fin);
             }
         } catch (IOException exc) {
             throw new RuntimeException(exc);

@@ -63,16 +63,69 @@ public class RechercheSallesController {
         this.controleurPrincipal = controleur;
         this.mainGUI = gui;
 
-        listViewSalles.setCellFactory(lv -> new SalleListCell(this.mainGUI));
+        listViewSalles.setCellFactory(lv -> new SalleListCell(this.mainGUI, this));
         listViewSalles.setItems(sallesFiltrees);
         listViewSalles.setFixedCellSize(120);
+
+        // =========================================================================
+        // --- GESTION ET VALIDATION AUTOMATIQUE DES DATES DE DÉBUT ET DE FIN ---
+        // =========================================================================
+
+        // 1. Écouteur sur la date de début : ajuste automatiquement la date de fin
+        date_debut.valueProperty().addListener((observable, ancienneDate, nouvelleDate) -> {
+            if (nouvelleDate != null) {
+                LocalDate dateFinActuelle = date_fin.getValue();
+                // Si la date de fin est vide, ou si elle est illogique (antérieure au début)
+                if (dateFinActuelle == null || dateFinActuelle.isBefore(nouvelleDate)) {
+                    // On remplit automatiquement la date de fin pour qu'elle soit cohérente
+                    date_fin.setValue(nouvelleDate);
+                }
+            }
+        });
+
+        // 2. Écouteur sur la date de fin : bloque et réinitialise si l'utilisateur saisit une mauvaise date
+        date_fin.valueProperty().addListener((observable, ancienneDate, nouvelleDate) -> {
+            LocalDate dateDebutActuelle = date_debut.getValue();
+
+            // Si on a bien deux dates remplies
+            if (nouvelleDate != null && dateDebutActuelle != null) {
+                // Si l'utilisateur force une date de fin avant la date de début (ex: saisie manuelle au clavier)
+                if (nouvelleDate.isBefore(dateDebutActuelle)) {
+
+                    // Affichage de l'alerte d'erreur via l'IHM
+                    if (this.mainGUI != null) {
+                        this.mainGUI.informerUtilisateur("La date de fin ne peut pas être antérieure à la date de début !", false);
+                    }
+
+                    // On force le retour à la date valide minimale (la date de début)
+                    // Utilisation de Platform.runLater pour éviter des conflits de modification pendant l'écoute du champ
+                    javafx.application.Platform.runLater(() -> {
+                        date_fin.setValue(dateDebutActuelle);
+                    });
+                }
+            }
+        });
+
+        // 3. Calendrier visuel : Grise et désactive les dates antérieures à la date de début
+        date_fin.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate debut = date_debut.getValue();
+                // On désactive la case si elle est vide OU si la date sélectionnable est avant la date de début
+                setDisable(empty || (debut != null && date.isBefore(debut)));
+            }
+        });
+
+        // =========================================================================
+        // --- CHARGEMENT DES DONNÉES ET DE LA CARTE ---
+        // =========================================================================
 
         // Récupération des vraies données
         if (this.controleurPrincipal != null && this.controleurPrincipal.getToutesLesSalles() != null) {
             toutesLesSalles.addAll(this.controleurPrincipal.getToutesLesSalles());
         }
         sallesFiltrees.setAll(toutesLesSalles);
-
 
         // Chargement de la carte
         WebEngine webEngine = webViewCarte.getEngine();
@@ -95,6 +148,8 @@ public class RechercheSallesController {
         String lieuCherche = filtreLieu.getText() != null ? filtreLieu.getText().toLowerCase().trim() : "";
         String capStr = filtreCapacite.getText() != null ? filtreCapacite.getText().trim() : "";
         String tarifStr = filtreTarif.getText() != null ? filtreTarif.getText().trim() : "";
+        LocalDate debut = date_debut.getValue();
+        LocalDate fin = date_fin.getValue();
         // On ne récupère plus les dates ici pour filtrer les salles
 
         List<Salle> resultats = toutesLesSalles.stream().filter(salle -> {
@@ -105,7 +160,9 @@ public class RechercheSallesController {
             if (!tarifStr.isEmpty()) {
                 try { if (salle.getTarif() > Integer.parseInt(tarifStr)) return false; } catch (NumberFormatException e){}
             }
-            // 👇 On a retiré le filtre sur les dates ici pour ne pas masquer les salles
+            if (debut != null && fin != null) {
+                if (!salle.estDisponible(debut, fin)) return false;
+            }
             return true;
         }).collect(Collectors.toList());
 

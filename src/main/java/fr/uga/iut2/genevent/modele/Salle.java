@@ -86,6 +86,11 @@ public class Salle implements Serializable {
 
     // NOUVEAU : Méthode pour vérifier si la salle est libre pour des dates données
     public boolean estDisponible(LocalDate debut, LocalDate fin) {
+        // SÉCURITÉ : Si la liste est null (à cause d'une ancienne sauvegarde), on la crée
+        if (this.occupations == null) {
+            this.occupations = new ArrayList<>();
+        }
+
         for (Occupation occ : occupations) {
             if (occ.chevauche(debut, fin)) {
                 return false; // La salle est occupée sur cette période
@@ -94,8 +99,11 @@ public class Salle implements Serializable {
         return true; // Aucune occupation ne chevauche, la salle est libre
     }
 
-    // NOUVEAU : Méthode pour réserver la salle
     public void ajouterOccupation(LocalDate debut, LocalDate fin) {
+        // SÉCURITÉ : Si la liste est null, on la crée avant d'ajouter
+        if (this.occupations == null) {
+            this.occupations = new ArrayList<>();
+        }
         this.occupations.add(new Occupation(debut, fin));
     }
 

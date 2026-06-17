@@ -5,6 +5,7 @@ import fr.uga.iut2.genevent.modele.GenEvent;
 import fr.uga.iut2.genevent.modele.Salle;
 import fr.uga.iut2.genevent.util.Persisteur;
 import java.io.IOException;
+import java.time.LocalDate; // N'oublie pas d'importer LocalDate !
 import java.util.ArrayList;
 
 public class Main {
@@ -24,25 +25,36 @@ public class Main {
             System.exit(Main.EXIT_ERR_LOAD);
         }
 
-        // 1. Création des salles de test
         Salle summum = new Salle("Le Summum", new ArrayList<>(), 3000, "Rue Henri Barbusse, Grenoble", 500, 45.1585, 5.7314);
         Salle belleElectrique2 = new Salle("La Belle Électrique 2", new ArrayList<>(), 1000, "Esplanade Andry Farcy, Grenoble", 150, 45.1865, 5.7042);
         Salle heureBleue = new Salle("L'Heure Bleue", new ArrayList<>(), 600, "Avenue Jean Vilar, Saint-Martin-d'Hères", 80, 45.1783, 5.7668);
         Salle grandAngle = new Salle("Le Grand Angle", new ArrayList<>(), 1700, "Rue du Moulin, Voiron", 250, 45.3672, 5.5881);
 
-        summum.ajouterOccupation(java.time.LocalDate.now(), java.time.LocalDate.now().plusDays(5));
-        // 2. Ajout des salles AVANT de démarrer le contrôleur
-        // Utilisation de la méthode ajouterSalle() définie dans GenEvent
+        // --- DÉBUT DES DONNÉES DE TEST POUR LES DATES ---
+
+        // Le Summum est occupé du 15 Octobre 2026 au 20 Octobre 2026
+        LocalDate dateDebutSummum = LocalDate.of(2026, 10, 15);
+        LocalDate dateFinSummum = LocalDate.of(2026, 10, 20);
+        summum.ajouterOccupation(dateDebutSummum, dateFinSummum);
+
+        // La Belle Électrique 2 est occupée du 5 Novembre 2026 au 10 Novembre 2026
+        LocalDate dateDebutBelle = LocalDate.of(2026, 11, 5);
+        LocalDate dateFinBelle = LocalDate.of(2026, 11, 10);
+        belleElectrique2.ajouterOccupation(dateDebutBelle, dateFinBelle);
+
+        // L'Heure Bleue et Le Grand Angle restent libres tout le temps
+        // --- FIN DES DONNÉES DE TEST ---
+
+        // 2. Ajout des salles
+        // Grâce à notre nouvelle méthode ajouterSalle, il n'y aura plus de doublons !
         genevent.ajouterSalle(summum);
         genevent.ajouterSalle(belleElectrique2);
         genevent.ajouterSalle(heureBleue);
         genevent.ajouterSalle(grandAngle);
-        System.out.println("✅ Salles de test ajoutées au modèle.");
+        System.out.println("✅ Salles de test ajoutées au modèle avec des occupations de test.");
 
         // 3. Initialisation et démarrage de l'interface graphique
         Controleur controleur = new Controleur(genevent);
-        // `Controleur.demarrer` garde le contrôle de l'exécution tant que
-        // l'utilisateur/trice n'a pas saisi la commande QUITTER.
         controleur.demarrer();
 
         // 4. Sauvegarde de l'état une fois l'interface fermée
