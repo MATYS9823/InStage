@@ -1,8 +1,9 @@
 package fr.uga.iut2.genevent.modele;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Materiel {
+public class Materiel implements Serializable {
     private int prix;
     private String typeEquipement;
     private String fournisseur;

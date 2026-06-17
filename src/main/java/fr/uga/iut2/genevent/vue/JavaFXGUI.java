@@ -1,6 +1,7 @@
 package fr.uga.iut2.genevent.vue;
 import fr.uga.iut2.genevent.controleur.Controleur;
 
+import fr.uga.iut2.genevent.modele.Materiel;
 import fr.uga.iut2.genevent.modele.Organisateur;
 import javafx.event.ActionEvent;
 import java.io.IOException;
@@ -75,6 +76,8 @@ public class JavaFXGUI extends IHM {
     @FXML private TextField tfPrixMateriel;
     @FXML private TextField tfTypeEquipement;
     @FXML private TextField tfFournisseur;
+
+    @FXML private VBox materielTilePane;
 
 
     // vhamp vue dashboard
@@ -204,6 +207,7 @@ public class JavaFXGUI extends IHM {
             throw new RuntimeException(exc);
         }
     }
+
     public void allerVerscreerConcertsFromSalle(String lieu) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("create-concert-view.fxml"));
@@ -502,6 +506,46 @@ public class JavaFXGUI extends IHM {
         return carte;
     }
 
+
+    private VBox creerCarteMateriel(Materiel m) {
+        Label nom = new Label(m.getNom());
+        nom.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+
+        Label type = new Label(m.getTypeEquipement());
+        type.setStyle("-fx-font-size: 14px; -fx-font-style: italic; -fx-text-fill: #7F8C8D;");
+
+        Label fournisseur = new Label("🏭 " + m.getFournisseur());
+        fournisseur.setStyle("-fx-text-fill: #34495E; -fx-font-size: 13px;");
+
+        Label prix = new Label("💶 " + m.getPrix() + " €");
+        prix.setStyle("-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #2980B9;");
+
+        Button btnSupprimer = new Button("✕");
+        btnSupprimer.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setContentText("Supprimer le matériel \"" + m.getNom() + "\" ?");
+            alert.showAndWait().ifPresent(reponse -> {
+  /*              if (reponse == ButtonType.OK) {
+                    controleur.supprimerMateriel(m);   // à créer côté Controleur/modèle
+                    allerVersMateriel();                // recharge la vue
+                }*/
+            });
+        });
+
+        Region headerSpacer = new Region();
+        HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+
+        VBox carte = new VBox(12, header, type, fournisseur, prix);
+        carte.setStyle(
+                "-fx-background-color: #FFFFFF; -fx-background-radius: 18; -fx-padding: 20; " +
+                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+        );
+        carte.setPrefSize(360, 200);
+        return carte;
+    }
+
     @FXML
     private void cancelNewOrganisateurAction() {
         this.newOrgCancelButton.getScene().getWindow().hide();
@@ -573,6 +617,13 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+
+            if (materielTilePane != null) {
+                materielTilePane.getChildren().clear();
+                for (Materiel m : controleur.getConcertSelectionne().getMateriels()) {
+                    materielTilePane.getChildren().add(creerCarteMateriel(m));
+                }
+            }
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }

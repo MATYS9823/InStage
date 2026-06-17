@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.control.MenuItem?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.BorderPane?>
@@ -17,14 +12,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 
-
-<?import javafx.scene.control.MenuButton?>
-<StackPane xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml"
-           prefHeight="700.0" prefWidth="1000.0">
+<StackPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
 
     <BorderPane style="-fx-background-color: #F4F4F4;">
 
@@ -46,7 +35,7 @@
 
                 <BorderPane style="-fx-padding: 10 20 10 20; -fx-background-color: transparent;">
                     <left>
-                        <Label style="-fx-font-size: 32px; -fx-text-fill: #555555; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" onMouseClicked="#toggleMenuMateriel"/>
+                        <Label onMouseClicked="#toggleMenuMateriel" style="-fx-font-size: 32px; -fx-text-fill: #555555; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" />
                     </left>
                 </BorderPane>
             </VBox>
@@ -54,61 +43,30 @@
 
         <center>
             <VBox alignment="TOP_CENTER" spacing="15.0" style="-fx-padding: 0 40 20 40;">
-                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Matériel" />
+                <BorderPane style="-fx-padding: 0 40 40 0;">
+                    <center>
+                        <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Matériel" BorderPane.alignment="CENTER" />
+                    </center>
+                    <right>
+                        <Button onAction="#ajouterMaterielAction" style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Ajout matériel  +" BorderPane.alignment="CENTER" />
+                    </right>
+                </BorderPane>
                 <Separator prefWidth="200.0" style="-fx-background-color: #D0D0D0;" />
 
                 <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-border-color: transparent;">
-                    <VBox alignment="TOP_CENTER" spacing="30.0" style="-fx-padding: 20;">
-
-                        <VBox style="-fx-background-color: #B3B3B3; -fx-background-radius: 15; -fx-padding: 20;" spacing="15.0" maxWidth="700">
-                            <Label style="-fx-font-size: 20px; -fx-text-fill: #333333;" text="Nom : Caisson de basse" alignment="CENTER" maxWidth="Infinity" />
-
-                            <VBox spacing="8.0" style="-fx-padding: 10 0 10 20;">
-                                <Label style="-fx-font-size: 18px; -fx-text-fill: #333333;" text="Type : Son" />
-                                <Label style="-fx-font-size: 18px; -fx-text-fill: #333333;" text="Prix : 400€" />
-                                <Label style="-fx-font-size: 18px; -fx-text-fill: #333333;" text="Fournisseur : Sono matériel" />
-                            </VBox>
-
-                            <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                                <Button style="-fx-background-color: #F0F0F0; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;" text="Modifier ✍" />
-                                <Button style="-fx-background-color: #8C8C8C; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;" text="Supprimer 🗑" onAction="#supprimerMaterielAction" />
-                            </HBox>
-                        </VBox>
-
-                        <VBox style="-fx-background-color: #B3B3B3; -fx-background-radius: 15; -fx-padding: 20;" spacing="15.0" maxWidth="700">
-                            <Label style="-fx-font-size: 20px; -fx-text-fill: #333333;" text="Nom : Projecteur LED 500W" alignment="CENTER" maxWidth="Infinity" />
-
-                            <VBox spacing="8.0" style="-fx-padding: 10 0 10 20;">
-                                <Label style="-fx-font-size: 18px; -fx-text-fill: #333333;" text="Type : Lumière" />
-                                <Label style="-fx-font-size: 18px; -fx-text-fill: #333333;" text="Prix : 150€" />
-                                <Label style="-fx-font-size: 18px; -fx-text-fill: #333333;" text="Fournisseur : LightShow Events" />
-                            </VBox>
-
-                            <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                                <Button style="-fx-background-color: #F0F0F0; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;" text="Modifier ✍" />
-                                <Button style="-fx-background-color: #8C8C8C; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;" text="Supprimer 🗑" onAction="#supprimerMaterielAction" />
-                            </HBox>
-                        </VBox>
-
-                    </VBox>
+                    <VBox fx:id="materielTilePane" alignment="TOP_CENTER" spacing="30.0" style="-fx-padding: 20;" />
                 </ScrollPane>
             </VBox>
         </center>
 
-        <bottom>
-            <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 0 40 40 0;">
-                <Button style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Ajout matériel  +" onAction="#ajouterMaterielAction"/>
-            </HBox>
-        </bottom>
-
     </BorderPane>
 
-    <Region fx:id="scrimMateriel" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" onMouseClicked="#toggleMenuMateriel" />
+    <Region fx:id="scrimMateriel" onMouseClicked="#toggleMenuMateriel" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
 
     <VBox fx:id="sideMenuMateriel" maxWidth="250.0" style="-fx-background-color: #555555;" visible="false" StackPane.alignment="CENTER_LEFT">
 
         <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
-            <Label style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" onMouseClicked="#toggleMenuMateriel" />
+            <Label onMouseClicked="#toggleMenuMateriel" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
         </HBox>
 
         <VBox spacing="15.0" style="-fx-padding: 10 0 20 0;">
