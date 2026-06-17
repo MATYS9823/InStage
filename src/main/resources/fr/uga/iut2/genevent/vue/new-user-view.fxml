@@ -77,7 +77,7 @@
 
                 <VBox alignment="CENTER" spacing="15.0">
                     <children>
-                        <Button fx:id="newOrgOkButton" disable="true" onAction="#createNewOrganisateurAction" prefHeight="45.0" prefWidth="200.0" styleClass="custom-button" text="S'inscrire">
+                        <Button fx:id="newOrgOkButton" defaultButton="true" disable="true" onAction="#createNewOrganisateurAction" prefHeight="45.0" prefWidth="200.0" styleClass="custom-button" text="S'inscrire">
                             <font>
                                 <Font name="System Bold" size="16.0" />
                             </font>

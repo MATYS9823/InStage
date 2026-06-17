@@ -105,8 +105,6 @@
                     <children>
                         <VBox prefWidth="280.0" style="-fx-background-color: #555555;">
                             <children>
-
-                                <!-- Bouton Fermer (×) -->
                                 <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
                                     <children>
                                         <Label onMouseClicked="#toggleMenu" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
@@ -127,16 +125,17 @@
                                             </font>
                                         </Button>
 
-                                        <!-- Onglet Actif (Mes concerts) -->
                                         <HBox alignment="CENTER_LEFT">
                                             <children>
                                                 <Region minWidth="4.0" prefHeight="35.0" style="-fx-background-color: white; -fx-background-radius: 3;">
                                                     <HBox.margin>
-                                                        <Insets left="15.0" right="11.0" />
+                                                        <Insets left="10.0" right="6.0" />
                                                     </HBox.margin>
                                                 </Region>
-
-                                                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" style="-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: black; -fx-cursor: default; -fx-padding: 10 20 10 15;" text=" Mes concerts" HBox.hgrow="ALWAYS">
+                                                <Button alignment="BASELINE_LEFT" maxWidth="Infinity" style="-fx-background-color: white; -fx-background-radius: 20; -fx-text-fill: black; -fx-cursor: default; -fx-padding: 10 20 10 10;" text=" Mes concerts" HBox.hgrow="ALWAYS">
+                                                    <HBox.margin>
+                                                        <Insets right="40.0" />
+                                                    </HBox.margin>
                                                     <font>
                                                         <Font name="System Bold" size="16.0" />
                                                     </font>

@@ -56,7 +56,7 @@
                     <children>
                         <Hyperlink onAction="#motdepasseOublierAction" styleClass="custom-link" text="Mot de passe oublié ?" />
 
-                        <Button fx:id="loginOkButton" disable="true" onAction="#loginAction" prefHeight="45.0" prefWidth="200.0" styleClass="custom-button" text="Connexion">
+                        <Button fx:id="loginOkButton" defaultButton="true" disable="true" onAction="#loginAction" prefHeight="45.0" prefWidth="200.0" styleClass="custom-button" text="Connexion">
                             <font>
                                 <Font name="System Bold" size="16.0" />
                             </font>
