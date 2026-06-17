@@ -69,6 +69,7 @@ public class JavaFXGUI extends IHM {
 
     @FXML private Button creerconcertButton;
     @FXML private TilePane concertsTilePane;
+    @FXML private Label artistelabel;
 
 
     // vhamp vue dashboard
@@ -211,6 +212,10 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            if (controleur.getConcertSelectionne() != null) {
+                welcomeLabel.setText(controleur.getConcertSelectionne().getNom());
+                artistelabel.setText(controleur.getConcertSelectionne().getArtiste());
+            }
 
         }catch (IOException exc){
             throw new RuntimeException(exc);
@@ -223,22 +228,18 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            if (controleur.getConcertSelectionne() != null) {
+                welcomeLabel.setText(controleur.getConcertSelectionne().getNom());
+                artistelabel.setText(controleur.getConcertSelectionne().getArtiste());
+            }
+
         }catch (IOException exc){
             throw new RuntimeException(exc);
         }
     }
 
-    private void allerVersbuvette(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("buvette-view.fxml"));
-            loader.setController(this);
-            Scene scene = new Scene(loader.load());
-            primaryStage.setScene(scene);
-        }catch (IOException exc){
-            throw new RuntimeException(exc);
-        }
 
-    }
+
 
 //-----  Éléments du dialogue  -------------------------------------------------
 
@@ -424,7 +425,9 @@ public class JavaFXGUI extends IHM {
         });
         // Bouton Modifier (Bottom Right)
         Button btnModifier = new Button("Modifier");
-        btnModifier.setOnAction(e -> {allerVersdashboard();});
+        btnModifier.setOnAction(e -> {
+            controleur.selectionnerConcert(c);
+            allerVersdashboard();});
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, javafx.scene.layout.Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
