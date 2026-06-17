@@ -30,6 +30,7 @@ public class Main {
         Salle heureBleue = new Salle("L'Heure Bleue", new ArrayList<>(), 600, "Avenue Jean Vilar, Saint-Martin-d'Hères", 80, 45.1783, 5.7668);
         Salle grandAngle = new Salle("Le Grand Angle", new ArrayList<>(), 1700, "Rue du Moulin, Voiron", 250, 45.3672, 5.5881);
 
+        summum.ajouterOccupation(java.time.LocalDate.now(), java.time.LocalDate.now().plusDays(5));
         // 2. Ajout des salles AVANT de démarrer le contrôleur
         // Utilisation de la méthode ajouterSalle() définie dans GenEvent
         genevent.ajouterSalle(summum);

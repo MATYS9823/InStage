@@ -14,7 +14,6 @@ public class GenEvent implements Serializable {
     private final Map<String, Concert> concerts;
     private final Map<String,Materiel> materiel;
 
-    // --- NOUVEAU : La liste des salles ---
     private List<Salle> salles = new ArrayList<>();
 
     public GenEvent() {
@@ -47,13 +46,13 @@ public class GenEvent implements Serializable {
         return this.salles;
     }
 
-
-    public  void ajouterSalle(Salle salle){
-        if(this.salles==null){
-            this.salles=new ArrayList<>();}
-        if(!this.salles.contains(salle)){
-            this.salles.add(salle);
+    public void ajouterSalle(Salle salle){
+        // Si la liste n'a pas été initialisée (à cause d'une ancienne sauvegarde)
+        if (this.salles == null) {
+            this.salles = new ArrayList<>();
         }
+        if (!this.salles.contains(salle))
+        {this.salles.add(salle);}
     }
 
     public boolean ajouteOrganisateur(String nom, String prenom, String mdp, String email) {

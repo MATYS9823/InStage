@@ -99,7 +99,7 @@ public class JavaFXGUI extends IHM {
      * Met à jour le label de bienvenue avec le prénom/nom de l'organisateur.
      */
     @FXML
-    private void allerVersAccueil() {
+    public void allerVersAccueil() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
             loader.setController(this);
@@ -139,7 +139,7 @@ public class JavaFXGUI extends IHM {
     }
 
     @FXML
-    private void allerVersMesConcerts() {
+    public void allerVersMesConcerts() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("manage-concerts-view.fxml"));
             loader.setController(this);

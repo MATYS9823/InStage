@@ -46,9 +46,14 @@ public class RechercheSallesController {
     @FXML private HBox sideMenuD;
     @FXML private Region scrim;
 
+
     // --- Données ---
     private List<Salle> toutesLesSalles = new ArrayList<>();
     private ObservableList<Salle> sallesFiltrees = FXCollections.observableArrayList();
+
+
+    public LocalDate getDateDebut() { return date_debut.getValue(); }
+    public LocalDate getDateFin() { return date_fin.getValue(); }
 
     /**
      * Cette méthode remplace notre ancien initialiserRechercheSalles().
@@ -90,8 +95,7 @@ public class RechercheSallesController {
         String lieuCherche = filtreLieu.getText() != null ? filtreLieu.getText().toLowerCase().trim() : "";
         String capStr = filtreCapacite.getText() != null ? filtreCapacite.getText().trim() : "";
         String tarifStr = filtreTarif.getText() != null ? filtreTarif.getText().trim() : "";
-        LocalDate dateDebut = date_debut.getValue();
-        LocalDate dateFin = date_fin.getValue();
+        // On ne récupère plus les dates ici pour filtrer les salles
 
         List<Salle> resultats = toutesLesSalles.stream().filter(salle -> {
             if (!lieuCherche.isEmpty() && !salle.getLieu().toLowerCase().contains(lieuCherche) && !salle.getNom().toLowerCase().contains(lieuCherche)) return false;
@@ -101,10 +105,7 @@ public class RechercheSallesController {
             if (!tarifStr.isEmpty()) {
                 try { if (salle.getTarif() > Integer.parseInt(tarifStr)) return false; } catch (NumberFormatException e){}
             }
-            if (dateDebut != null && dateFin != null) {
-                if (dateFin.isBefore(dateDebut)) return false;
-                if (!salle.estDisponible(dateDebut, dateFin)) return false;
-            }
+            // 👇 On a retiré le filtre sur les dates ici pour ne pas masquer les salles
             return true;
         }).collect(Collectors.toList());
 
@@ -115,6 +116,9 @@ public class RechercheSallesController {
             try { webViewCarte.getEngine().executeScript("updateMarkers('" + json + "')"); }
             catch (Exception e) {}
         }
+
+        // 👇 NOUVEAU : On force l'actualisation des cartes
+        listViewSalles.refresh();
     }
 
 
@@ -145,26 +149,15 @@ public class RechercheSallesController {
 
     @FXML
     private void allerVersAccueil() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
-            loader.setController(this);
-            Scene scene = new Scene(loader.load());
-            primaryStage.setScene(scene);
-        } catch (IOException exc) {
-            throw new RuntimeException(exc);
+        if (this.mainGUI != null) {
+            this.mainGUI.allerVersAccueil();
         }
     }
 
     @FXML
     private void allerVersMesConcerts() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("manage-concerts-view.fxml"));
-            loader.setController(this);
-            Scene scene = new Scene(loader.load());
-            primaryStage.setScene(scene);
-
-        } catch (IOException exc) {
-            throw new RuntimeException(exc);
+        if (this.mainGUI != null) {
+            this.mainGUI.allerVersMesConcerts();
         }
     }
 }
