@@ -109,10 +109,8 @@ public class JavaFXGUI extends IHM {
     @FXML private Region scrimCarte;
     @FXML private VBox carteTilePane;
 
-
-
-
-
+    @FXML private TextField tfNomCarte;
+    @FXML private TextField tfThemeCarte;
 
     @FXML private TextField tfNomBuvette;
     @FXML private TextField tfLocalisationBuvette;
@@ -139,7 +137,7 @@ public class JavaFXGUI extends IHM {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
         loader.setController(this);
         Scene scene = new Scene(loader.load());
-        primaryStage.setTitle("GenEvent");
+        primaryStage.setTitle("IN STAGE");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -157,6 +155,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
 
             if (welcomeLabel != null) {
                 welcomeLabel.setText("Bienvenue " + controleur.getOrganisateurConnecte().getPrenom()
@@ -206,6 +205,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -218,6 +218,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -230,6 +231,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
 
             if (concertsTilePane != null) {
                 concertsTilePane.getChildren().clear();
@@ -268,12 +270,21 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
             if (buvetteTilePane != null && controleur.getConcertSelectionne() != null) {
                 buvetteTilePane.getChildren().clear();
                 for (Buvette b : controleur.getConcertSelectionne().getBuvettes()) {
                     buvetteTilePane.getChildren().add(creerCarteBuvette(b));
                 }
             }
+            if (welcomeLabel != null) {
+                welcomeLabel.setText(controleur.getConcertSelectionne().getNom());
+            }
+
+            if (artistelabel!= null) {
+                artistelabel.setText(controleur.getConcertSelectionne().getArtiste());
+            }
+
 
         }catch (IOException exc){
             throw new RuntimeException(exc);
@@ -287,6 +298,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
         }catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -298,6 +310,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
 
             // ---> APPEL NOUVELLE MÉTHODE AVANT DE REMPLIR LES CHAMPS <---
             initialiserDatesConcert();
@@ -326,6 +339,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
             if (controleur.getConcertSelectionne() != null) {
                 welcomeLabel.setText(controleur.getConcertSelectionne().getNom());
                 artistelabel.setText(controleur.getConcertSelectionne().getArtiste());
@@ -347,6 +361,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
 
             Concert concert = controleur.getConcertSelectionne();
             controleur.selectionnerConcertRecent(concert);
@@ -409,6 +424,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -420,6 +436,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -432,6 +449,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
 
             if (staffTilePane != null && controleur.getConcertSelectionne() != null) {
                 staffTilePane.getChildren().clear();
@@ -444,12 +462,14 @@ public class JavaFXGUI extends IHM {
         }
     }
 
+    @FXML
     private void allerVerscreerBuvette() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("create-buvette-view.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
 
         } catch (IOException exc) {
             throw new RuntimeException(exc);
@@ -462,6 +482,27 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
+
+            if (carteTilePane != null && controleur.getConcertSelectionne() != null) {
+                carteTilePane.getChildren().clear();
+                for (Carte c : controleur.getConcertSelectionne().getCartes()) {
+                    carteTilePane.getChildren().add(creerCarteCarte(c));
+                }
+            }
+        }catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
+    }
+
+    private void  allerVerscreerCarte() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-carte-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
+
         }catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -744,7 +785,7 @@ public class JavaFXGUI extends IHM {
 
     @FXML
     private void creerCarteAction() {
-        allerVerscreerBuvette();
+        allerVerscreerCarte();
     }
 
     @FXML
@@ -759,6 +800,20 @@ public class JavaFXGUI extends IHM {
         );
         controleur.creerBuvette(data);
         allerVersBuvette();
+    }
+
+    @FXML
+    private void createNewCarteAction() {
+        if (tfNomCarte.getText().isBlank()) {
+            informerUtilisateur("Merci de renseigner le nom de la carte.", false);
+            return;
+        }
+        InfosCarte data = new InfosCarte(
+                tfThemeCarte.getText().strip(),
+                tfNomCarte.getText().strip()
+        );
+        controleur.creercarte(data);
+        allerVersCarte();
     }
 
     // Gestion du volet latéral spécifique à la page Buvette
@@ -880,7 +935,8 @@ public class JavaFXGUI extends IHM {
         btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
-            // Logique de suppression
+            controleur.supprimerMateriel(m);
+            allerVersMateriel();
         });
 
         Region headerSpacer = new Region();
@@ -919,7 +975,8 @@ public class JavaFXGUI extends IHM {
         btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
-            // Logique de suppression
+            controleur.supprimerMerch(m);
+            allerVersMerch();
         });
 
         Region headerSpacer = new Region();
@@ -963,14 +1020,14 @@ public class JavaFXGUI extends IHM {
                 personnelBox.getChildren().add(badge);
             }
         }
-
         // CROIX DE SUPPRESSION
         Button btnSupprimer = new Button("✕");
         btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
         btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(ev -> {
-            // Logique de suppression
+            controleur.supprimerEquipe(e);
+            allerVersStaff();
         });
 
         Region headerSpacer = new Region();
@@ -1021,7 +1078,8 @@ public class JavaFXGUI extends IHM {
         btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(ev -> {
-            // Logique de suppression
+            controleur.supprimerBuvette(b);
+            allerVersBuvette();
         });
 
         Region headerSpacer = new Region();
@@ -1049,6 +1107,44 @@ public class JavaFXGUI extends IHM {
 
         carte.setStyle(defaultStyle);
         carte.setPrefSize(350, 220);
+        carte.setOnMouseEntered(ev -> carte.setStyle(hoverStyle));
+        carte.setOnMouseExited(ev -> carte.setStyle(defaultStyle));
+
+        return carte;
+    }
+
+    private VBox creerCarteCarte(Carte c) {
+        Label nom = new Label("Carte : \"" + c.getNom() + "\"");
+        nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
+
+        Label theme = new Label("Thème : " + c.getTheme());
+        theme.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
+
+        // CROIX DE SUPPRESSION
+        Button btnSupprimer = new Button("✕");
+        btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
+        btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnMouseExited(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnAction(ev -> {
+            controleur.supprimerCarte(c);
+            allerVersCarte();
+        });
+
+        Region headerSpacer = new Region();
+        HBox.setHgrow(headerSpacer, Priority.ALWAYS);
+        HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+        header.setAlignment(Pos.TOP_CENTER);
+
+        Region vSpacer = new Region();
+        VBox.setVgrow(vSpacer, Priority.ALWAYS);
+
+        VBox carte = new VBox(15, header, vSpacer, theme);
+
+        String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
+        String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
+
+        carte.setStyle(defaultStyle);
+        carte.setPrefSize(350, 200);
         carte.setOnMouseEntered(ev -> carte.setStyle(hoverStyle));
         carte.setOnMouseExited(ev -> carte.setStyle(defaultStyle));
 
@@ -1126,6 +1222,7 @@ public class JavaFXGUI extends IHM {
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
 
             if (materielTilePane != null) {
                 materielTilePane.getChildren().clear();
@@ -1329,6 +1426,7 @@ public class JavaFXGUI extends IHM {
 
             // On affiche la page
             primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE");
 
         } catch (IOException exc) {
             System.err.println("Erreur lors du chargement de la page Recherche Salles !");

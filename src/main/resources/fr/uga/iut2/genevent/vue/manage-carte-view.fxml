@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<StackPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
 
     <BorderPane style="-fx-background-color: #F4F4F4;">
 
@@ -53,7 +53,7 @@
                         <Label fx:id="welcomeLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Nom_buvette" BorderPane.alignment="CENTER" />
                     </center>
                     <right>
-                        <Button style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Créer une carte  +" BorderPane.alignment="CENTER" />
+                        <Button onAction="#creerCarteAction" style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Créer une carte  +" BorderPane.alignment="CENTER" />
                     </right>
                 </BorderPane>
 
@@ -61,40 +61,7 @@
 
                 <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-border-color: transparent;">
                     <content>
-                        <VBox fx:id="carteTilePane" alignment="TOP_CENTER" spacing="30.0" style="-fx-padding: 20;">
-
-                            <!-- Carte d'exemple, à remplacer/dupliquer dynamiquement depuis le Java -->
-                            <VBox spacing="15.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);">
-                                <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Carte : &quot;Utopia&quot;" />
-                                <Label style="-fx-font-size: 16px; -fx-text-fill: #555555;" text="Thème : Amérique" />
-
-                                <HBox alignment="CENTER_LEFT" spacing="15.0">
-                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #555555;" text="Produits :" />
-                                    <HBox spacing="8.0">
-                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Coca Cola" />
-                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Hot-Dog" />
-                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Bière" />
-                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Chips" />
-                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Pop-Corn" />
-                                        <Label style="-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Ice-tea" />
-                                    </HBox>
-                                </HBox>
-
-                                <HBox alignment="BOTTOM_RIGHT" spacing="15.0">
-                                    <Button style="-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;" text="Modifier ✍">
-                                        <graphic>
-                                            <SVGPath content="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="white" />
-                                        </graphic>
-                                    </Button>
-                                    <Button style="-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-weight: bold; -fx-background-radius: 20; -fx-border-color: #E74C3C; -fx-border-radius: 20; -fx-border-width: 1; -fx-cursor: hand; -fx-padding: 8 16 8 16;" text="Supprimer 🗑">
-                                        <graphic>
-                                            <SVGPath content="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="#E74C3C" />
-                                        </graphic>
-                                    </Button>
-                                </HBox>
-                            </VBox>
-
-                        </VBox>
+                        <VBox fx:id="carteTilePane" alignment="TOP_CENTER" spacing="30.0" style="-fx-padding: 20;" />
                     </content>
                 </ScrollPane>
 

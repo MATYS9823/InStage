@@ -16,7 +16,7 @@ public class GenEvent implements Serializable {
     private final Map<String,Merch> merch;
     private final Map<String,Equipe> equipe;
     private final Map<String,Buvette> buvette;
-    private final Map<String,Carte> carte;
+    private  Map<String,Carte> carte = new HashMap<>();
 
     private List<Salle> salles = new ArrayList<>();
 
@@ -27,7 +27,6 @@ public class GenEvent implements Serializable {
         this.merch = new HashMap<>();
         this.equipe = new HashMap<>();
         this.buvette = new HashMap<>();
-        this.carte = new HashMap<>();
 
 
 
@@ -138,6 +137,9 @@ public class GenEvent implements Serializable {
     }
 
     public void nouvelcarte(String theme,String nom, String nomConcert){
+        if (this.carte == null) {
+            this.carte = new HashMap<>();
+        }
         Carte carte = new Carte(theme,nom);
         this.carte.put(nom,carte);
         this.concerts.get(nomConcert).ajouterCarte(carte);
@@ -150,6 +152,33 @@ public class GenEvent implements Serializable {
         this.concerts.remove(concert.getNom());
         this.organisateurs.get(emailOrganisateur).supprimerConcert(concert);
     }
+
+    public void supprimerMateriel(Materiel materiel, String nomConcert) {
+        this.materiel.remove(materiel.getNom());
+        this.concerts.get(nomConcert).suprimerMateriel(materiel);
+    }
+
+    public void supprimerMerch(Merch merch, String nomConcert) {
+        this.merch.remove(merch.getNom());
+        this.concerts.get(nomConcert).suprimerMerch(merch);
+    }
+
+    public void supprimerCarte(Carte carte, String nomConcert) {
+        this.carte.remove(carte.getNom());
+        this.concerts.get(nomConcert).suprimerCarte(carte);
+    }
+
+    public void supprimerBuvette(Buvette buvette, String nomConcert) {
+        this.buvette.remove(buvette.getNom());
+        this.concerts.get(nomConcert).suprimerBuvette(buvette);
+    }
+
+    public void  supprimerEquipe(Equipe equipe, String nomConcert) {
+        this.equipe.remove(equipe.getNom());
+        this.concerts.get(nomConcert).suprimerEquipe(equipe);
+    }
+
+
  /*   public void nouveauMateriel(String nom, int Prix, String Fournisseur, String TypeEquipement,String nomConcert){
         assert  !this.materiel.containsKey(nom);
         assert this.concerts.containsKey(nomConcert);

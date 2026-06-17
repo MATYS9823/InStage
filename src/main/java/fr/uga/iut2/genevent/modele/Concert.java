@@ -130,7 +130,7 @@ public class Concert implements Serializable {
 
     public void suprimerEquipe(Equipe equipe){
         if (equipes.contains(equipe)){
-            merchs.remove(equipe);
+            equipes.remove(equipe);
         }
         else {
             System.out.println("Cette equipes n'est pas présente");}
@@ -160,13 +160,18 @@ public class Concert implements Serializable {
     }
 
     public void ajouterCarte(Carte carte){
+        if (this.cartes == null) {
+            this.cartes = new ArrayList<>();
+        }
         if (cartes.contains(carte)){
             System.out.println("Cette Carte est déjà présente");
         }
         else {cartes.add(carte);}
     }
-
     public void suprimerCarte(Carte carte){
+        if (this.cartes == null) {
+            this.cartes = new ArrayList<>();
+        }
         if (cartes.contains(carte)){
             cartes.remove(carte);
         }
@@ -174,8 +179,10 @@ public class Concert implements Serializable {
             System.out.println("cette carte n'st pas présente");
         }
     }
-
     public List<Carte> getCartes(){
+        if (this.cartes == null) {
+            this.cartes = new ArrayList<>();
+        }
         return this.cartes;
     }
 

@@ -1,9 +1,6 @@
 package fr.uga.iut2.genevent.controleur;
 
-import fr.uga.iut2.genevent.modele.Concert;
-import fr.uga.iut2.genevent.modele.Equipe;
-import fr.uga.iut2.genevent.modele.Organisateur;
-import fr.uga.iut2.genevent.modele.GenEvent;
+import fr.uga.iut2.genevent.modele.*;
 import fr.uga.iut2.genevent.vue.CLI;
 import fr.uga.iut2.genevent.vue.IHM;
 import fr.uga.iut2.genevent.vue.JavaFXGUI;
@@ -192,6 +189,32 @@ public class Controleur {
         this.genevent.supprimerConcert(concert,this.organisateurConnecte.getEmail());
         this.ihm.informerUtilisateur("Le concert \"" + concert.getNom() + "\" a été supprimé.", true);
     }
+
+    public void supprimerMateriel(Materiel materiel) {
+        this.genevent.supprimerMateriel(materiel,this.concertSelectionne.getNom());
+        this.ihm.informerUtilisateur("Le matériel \"" + materiel.getNom() + "\" a été supprimé.", true);
+    }
+
+    public void supprimerBuvette(Buvette buvette) {
+        this.genevent.supprimerBuvette(buvette,this.concertSelectionne.getNom());
+        this.ihm.informerUtilisateur("La buvette \"" + buvette.getNom() + "\" a été supprimé.", true);
+    }
+
+    public void supprimerEquipe(Equipe equipe) {
+        this.genevent.supprimerEquipe(equipe,this.concertSelectionne.getNom());
+        this.ihm.informerUtilisateur("L'equipe'\"" + equipe.getNom() + "\" a été supprimé.", true);
+    }
+
+    public void supprimerCarte(Carte carte) {
+        this.genevent.supprimerCarte(carte,this.concertSelectionne.getNom());
+        this.ihm.informerUtilisateur("La carte '\"" + carte.getNom() + "\" a été supprimé.", true);
+    }
+
+    public void supprimerMerch(Merch merch) {
+        this.genevent.supprimerMerch(merch,this.concertSelectionne.getNom());
+        this.ihm.informerUtilisateur("Le merch '\"" + merch.getNom() + "\" a été supprimé.", true);
+    }
+
 
     public void saisirConnexion() {
         this.ihm.saisirConnexion();
