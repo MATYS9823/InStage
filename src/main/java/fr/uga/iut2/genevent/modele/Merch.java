@@ -7,7 +7,6 @@ import java.util.List;
 public class Merch implements Serializable {
     private String localisation;
     private String nom;
-    private List<Equipe> equipes=new ArrayList<>();
     private List<Produit> produits=new ArrayList<>();
 
 
@@ -24,29 +23,10 @@ public class Merch implements Serializable {
         return nom;
     }
 
-    public List<Equipe> getEquipes() {
-        return equipes;
-    }
-
     public List<Produit> getProduits() {
         return produits;
     }
 
-    public void ajouterEquipe(Equipe equipe){
-        if(equipes.contains(equipe)){
-            System.out.println("Cette equipe est deja dans votre liste");
-        }
-        else {equipes.add(equipe);}
-    }
-
-    public void supprimerEquipe(Equipe equipe){
-        if (equipes.contains(equipe)){
-            equipes.remove(equipe);
-        }
-        else {
-            System.out.println("Cette equipe n'est pas dans votre liste");
-        }
-    }
 
     public void ajouterProduit(Produit produit){
         if(produits.contains(produit)){

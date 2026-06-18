@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.shape.SVGPath?>
@@ -100,20 +101,21 @@
 
                                     <VBox spacing="8.0">
                                         <Label styleClass="text-dark" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Détails du bénéfice (Salle pleine) :" />
-                                        <Label fx:id="optiBeneficeBilletsLabel" styleClass="text-dark" style="-fx-font-size: 16px;" text="↳ Billetterie : -- €" />
-                                        <Label fx:id="optiBeneficeMerchLabel" styleClass="text-dark" style="-fx-font-size: 16px;" text="↳ Buvette/Merch : -- €" />
+                                        <Label fx:id="optiBeneficeBilletsLabel" styleClass="text-dark" style="-fx-font-size: 16px;" text="↳ Ventes Billetterie : -- €" />
+                                        <Label fx:id="optiBeneficeMerchLabel" styleClass="text-dark" style="-fx-font-size: 16px;" text="↳ Ventes Buvette/Merch : -- €" />
 
                                         <Region prefHeight="5.0" />
 
                                         <Label fx:id="optiRevenuMaxLabel" styleClass="text-dark" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Bénéfice Total Max : -- €" />
+                                        <Label fx:id="optiCalculMaxLabel" styleClass="text-dark" style="-fx-font-size: 13px; -fx-font-style: italic; -fx-text-fill: #555555;" text="(Détail du calcul)" />
                                         <Label fx:id="optiPlacesMaxLabel" styleClass="text-dark" style="-fx-font-size: 14px; -fx-text-fill: #555555;" text="Capacité : --" />
                                     </VBox>
 
                                     <Separator style="-fx-background-color: #000000;" />
 
                                     <VBox spacing="5.0">
-                                        <Label styleClass="text-dark" style="-fx-font-size: 14px;" text="Pour ne pas perdre d'argent (Remboursement des frais) :" />
-                                        <Label fx:id="optiRentabiliteLabel" styleClass="text-dark" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Seuil de rentabilité : -- €" />
+                                        <Label styleClass="text-dark" style="-fx-font-size: 14px;" text="Dépenses restantes à couvrir après gains Buvette/Merch :" wrapText="true" />
+                                        <Label fx:id="optiRentabiliteLabel" styleClass="text-dark" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Ventes billets pour rentabilité : -- €" />
                                         <Label fx:id="optiPlacesMinLabel" styleClass="text-dark" style="-fx-font-size: 16px;" text="Objectif minimal : --" />
                                     </VBox>
 

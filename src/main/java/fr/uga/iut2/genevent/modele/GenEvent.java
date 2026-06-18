@@ -99,7 +99,6 @@ public class GenEvent implements Serializable {
         this.concerts.put(nom, concert);
         this.organisateurs.get(emailOrganisateur).creerConcert(concert);
 
-        // --- NOUVEAUTÉ : LIAISON AVEC LA SALLE ET CRÉATION DE L'OCCUPATION ---
         // On parcours les salles existantes pour voir si le lieu correspond
         for (Salle s : getSalles()) {
             if (s.getNom().equalsIgnoreCase(lieu) || s.getLieu().equalsIgnoreCase(lieu)) {
@@ -177,18 +176,6 @@ public class GenEvent implements Serializable {
         this.equipe.remove(equipe.getNom());
         this.concerts.get(nomConcert).suprimerEquipe(equipe);
     }
-
-
- /*   public void nouveauMateriel(String nom, int Prix, String Fournisseur, String TypeEquipement,String nomConcert){
-        assert  !this.materiel.containsKey(nom);
-        assert this.concerts.containsKey(nomConcert);
-
-        Materiel materiel = new Materiel(Prix,TypeEquipement,Fournisseur,nom);
-        this.materiel.put(nom,materiel);
-        this.concerts.get(nomConcert).
-    }*/
-
-
 
     public Organisateur connecter(String email, String mdp) {
         Organisateur org = this.organisateurs.get(email);

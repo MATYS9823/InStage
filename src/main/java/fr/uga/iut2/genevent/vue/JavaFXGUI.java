@@ -1,10 +1,6 @@
 package fr.uga.iut2.genevent.vue;
-
 import fr.uga.iut2.genevent.controleur.Controleur;
-
 import fr.uga.iut2.genevent.modele.*;
-import javafx.event.ActionEvent;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,12 +8,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -28,12 +22,6 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import org.apache.commons.validator.routines.EmailValidator;
 import java.util.List;
-
-//import pour le format agenda
-import javafx.stage.FileChooser;
-import java.io.File;
-import java.io.PrintWriter;
-import java.time.format.DateTimeFormatter;
 
 
 public class JavaFXGUI extends IHM {
@@ -130,7 +118,7 @@ public class JavaFXGUI extends IHM {
     @FXML private Label lblDernierLieu;
 
 
-
+    //label pour les cout et rentabilité
     @FXML private Label titreCoutsLabel;
     @FXML private Label coutSalleLabel;
     @FXML private Label coutMaterielLabel;
@@ -142,6 +130,7 @@ public class JavaFXGUI extends IHM {
     @FXML private Label coutProduitsLabel;
     @FXML private Label optiBeneficeBilletsLabel;
     @FXML private Label optiBeneficeMerchLabel;
+    @FXML private Label optiCalculMaxLabel;
 
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
@@ -854,12 +843,10 @@ public class JavaFXGUI extends IHM {
             informerUtilisateur("Merci de remplir au moins le nom.", false);
             return;
         }
-
         InfosMerch data = new InfosMerch(
-                tfLocalisationMerch.getText().strip(),
-                tfNomMerch.getText().strip()
+                tfNomMerch.getText().strip(),           // CORRECTION : NOM EN PREMIER
+                tfLocalisationMerch.getText().strip()   // CORRECTION : LOCALISATION EN SECOND
         );
-
         controleur.creerMerch(data);
         allerVersMerch();
     }
@@ -870,12 +857,10 @@ public class JavaFXGUI extends IHM {
             informerUtilisateur("Merci de renseigner le nom de l'équipe.", false);
             return;
         }
-
         InfosMerch data = new InfosMerch(
-                tfCategorieEquipe.getText().strip(),  // localisation = catégorie
-                tfNomEquipe.getText().strip()          // nom
+                tfNomEquipe.getText().strip(),          // CORRECTION : NOM EN PREMIER
+                tfCategorieEquipe.getText().strip()     // CORRECTION : CATÉGORIE EN SECOND
         );
-
         controleur.creerEquipe(data);
         allerVersStaff();
     }
@@ -906,8 +891,8 @@ public class JavaFXGUI extends IHM {
             return;
         }
         InfosCarte data = new InfosCarte(
-                tfThemeCarte.getText().strip(),
-                tfNomCarte.getText().strip()
+                tfNomCarte.getText().strip(),           // CORRECTION : NOM EN PREMIER
+                tfThemeCarte.getText().strip()          // CORRECTION : THÈME EN SECOND
         );
         controleur.creercarte(data);
         allerVersCarte(buvetteEnCoursDeModification);
@@ -947,7 +932,7 @@ public class JavaFXGUI extends IHM {
 
         Button btnSupprimer = new Button("✕");
         btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
-        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #000000; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer le concert \"" + c.getNom() + "\" ?");
@@ -1014,7 +999,7 @@ public class JavaFXGUI extends IHM {
         // CROIX DE SUPPRESSION
         Button btnSupprimer = new Button("✕");
         btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
-        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #000000; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1080,7 +1065,7 @@ public class JavaFXGUI extends IHM {
                 lblProd.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
                 Button btnRemove = new Button("✕");
-                btnRemove.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0 0 0 5;");
+                btnRemove.setStyle("-fx-background-color: transparent; -fx-text-fill: #000000; -fx-font-size: 10px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0 0 0 5;");
                 btnRemove.setOnAction(ev -> {
                     m.supprimerProduit(p); // Appelle votre méthode du modèle
                     allerVersMerch(); // Rafraîchissement de la page
@@ -1161,7 +1146,7 @@ public class JavaFXGUI extends IHM {
         // --- CROIX DE SUPPRESSION DU STAND MERCH ---
         Button btnSupprimerMerch = new Button("✕");
         btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
-        btnSupprimerMerch.setOnMouseEntered(ev -> btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimerMerch.setOnMouseEntered(ev -> btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #000000; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimerMerch.setOnMouseExited(ev -> btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimerMerch.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1229,7 +1214,7 @@ public class JavaFXGUI extends IHM {
 
                 // Bouton miniature pour retirer ce membre spécifique
                 Button btnRemove = new Button("✕");
-                btnRemove.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0 0 0 5;");
+                btnRemove.setStyle("-fx-background-color: transparent; -fx-text-fill: #000000; -fx-font-size: 10px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0 0 0 5;");
                 btnRemove.setOnAction(ev -> {
                     e.supprimerPersonnel(membre); // Suppression du modèle
                     allerVersStaff(); // Rafraîchissement de la page
@@ -1269,7 +1254,7 @@ public class JavaFXGUI extends IHM {
         // --- CROIX DE SUPPRESSION DE L'ÉQUIPE (Entière) ---
         Button btnSupprimerEquipe = new Button("✕");
         btnSupprimerEquipe.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
-        btnSupprimerEquipe.setOnMouseEntered(ev -> btnSupprimerEquipe.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimerEquipe.setOnMouseEntered(ev -> btnSupprimerEquipe.setStyle("-fx-background-color: transparent; -fx-text-fill: #000000; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimerEquipe.setOnMouseExited(ev -> btnSupprimerEquipe.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimerEquipe.setOnAction(ev -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1331,7 +1316,7 @@ public class JavaFXGUI extends IHM {
         } else {
             for (Carte carte : cartesAppliquees) {
                 Label badge = new Label("🗺 " + carte.getNom());
-                badge.setStyle("-fx-background-color: #EAF6EE; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
+                badge.setStyle("-fx-background-color: #bababa; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
                 cartesBox.getChildren().add(badge);
             }
         }
@@ -1380,7 +1365,7 @@ public class JavaFXGUI extends IHM {
             btnAppliquerBuvette.setDisable(false);
         } else if (buvetteAppliquee != null) {
             btnAppliquerBuvette.setText("Appliquer buvette");
-            btnAppliquerBuvette.setStyle("-fx-background-color: #95A5A6; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 16 8 16;");
+            btnAppliquerBuvette.setStyle("-fx-background-color: #555555; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 16 8 16;");
             btnAppliquerBuvette.setDisable(true);
         } else {
             btnAppliquerBuvette.setText("Appliquer buvette");
@@ -1558,7 +1543,7 @@ public class JavaFXGUI extends IHM {
 
         String defaultStyle  = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
         String hoverStyle    = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
-        String appliqueeStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 2; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(39,174,96,0.2), 12, 0, 0, 4);";
+        String appliqueeStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 2; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgb(44 44 46), 12, 0, 0, 4);";
 
         carte.setStyle(estAppliquee ? appliqueeStyle : defaultStyle);
         carte.setPrefWidth(350);
@@ -1952,7 +1937,7 @@ public class JavaFXGUI extends IHM {
                     if (m.getProduits() != null) {
                         for (Produit p : m.getProduits()) {
                             double coutUnitaire = p.getPrix();
-                            // On applique ta règle : on vend 20% plus cher que le prix d'achat
+                            // Marge de 20%
                             double prixVenteUnitaire = coutUnitaire * 1.20;
 
                             coutProduitsTotal += (coutUnitaire * quantiteEstimee);
@@ -1987,26 +1972,33 @@ public class JavaFXGUI extends IHM {
 
                 if (opti != null) {
                     double recetteBilletsMax = opti.getRevenuMax();
+                    double recettesGlobales = recetteBilletsMax + recetteProduitsTotal;
 
                     // Le VRAI Bénéfice = (Argent total qui rentre) - (Argent total dépensé)
-                    double beneficeTotalMax = (recetteBilletsMax + recetteProduitsTotal) - coutTotalGeneral;
+                    double beneficeTotalMax = recettesGlobales - coutTotalGeneral;
 
-                    // J'ai renommé les labels directement ici pour qu'ils affichent "Ventes" (l'argent brut généré)
                     if (optiBeneficeBilletsLabel != null) optiBeneficeBilletsLabel.setText(String.format("↳ Ventes Billetterie : %.0f €", recetteBilletsMax));
                     if (optiBeneficeMerchLabel != null) optiBeneficeMerchLabel.setText(String.format("↳ Ventes Buvette/Merch : %.0f €", recetteProduitsTotal));
 
                     optiRevenuMaxLabel.setText(String.format("Bénéfice Total Max : %.0f €", beneficeTotalMax));
+
+                    // DÉTAIL DU CALCUL AFFICHÉ ICI
+                    if (optiCalculMaxLabel != null) {
+                        optiCalculMaxLabel.setText(String.format("(Détail : %.0f € de Ventes Totales - %.0f € de Dépenses)", recettesGlobales, coutTotalGeneral));
+                    }
+
                     optiPlacesMaxLabel.setText("Capacité : " + opti.getPlacesStandard() + " Stand. / " + opti.getPlacesVIP() + " VIP");
                 } else {
                     if (optiBeneficeBilletsLabel != null) optiBeneficeBilletsLabel.setText("↳ Ventes Billetterie : Erreur");
                     if (optiBeneficeMerchLabel != null) optiBeneficeMerchLabel.setText("↳ Ventes Buvette/Merch : --");
                     optiRevenuMaxLabel.setText("Bénéfice Max : Non Rentable");
+                    if (optiCalculMaxLabel != null) optiCalculMaxLabel.setText("");
                     optiPlacesMaxLabel.setText("La salle est trop petite.");
                 }
 
                 if (min != null) {
                     if (objectifBilletsPourRentabilite <= 0) {
-                        optiRentabiliteLabel.setText("Déjà rentable ! (Frais couverts)");
+                        optiRentabiliteLabel.setText("Déjà rentable ! (Frais couverts par buvette/merch)");
                         optiPlacesMinLabel.setText("Objectif minimal : 0 billet");
                     } else {
                         optiRentabiliteLabel.setText(String.format("Ventes billets pour rentabilité : %d €", min.getRevenuGenere()));
@@ -2022,6 +2014,4 @@ public class JavaFXGUI extends IHM {
             exc.printStackTrace();
         }
     }
-
-
 }

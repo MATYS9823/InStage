@@ -8,6 +8,10 @@ import fr.uga.iut2.genevent.vue.JavaFXGUI;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Classe centrale du patron MVC.
+ * Fait le lien entre l'interface utilisateur (Vue/IHM) et les données (Modèle/GenEvent).
+ */
 public class Controleur {
 
     private final GenEvent genevent;
@@ -154,12 +158,12 @@ public class Controleur {
 
     public void creerBuvette(IHM.InfosBuvette infosBuvette){
         this.genevent.nouvelBuvette(
-                infosBuvette.localisation,
-                infosBuvette.nom,
+                infosBuvette.nom,          // CORRECTION : GenEvent attend le nom ici !
+                infosBuvette.localisation, // CORRECTION : et la localisation ici !
                 this.concertSelectionne.getNom()
         );
         this.ihm.informerUtilisateur(
-                "Nouvel buvette" + infosBuvette.nom,
+                "Nouvelle buvette : " + infosBuvette.nom,
                 true
         );
     }
@@ -242,9 +246,6 @@ public class Controleur {
         return this.genevent.getOrganisateur(email);
     }
 
-    public Concert getConcert(String nom){
-        return this.genevent.getConcertParNom(nom);
-    }
 
     public void selectionnerConcert(Concert concert) {
         this.concertSelectionne = concert;
