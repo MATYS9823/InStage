@@ -18,6 +18,7 @@ public class Concert implements Serializable {
     private LocalDate date_debut;
     private LocalDate date_fin;
 
+    private Buvette buvetteAppliquee = null;
     private String lieu;
     private String artistes;
     private String nom;
@@ -63,6 +64,10 @@ public class Concert implements Serializable {
 
     public void setSalle(Salle salle) {
         this.salle = salle;
+    }
+
+    public Buvette getBuvetteAppliquee() {
+        return this.buvetteAppliquee;
     }
 
     /**
@@ -237,5 +242,9 @@ public class Concert implements Serializable {
             System.out.println("-> Total billets à vendre : " + min.getTotalBilletsAchetes() + " / " + this.salle.getNbPlaces());
         }
         System.out.println("===================================\n");
+    }
+
+    public void setBuvetteAppliquee(Buvette buvetteAppliquee) {
+        this.buvetteAppliquee = buvetteAppliquee;
     }
 }

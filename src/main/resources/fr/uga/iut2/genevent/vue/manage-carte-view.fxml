@@ -16,130 +16,142 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<StackPane prefHeight="720.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
 
-    <BorderPane styleClass="main-background">
-        <top>
-            <VBox styleClass="title-bar-white">
-                <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header">
-                    <Button onAction="#allerVersAccueil" styleClass="icon-button">
-                        <graphic>
-                            <ImageView fitHeight="45.0" preserveRatio="true">
-                                <image><Image url="@logotransparent.png" /></image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Region HBox.hgrow="ALWAYS" />
-                    <MenuButton styleClass="icon-button">
-                        <graphic>
-                            <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="white" scaleX="1.3" scaleY="1.3" />
-                        </graphic>
-                        <items>
-                            <MenuItem mnemonicParsing="false" onAction="#connexionMenuItemAction" text="Se déconnecter" />
-                            <MenuItem mnemonicParsing="false" onAction="#quitterMenuBurgerAction" text="Quitter" />
-                        </items>
-                    </MenuButton>
-                </HBox>
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header">
+            <children>
+                <Button onAction="#allerVersAccueil" styleClass="icon-button">
+                    <graphic>
+                        <ImageView fitHeight="45.0" preserveRatio="true">
+                            <image><Image url="@logotransparent.png" /></image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Region HBox.hgrow="ALWAYS" />
+                <MenuButton styleClass="icon-button">
+                    <graphic>
+                        <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="white" scaleX="1.3" scaleY="1.3" />
+                    </graphic>
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#connexionMenuItemAction" text="Se déconnecter" />
+                        <MenuItem mnemonicParsing="false" onAction="#quitterMenuBurgerAction" text="Quitter" />
+                    </items>
+                </MenuButton>
+            </children>
+        </HBox>
+    </top>
 
-                <BorderPane style="-fx-padding: 15 20 10 20; -fx-background-color: transparent;">
-                    <left>
-                        <Label onMouseClicked="#toggleMenuCarte" style="-fx-font-size: 32px; -fx-text-fill: #555555; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" />
-                    </left>
-                </BorderPane>
-            </VBox>
-        </top>
+    <center>
+        <StackPane>
+            <children>
+                <BorderPane styleClass="main-background">
+                    <top>
+                        <VBox styleClass="title-bar-white">
+                            <children>
+                                <BorderPane style="-fx-padding: 15 20 10 20; -fx-background-color: transparent;">
+                                    <left>
+                                        <Label onMouseClicked="#toggleMenuCarte" style="-fx-font-size: 32px; -fx-text-fill: #555555; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" />
+                                    </left>
+                                </BorderPane>
+                            </children>
+                        </VBox>
+                    </top>
 
-        <center>
-            <VBox alignment="TOP_CENTER" spacing="15.0">
-                <padding>
-                    <Insets bottom="20.0" left="40.0" right="40.0" top="10.0" />
-                </padding>
-
-                <BorderPane>
                     <center>
-                        <Label fx:id="welcomeLabel" styleClass="text-dark" style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Nom_buvette" BorderPane.alignment="CENTER" />
+                        <VBox alignment="TOP_CENTER" spacing="15.0">
+                            <padding>
+                                <Insets bottom="20.0" left="40.0" right="40.0" top="10.0" />
+                            </padding>
+
+                            <BorderPane>
+                                <center>
+                                    <Label fx:id="welcomeLabel" styleClass="text-dark" style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Nom_buvette" BorderPane.alignment="CENTER" />
+                                </center>
+                                <right>
+                                    <Button onAction="#creerCarteAction" styleClass="custom-button" style="-fx-padding: 10 25;" text="Créer une carte  +" BorderPane.alignment="CENTER" />
+                                </right>
+                            </BorderPane>
+
+                            <Separator />
+
+                            <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                                <content>
+                                    <VBox fx:id="carteTilePane" alignment="TOP_CENTER" spacing="30.0" style="-fx-padding: 20;" />
+                                </content>
+                            </ScrollPane>
+                        </VBox>
                     </center>
-                    <right>
-                        <Button onAction="#creerCarteAction" styleClass="custom-button" style="-fx-padding: 10 25;" text="Créer une carte  +" BorderPane.alignment="CENTER" />
-                    </right>
                 </BorderPane>
 
-                <Separator />
+                <Region fx:id="scrimCarte" onMouseClicked="#toggleMenuCarte" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
 
-                <ScrollPane fitToWidth="true" styleClass="scroll-pane">
-                    <content>
-                        <VBox fx:id="carteTilePane" alignment="TOP_CENTER" spacing="30.0" style="-fx-padding: 20;" />
-                    </content>
-                </ScrollPane>
-            </VBox>
-        </center>
-    </BorderPane>
+                <VBox fx:id="sideMenuCarte" maxWidth="280.0" prefWidth="280.0" styleClass="sidebar" visible="false" StackPane.alignment="CENTER_LEFT">
+                    <children>
+                        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
+                            <children>
+                                <Label onMouseClicked="#toggleMenuCarte" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
+                            </children>
+                        </HBox>
 
-    <Region fx:id="scrimCarte" onMouseClicked="#toggleMenuCarte" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
+                        <VBox spacing="15.0">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                                    <children>
+                                        <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="🏠" />
+                                        <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Vos concerts" />
+                                    </children>
+                                </HBox>
 
-    <VBox fx:id="sideMenuCarte" maxWidth="280.0" prefWidth="280.0" styleClass="sidebar" visible="false" StackPane.alignment="CENTER_LEFT">
-        <children>
-            <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
-                <children>
-                    <Label onMouseClicked="#toggleMenuCarte" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
-                </children>
-            </HBox>
+                                <HBox alignment="CENTER_LEFT">
+                                    <children>
+                                        <Region minWidth="4.0" prefHeight="35.0" style="-fx-background-color: white; -fx-background-radius: 3;">
+                                            <HBox.margin>
+                                                <Insets left="15.0" right="11.0" />
+                                            </HBox.margin>
+                                        </Region>
+                                        <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersBuvette" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 10 40 10 15; -fx-cursor: hand;">
+                                            <children>
+                                                <Label style="-fx-font-size: 20px; -fx-text-fill: black;" text="🍸" />
+                                                <Label style="-fx-font-size: 16px; -fx-text-fill: black; -fx-font-weight: bold;" text="Buvette" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </HBox>
 
-            <VBox spacing="15.0">
-                <children>
-                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                        <children>
-                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="🏠" />
-                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Vos concerts" />
-                        </children>
-                    </HBox>
+                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMerch" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                                    <children>
+                                        <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="👕" />
+                                        <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Merch" />
+                                    </children>
+                                </HBox>
 
-                    <HBox alignment="CENTER_LEFT">
-                        <children>
-                            <Region minWidth="4.0" prefHeight="35.0" style="-fx-background-color: white; -fx-background-radius: 3;">
-                                <HBox.margin>
-                                    <Insets left="15.0" right="11.0" />
-                                </HBox.margin>
-                            </Region>
-                            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersBuvette" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 10 40 10 15; -fx-cursor: hand;">
-                                <children>
-                                    <Label style="-fx-font-size: 20px; -fx-text-fill: black;" text="🍸" />
-                                    <Label style="-fx-font-size: 16px; -fx-text-fill: black; -fx-font-weight: bold;" text="Buvette" />
-                                </children>
-                            </HBox>
-                        </children>
-                    </HBox>
+                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersStaff" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                                    <children>
+                                        <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="👤" />
+                                        <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Staff" />
+                                    </children>
+                                </HBox>
 
-                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMerch" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                        <children>
-                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="👕" />
-                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Merch" />
-                        </children>
-                    </HBox>
+                                <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMateriel" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                                    <children>
+                                        <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="📦" />
+                                        <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Matériel" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
 
-                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersStaff" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                        <children>
-                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="👤" />
-                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Staff" />
-                        </children>
-                    </HBox>
+                        <Region VBox.vgrow="ALWAYS" />
 
-                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMateriel" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                        <children>
-                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="📦" />
-                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Matériel" />
-                        </children>
-                    </HBox>
-                </children>
-            </VBox>
-
-            <Region VBox.vgrow="ALWAYS" />
-
-            <VBox alignment="CENTER" style="-fx-padding: 20; -fx-cursor: hand;">
-                <children>
-                    <Button maxWidth="Infinity" fx:id="menuButton" onAction="#allerVersdashboard" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
-                </children>
-            </VBox>
-        </children>
-    </VBox>
-</StackPane>
+                        <VBox alignment="CENTER" style="-fx-padding: 20; -fx-cursor: hand;">
+                            <children>
+                                <Button maxWidth="Infinity" fx:id="menuButton" onAction="#allerVersdashboard" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+            </children>
+        </StackPane>
+    </center>
+</BorderPane>

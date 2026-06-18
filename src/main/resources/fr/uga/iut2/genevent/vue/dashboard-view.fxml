@@ -80,7 +80,7 @@
                                         <VBox alignment="CENTER" prefHeight="180.0" spacing="15.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);">
                                             <children>
                                                 <Label fx:id="dashboardBuvetteNomLabel" styleClass="text-dark" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Utopia" />
-                                                <Label fx:id="dashboardBuvetteThemeLabel" styleClass="text-dark" style="-fx-font-size: 14px; -fx-font-style: italic;" text="Thème: Amerique" />
+                                                <Label fx:id="dashboardBuvetteThemeLabel" styleClass="text-dark" style="-fx-font-size: 14px; -fx-font-style: italic;" text="Localisation: Sud" />
                                                 <Button onAction="#allerVersBuvette" styleClass="custom-button" style="-fx-padding: 8 25 8 25;" text="Voir plus" />
                                             </children>
                                         </VBox>
