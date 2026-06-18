@@ -668,7 +668,7 @@ public class JavaFXGUI extends IHM {
     }
 
     @FXML
-    private void connexionMenuItemActionFP() {
+    public void connexionMenuItemActionFP() {
         // Depuis mdp oublié, ce bouton sert à aller sur la page de déconnecter
         allerVersLogin();
     }

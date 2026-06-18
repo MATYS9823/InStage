@@ -246,3 +246,20 @@
 .header-logo {
     -fx-fit-height: 30;
 }
+
+.btn-retour {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 8;
+}
+
+/* Effet quand la souris approche (Hover) */
+.btn-retour:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.08); /* Ajoute un léger fond gris transparent très propre */
+}
+
+/* Effet quand on clique dessus (Pressed) */
+.btn-retour:pressed {
+    -fx-background-color: rgba(0, 0, 0, 0.15); /* Devient un peu plus foncé sous le clic */
+}

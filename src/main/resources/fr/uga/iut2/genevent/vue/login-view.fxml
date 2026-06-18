@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
 <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -15,11 +16,20 @@
                     <graphic>
                         <ImageView fitHeight="90.0" preserveRatio="true">
                             <image>
-                                <Image url="@logotransparentblanc.png" />
+                                <Image url="@logotransparent.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </Button>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Label text="IN STAGE" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-letter-spacing: 2px;">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+
                 <Region HBox.hgrow="ALWAYS" />
 
                 <MenuButton styleClass="icon-button">

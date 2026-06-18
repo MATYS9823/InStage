@@ -202,6 +202,8 @@ public class RechercheSallesController {
         scrim.setVisible(!isOpen);
     }
 
+
+
     //-----  Navigation  -----------------------------------------------------------
 
     @FXML
