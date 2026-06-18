@@ -241,3 +241,8 @@
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
+
+/* Règle pour agrandir le logo dans  */
+.header-logo {
+    -fx-fit-height: 30;
+}

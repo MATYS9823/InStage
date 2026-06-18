@@ -6,12 +6,23 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <BorderPane fx:controller="fr.uga.iut2.genevent.vue.RechercheSallesController" prefHeight="800.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header" BorderPane.alignment="CENTER">
             <children>
+                <Button onAction="#allerVersAccueil" styleClass="icon-button">
+                    <graphic>
+                        <ImageView fitHeight="90.0" preserveRatio="true">
+                            <image>
+                                <Image url="@logotransparent.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
                 <Region HBox.hgrow="ALWAYS" />
 
                 <MenuButton styleClass="icon-button">

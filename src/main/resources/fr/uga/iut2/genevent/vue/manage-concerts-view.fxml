@@ -25,9 +25,9 @@
             <children>
                 <Button onAction="#allerVersAccueil" styleClass="icon-button">
                     <graphic>
-                        <ImageView fitHeight="45.0" preserveRatio="true">
+                        <ImageView fitHeight="90.0" preserveRatio="true">
                             <image>
-                                <Image url="@Logo.png" />
+                                <Image url="@logotransparent.png" />
                             </image>
                         </ImageView>
                     </graphic>
