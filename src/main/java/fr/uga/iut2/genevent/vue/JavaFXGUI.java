@@ -944,8 +944,16 @@ public class JavaFXGUI extends IHM {
         btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
-            controleur.supprimerMateriel(m);
-            allerVersMateriel();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setContentText("Supprimer le materiel \"" + m.getNom() + "\" ?");
+            alert.showAndWait().ifPresent(reponse -> {
+                if (reponse == ButtonType.OK) {
+                    controleur.supprimerMateriel(m);
+                    allerVersMateriel();
+                }
+            });
+
         });
 
         Region headerSpacer = new Region();
@@ -1082,9 +1090,17 @@ public class JavaFXGUI extends IHM {
         btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
         btnSupprimerMerch.setOnMouseEntered(ev -> btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimerMerch.setOnMouseExited(ev -> btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
-        btnSupprimerMerch.setOnAction(ev -> {
-            controleur.supprimerMerch(m); 
-            allerVersMerch();
+        btnSupprimerMerch.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setContentText("Supprimer le merch \"" + m.getNom() + "\" ?");
+            alert.showAndWait().ifPresent(reponse -> {
+                if (reponse == ButtonType.OK) {
+                    controleur.supprimerMerch(m);
+                    allerVersMerch();
+                }
+            });
+
         });
 
         // --- ASSEMBLAGE DE LA CARTE ---
@@ -1183,8 +1199,16 @@ public class JavaFXGUI extends IHM {
         btnSupprimerEquipe.setOnMouseEntered(ev -> btnSupprimerEquipe.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimerEquipe.setOnMouseExited(ev -> btnSupprimerEquipe.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimerEquipe.setOnAction(ev -> {
-            controleur.supprimerEquipe(e);
-            allerVersStaff();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setContentText("Supprimer l'equipe' \"" + e.getNom() + "\" ?");
+            alert.showAndWait().ifPresent(reponse -> {
+                if (reponse == ButtonType.OK) {
+                    controleur.supprimerEquipe(e);
+                    allerVersStaff();
+                }
+            });
+
         });
 
         // --- ASSEMBLAGE DE LA CARTE ---
@@ -1238,9 +1262,17 @@ public class JavaFXGUI extends IHM {
         btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
         btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
-        btnSupprimer.setOnAction(ev -> {
-            controleur.supprimerBuvette(b);
-            allerVersBuvette();
+        btnSupprimer.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setContentText("Supprimer la buvette \"" + b.getNom() + "\" ?");
+            alert.showAndWait().ifPresent(reponse -> {
+                if (reponse == ButtonType.OK) {
+                    controleur.supprimerBuvette(b);
+                    allerVersBuvette();
+                }
+            });
+
         });
 
         Region headerSpacer = new Region();
@@ -1286,9 +1318,17 @@ public class JavaFXGUI extends IHM {
         btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
         btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
-        btnSupprimer.setOnAction(ev -> {
-            controleur.supprimerCarte(c);
-            allerVersCarte();
+        btnSupprimer.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setContentText("Supprimer la carte \"" + c.getNom() + "\" ?");
+            alert.showAndWait().ifPresent(reponse -> {
+                if (reponse == ButtonType.OK) {
+                    controleur.supprimerCarte(c);
+                    allerVersCarte();
+                }
+            });
+
         });
 
         Region headerSpacer = new Region();
