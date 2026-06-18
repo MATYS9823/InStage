@@ -23,7 +23,7 @@
 
 /* Conteneur de la liste déroulante (ContextMenu) */
 .context-menu {
-    -fx-background-color: #2C2C2E; /* Même beau noir que vos boutons */
+    -fx-background-color: #2C2C2E;
     -fx-background-radius: 10;
     -fx-border-color: #1C1C1E;
     -fx-border-radius: 10;
@@ -52,7 +52,7 @@
     -fx-text-fill: #000000;
 }
 
-/* Boutons d'action principaux (beaux tons de noir, arrondis) */
+/* Boutons d'action principaux */
 .custom-button {
     -fx-background-color: #2C2C2E;
     -fx-background-radius: 35;
@@ -162,7 +162,7 @@
     -fx-padding: 20;
 }
 
-/* Petits badges pour les produits (Coca, Hot-Dog...) */
+/* Petits badges pour les produits */
 .pill-badge {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 15;
