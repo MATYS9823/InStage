@@ -135,9 +135,9 @@
 
             <Region VBox.vgrow="ALWAYS" />
 
-            <VBox alignment="CENTER" style="-fx-padding: 20;">
+            <VBox alignment="CENTER" style="-fx-padding: 20; -fx-cursor: hand;">
                 <children>
-                    <Button maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
+                    <Button maxWidth="Infinity" fx:id="menuButton" onAction="#allerVersdashboard" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
                 </children>
             </VBox>
         </children>

@@ -78,6 +78,7 @@ public class JavaFXGUI extends IHM {
     @FXML private Button creerconcertButton;
     @FXML private TilePane concertsTilePane;
     @FXML private Label artistelabel;
+    @FXML private Button menuButton;
 
     @FXML private TextField tfNomMateriel;
     @FXML private TextField tfPrixMateriel;
@@ -298,6 +299,9 @@ public class JavaFXGUI extends IHM {
                 artistelabel.setText(controleur.getConcertSelectionne().getArtiste());
             }
 
+            if (menuButton!= null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
 
         }catch (IOException exc){
             throw new RuntimeException(exc);
@@ -312,6 +316,11 @@ public class JavaFXGUI extends IHM {
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.setTitle("IN STAGE");
+
+            if (menuButton != null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
+
         }catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -363,11 +372,15 @@ public class JavaFXGUI extends IHM {
                     merchTilePane.getChildren().add(creerCarteMerch(m));
                 }
             }
+            if (menuButton!= null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
         }catch (IOException exc){
             throw new RuntimeException(exc);
         }
     }
 
+    @FXML
     public void allerVersdashboard(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
@@ -433,6 +446,22 @@ public class JavaFXGUI extends IHM {
                         dashboardMaterielCategoriesLabel.setText(String.join(", ", types));
                     }
                 }
+
+                // Buvette
+                if (dashboardBuvetteNomLabel != null) {
+                    if (!concert.getBuvettes().isEmpty()) {
+                        dashboardBuvetteNomLabel.setText(concert.getBuvettes().get(0).getNom());
+                    } else {
+                        dashboardBuvetteNomLabel.setText("Aucune buvette");
+                    }
+                }
+                if (dashboardBuvetteThemeLabel != null) {
+                    if (!concert.getBuvettes().isEmpty()) {
+                        dashboardBuvetteThemeLabel.setText("Thème: " + concert.getBuvettes().get(0).getLocalisation());
+                    } else {
+                        dashboardBuvetteThemeLabel.setText("Aucun thème");
+                    }
+                }
             }
 
         } catch (IOException exc){
@@ -447,6 +476,11 @@ public class JavaFXGUI extends IHM {
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.setTitle("IN STAGE");
+
+            if (menuButton != null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
+
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -454,11 +488,16 @@ public class JavaFXGUI extends IHM {
 
     private void allerVerscreerStaff() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-staff-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("create-equipe-view.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.setTitle("IN STAGE");
+
+            if (menuButton != null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
+
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -467,7 +506,7 @@ public class JavaFXGUI extends IHM {
     @FXML
     private void allerVersStaff() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("staff-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("equipe-view.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
@@ -480,6 +519,15 @@ public class JavaFXGUI extends IHM {
                     staffTilePane.getChildren().add(creerCarteEquipe(e));
                 }
             }
+
+            if (artistelabel!= null) {
+                artistelabel.setText(controleur.getConcertSelectionne().getArtiste());
+            }
+
+            if (menuButton != null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
+
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -493,6 +541,10 @@ public class JavaFXGUI extends IHM {
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.setTitle("IN STAGE");
+
+            if (menuButton != null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
 
         } catch (IOException exc) {
             throw new RuntimeException(exc);
@@ -513,6 +565,9 @@ public class JavaFXGUI extends IHM {
                     carteTilePane.getChildren().add(creerCarteCarte(c));
                 }
             }
+            if (menuButton!= null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
         }catch (IOException exc) {
             throw new RuntimeException(exc);
         }
@@ -525,6 +580,10 @@ public class JavaFXGUI extends IHM {
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.setTitle("IN STAGE");
+
+            if (menuButton != null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
 
         }catch (IOException exc) {
             throw new RuntimeException(exc);
@@ -1439,6 +1498,15 @@ public class JavaFXGUI extends IHM {
                     materielTilePane.getChildren().add(creerCarteMateriel(m));
                 }
             }
+
+            if (artistelabel!= null) {
+                artistelabel.setText(controleur.getConcertSelectionne().getArtiste());
+            }
+
+            if (menuButton != null) {
+                menuButton.setText(controleur.getConcertSelectionne().getNom());
+            }
+
         } catch (IOException exc) {
             throw new RuntimeException(exc);
         }

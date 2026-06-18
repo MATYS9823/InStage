@@ -59,7 +59,7 @@
                                         <Label fx:id="welcomeLabel" styleClass="text-dark" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Goosebump_France" BorderPane.alignment="CENTER" />
                                     </center>
                                     <right>
-                                        <Label fx:id="artisteLabel" styleClass="text-dark" style="-fx-font-size: 20px;" text="Travis Scott" BorderPane.alignment="CENTER" />
+                                        <Label fx:id="artistelabel" styleClass="text-dark" style="-fx-font-size: 20px;" text="Travis Scott" BorderPane.alignment="CENTER" />
                                     </right>
                                 </BorderPane>
                                 <Separator />
@@ -147,9 +147,9 @@
 
                         <Region VBox.vgrow="ALWAYS" />
 
-                        <VBox alignment="CENTER" style="-fx-padding: 20;">
+                        <VBox alignment="CENTER" style="-fx-padding: 20; -fx-cursor: hand;">
                             <children>
-                                <Button maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
+                                <Button fx:id="menuButton" onAction="#allerVersdashboard" maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
                             </children>
                         </VBox>
                     </children>
