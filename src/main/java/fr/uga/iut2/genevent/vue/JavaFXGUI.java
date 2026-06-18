@@ -138,6 +138,9 @@ public class JavaFXGUI extends IHM {
     @FXML private Label optiPlacesMaxLabel;
     @FXML private Label optiRentabiliteLabel;
     @FXML private Label optiPlacesMinLabel;
+    @FXML private Label coutProduitsLabel;
+    @FXML private Label optiBeneficeBilletsLabel;
+    @FXML private Label optiBeneficeMerchLabel;
 
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
@@ -1918,81 +1921,102 @@ public class JavaFXGUI extends IHM {
     @FXML
     public void allerVersCouts(Concert c) {
         try {
-            controleur.selectionnerConcert(c); // Mémoriser le concert sélectionné
+            controleur.selectionnerConcert(c);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("couts-view.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.setTitle("IN STAGE - Coûts et Optimisation");
 
-            // 1. Initialisation des Titres
             if (titreCoutsLabel != null) {
                 titreCoutsLabel.setText("Tableau financier : " + c.getNom());
             }
 
-            // 2. Calcul du Matériel
+            // 1. Dépenses fixes (Salle + Matériel)
             int coutMateriel = 0;
             if (c.getMateriels() != null) {
                 for (Materiel m : c.getMateriels()) {
                     coutMateriel += m.getPrix();
                 }
             }
+            int coutSalle = 0;
+            try { coutSalle = c.getCoutLocationSalle(); } catch(Exception ignored) {}
+            int coutTotalFixe = coutSalle + coutMateriel;
 
-            // 2b. : Calcul du chiffre d'affaires potentiel des produits merch
-            int revenuMerch = 0;
+            // 2. Dépenses et Recettes variables (Buvette/Merch)
+            double coutProduitsTotal = 0;
+            double recetteProduitsTotal = 0;
+            int quantiteEstimee = 50;
+
             if (c.getMerchs() != null) {
                 for (Merch m : c.getMerchs()) {
                     if (m.getProduits() != null) {
                         for (Produit p : m.getProduits()) {
-                            revenuMerch += p.getPrix();
+                            double coutUnitaire = p.getPrix();
+                            // On applique ta règle : on vend 20% plus cher que le prix d'achat
+                            double prixVenteUnitaire = coutUnitaire * 1.20;
+
+                            coutProduitsTotal += (coutUnitaire * quantiteEstimee);
+                            recetteProduitsTotal += (prixVenteUnitaire * quantiteEstimee);
                         }
                     }
                 }
             }
 
-            // 3. Récupération Coût Salle (S'assurer que getCoutLocationSalle est accessible)
-            int coutSalle = 0;
-            try { coutSalle = c.getCoutLocationSalle(); } catch(Exception ignored) {}
+            // 3. Dépenses Totales Générales (Tous les coûts cumulés)
+            double coutTotalGeneral = coutTotalFixe + coutProduitsTotal;
 
-            int coutTotal = coutSalle + coutMateriel;
-            int coutNetApresmerch = coutTotal - revenuMerch;
+            if (coutSalleLabel != null) coutSalleLabel.setText("Location Salle : " + coutSalle + " €");
+            if (coutMaterielLabel != null) coutMaterielLabel.setText("Matériel : " + coutMateriel + " €");
+            if (coutProduitsLabel != null) coutProduitsLabel.setText(String.format("Stock Buvette/Merch : %.0f €", coutProduitsTotal));
+            if (coutTotalLabel != null) coutTotalLabel.setText(String.format("TOTAL DÉPENSES : %.0f €", coutTotalGeneral));
 
-            // 4. Affichage des Dépenses
-            if (coutSalleLabel != null) coutSalleLabel.setText("Location de la Salle : " + coutSalle + " €");
-            if (coutMaterielLabel != null) coutMaterielLabel.setText("Coût du Matériel : " + coutMateriel + " €");
-            if (coutTotalLabel != null) coutTotalLabel.setText("TOTAL DES DÉPENSES : " + coutTotal + " €");
-
-            // 5. Utilisation de votre Simulateur Financier
+            // 4. Simulateur Financier et Calcul de Rentabilité
             if (c.getSalle() != null && optiRevenuMaxLabel != null) {
                 fr.uga.iut2.genevent.modele.optimisation.SimulateurFinancier simulateur = new fr.uga.iut2.genevent.modele.optimisation.SimulateurFinancier();
 
-                int tarifStandard = 50; // MODIFIEZ ICI si vous avez des tarifs variables
-                int tarifVIP = 100;     // MODIFIEZ ICI
+                int tarifStandard = 50;
+                int tarifVIP = 100;
+
+                // NOUVEAU CALCUL : Pour être rentable, les billets doivent combler ce que les produits n'ont pas remboursé
+                int objectifBilletsPourRentabilite = (int) (coutTotalGeneral - recetteProduitsTotal);
 
                 fr.uga.iut2.genevent.modele.optimisation.ResultatOptimisation opti =
-                        simulateur.calculerOptimisationRevenu(c.getSalle(), coutNetApresmerch, tarifStandard, tarifVIP);
+                        simulateur.calculerOptimisationRevenu(c.getSalle(), objectifBilletsPourRentabilite, tarifStandard, tarifVIP);
                 fr.uga.iut2.genevent.modele.optimisation.ResultatRentabiliteMin min =
-                        simulateur.calculerMinimumBilletsPourRentabilite(c.getSalle(), coutNetApresmerch, tarifStandard, tarifVIP);
+                        simulateur.calculerMinimumBilletsPourRentabilite(c.getSalle(), objectifBilletsPourRentabilite, tarifStandard, tarifVIP);
+
                 if (opti != null) {
-                    optiRevenuMaxLabel.setText("Revenu Max : " + opti.getRevenuMax() + " €");
-                    optiPlacesMaxLabel.setText("Billetterie : " + opti.getPlacesStandard() + " Stand. / " + opti.getPlacesVIP() + " VIP");
+                    double recetteBilletsMax = opti.getRevenuMax();
+
+                    // Le VRAI Bénéfice = (Argent total qui rentre) - (Argent total dépensé)
+                    double beneficeTotalMax = (recetteBilletsMax + recetteProduitsTotal) - coutTotalGeneral;
+
+                    // J'ai renommé les labels directement ici pour qu'ils affichent "Ventes" (l'argent brut généré)
+                    if (optiBeneficeBilletsLabel != null) optiBeneficeBilletsLabel.setText(String.format("↳ Ventes Billetterie : %.0f €", recetteBilletsMax));
+                    if (optiBeneficeMerchLabel != null) optiBeneficeMerchLabel.setText(String.format("↳ Ventes Buvette/Merch : %.0f €", recetteProduitsTotal));
+
+                    optiRevenuMaxLabel.setText(String.format("Bénéfice Total Max : %.0f €", beneficeTotalMax));
+                    optiPlacesMaxLabel.setText("Capacité : " + opti.getPlacesStandard() + " Stand. / " + opti.getPlacesVIP() + " VIP");
                 } else {
-                    optiRevenuMaxLabel.setText("Revenu Max : Non Rentable");
-                    optiPlacesMaxLabel.setText("La salle est trop petite par rapport aux coûts.");
+                    if (optiBeneficeBilletsLabel != null) optiBeneficeBilletsLabel.setText("↳ Ventes Billetterie : Erreur");
+                    if (optiBeneficeMerchLabel != null) optiBeneficeMerchLabel.setText("↳ Ventes Buvette/Merch : --");
+                    optiRevenuMaxLabel.setText("Bénéfice Max : Non Rentable");
+                    optiPlacesMaxLabel.setText("La salle est trop petite.");
                 }
 
                 if (min != null) {
-                    optiRentabiliteLabel.setText("Seuil de rentabilité : " + min.getRevenuGenere() + " €");
-                    optiPlacesMinLabel.setText("Objectif minimal : " + min.getPlacesStandard() + " Stand. / " + min.getPlacesVIP() + " VIP");
+                    if (objectifBilletsPourRentabilite <= 0) {
+                        optiRentabiliteLabel.setText("Déjà rentable ! (Frais couverts)");
+                        optiPlacesMinLabel.setText("Objectif minimal : 0 billet");
+                    } else {
+                        optiRentabiliteLabel.setText(String.format("Ventes billets pour rentabilité : %d €", min.getRevenuGenere()));
+                        optiPlacesMinLabel.setText("Objectif minimal : " + min.getPlacesStandard() + " Stand. / " + min.getPlacesVIP() + " VIP");
+                    }
                 } else {
                     optiRentabiliteLabel.setText("Rentabilité inatteignable");
                     optiPlacesMinLabel.setText("Impossible de rembourser les frais.");
                 }
-            } else if (optiRevenuMaxLabel != null) {
-                optiRevenuMaxLabel.setText("Aucune salle assignée");
-                optiPlacesMaxLabel.setText("--");
-                optiRentabiliteLabel.setText("--");
-                optiPlacesMinLabel.setText("--");
             }
 
         } catch (Exception exc) {

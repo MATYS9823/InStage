@@ -4,13 +4,10 @@ import fr.uga.iut2.genevent.modele.Salle;
 
 public class SimulateurFinancier {
 
-    /**
-     * Calcule la répartition optimale (Sommet A) pour maximiser le revenu.
-     */
     public ResultatOptimisation calculerOptimisationRevenu(Salle salle, int seuilRentabilite, int tarifStandard, int tarifVIP) {
         int jauge = salle.getNbPlaces();
 
-        // Quota minimum imposé de 50%
+        // Quota minimum imposé de 50% de places standards pour une configuration pleine
         int placesStandard = jauge / 2;
         int placesVIP = jauge - placesStandard;
 
@@ -22,29 +19,33 @@ public class SimulateurFinancier {
         return new ResultatOptimisation(placesStandard, placesVIP, revenuMax);
     }
 
-    /**
-     * Calcule le nombre minimum de billets à vendre (Sommet B) pour dépasser le seuil.
-     */
     public ResultatRentabiliteMin calculerMinimumBilletsPourRentabilite(Salle salle, int seuilRentabilite, int tarifStandard, int tarifVIP) {
         int jauge = salle.getNbPlaces();
 
-        // On vend d'abord le quota minimum de places standards (n/2)
-        int placesStandard = jauge / 2;
-        int revenuStandard = placesStandard * tarifStandard;
-
+        // 1. On calcule d'abord combien de places Standards sont nécessaires au minimum
+        int placesStandard = (int) Math.ceil((double) seuilRentabilite / tarifStandard);
         int placesVIP = 0;
-        // Si le revenu standard ne suffit pas, on complète avec le strict nécessaire de VIP
-        if (revenuStandard < seuilRentabilite) {
+
+        // 2. Si on a besoin de plus de places que la capacité de la salle, on doit vendre du VIP
+        if (placesStandard > jauge) {
+            placesStandard = jauge;
+            int revenuStandard = placesStandard * tarifStandard;
             int resteACombler = seuilRentabilite - revenuStandard;
-            placesVIP = (int) Math.ceil((double) resteACombler / tarifVIP);
+
+            // On remplace des places Standards par des VIP (qui rapportent la différence de prix)
+            int differencePrix = tarifVIP - tarifStandard;
+            if (differencePrix > 0) {
+                placesVIP = (int) Math.ceil((double) resteACombler / differencePrix);
+                placesStandard = jauge - placesVIP;
+            }
         }
 
-        // Vérification physique : est-ce que ça dépasse la capacité de la salle ?
-        if ((placesStandard + placesVIP) > jauge) {
-            return null; // Impossible d'être rentable dans cette salle
+        // 3. Vérification finale : est-ce que ça rentre toujours dans la salle ?
+        if (placesVIP > jauge || placesStandard < 0) {
+            return null; // Impossible d'être rentable même avec 100% de VIP
         }
 
-        int revenuTotal = revenuStandard + (placesVIP * tarifVIP);
+        int revenuTotal = (placesStandard * tarifStandard) + (placesVIP * tarifVIP);
         return new ResultatRentabiliteMin(placesStandard, placesVIP, revenuTotal);
     }
 }

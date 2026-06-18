@@ -1,8 +1,12 @@
 package fr.uga.iut2.genevent.modele;
 
 import java.util.Objects;
+import java.io.Serializable;
+import java.util.Objects;
 
-public class Produit {
+public class Produit implements Serializable {
+    private static final long serialVersionUID = 1L; // Bonne pratique pour la sérialisation
+
     private String fournisseur;
     private int prix;
     private String nom;
