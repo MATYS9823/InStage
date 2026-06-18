@@ -9,6 +9,7 @@ public class Buvette implements Serializable {
     private String nom;
     private List<Equipe> equipes=new ArrayList<>();
     private Carte carte;
+    private List<Carte> cartesAppliquees = new ArrayList<>();
 
 
     public Buvette( String localisation, String nom) {
@@ -46,5 +47,21 @@ public class Buvette implements Serializable {
 
     public List<Equipe> getEquipes() {
         return equipes;
+    }
+
+    public List<Carte> getCartesAppliquees() {
+        return cartesAppliquees;
+    }
+
+    public boolean isCarteAppliquee(Carte c) {
+        return cartesAppliquees.contains(c);
+    }
+
+    public void toggleCarteAppliquee(Carte c) {
+        if (cartesAppliquees.contains(c)) {
+            cartesAppliquees.remove(c);
+        } else {
+            cartesAppliquees.add(c);
+        }
     }
 }

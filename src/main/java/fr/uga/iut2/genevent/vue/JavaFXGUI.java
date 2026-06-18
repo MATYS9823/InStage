@@ -44,6 +44,7 @@ public class JavaFXGUI extends IHM {
     // Stage principal, gardé pour changer de scène
     private Stage primaryStage;
     private final List<InfosNouveauConcert> concertsSauvegardes = new ArrayList<InfosNouveauConcert>();
+    private Buvette buvetteEnCoursDeModification = null;
 
     // champs vue connexion
     @FXML private TextField loginEmailTextField;
@@ -546,7 +547,8 @@ public class JavaFXGUI extends IHM {
         }
     }
 
-    private void allerVersCarte(){
+    private void allerVersCarte(Buvette buvetteCible) {
+        this.buvetteEnCoursDeModification = buvetteCible;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("manage-carte-view.fxml"));
             loader.setController(this);
@@ -560,10 +562,18 @@ public class JavaFXGUI extends IHM {
                     carteTilePane.getChildren().add(creerCarteCarte(c));
                 }
             }
-            if (menuButton!= null) {
+            if (menuButton != null) {
                 menuButton.setText(controleur.getConcertSelectionne().getNom());
             }
-        }catch (IOException exc) {
+
+            if (welcomeLabel != null) {
+                if (buvetteEnCoursDeModification != null) {
+                    welcomeLabel.setText(buvetteEnCoursDeModification.getNom());
+                } else {
+                    welcomeLabel.setText("Gestion des cartes");
+                }
+            }
+        } catch (IOException exc) {
             throw new RuntimeException(exc);
         }
     }
@@ -900,7 +910,7 @@ public class JavaFXGUI extends IHM {
                 tfNomCarte.getText().strip()
         );
         controleur.creercarte(data);
-        allerVersCarte();
+        allerVersCarte(buvetteEnCoursDeModification);
     }
 
     // Gestion du volet latéral spécifique à la page Buvette
@@ -1308,11 +1318,12 @@ public class JavaFXGUI extends IHM {
         Label localisation = new Label("📍 " + b.getLocalisation());
         localisation.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
-        // --- BADGES DES CARTES APPLIQUÉES AU CONCERT ---
+        // --- BADGES DES CARTES APPLIQUÉES À LA BUVETTE ---
         FlowPane cartesBox = new FlowPane(8, 6);
         cartesBox.setAlignment(Pos.CENTER_LEFT);
 
-        List<Carte> cartesAppliquees = concertCourant.getCartesAppliquees();
+        // MODIFICATION : On lit les cartes depuis la buvette (b) et non depuis le concert
+        List<Carte> cartesAppliquees = b.getCartesAppliquees();
         if (cartesAppliquees == null || cartesAppliquees.isEmpty()) {
             Label aucune = new Label("Aucune carte assignée");
             aucune.setStyle("-fx-font-size: 13px; -fx-text-fill: #AAAAAA; -fx-font-style: italic;");
@@ -1320,7 +1331,7 @@ public class JavaFXGUI extends IHM {
         } else {
             for (Carte carte : cartesAppliquees) {
                 Label badge = new Label("🗺 " + carte.getNom());
-                badge.setStyle("-fx-background-color: #EAF6EE; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #27AE60;");
+                badge.setStyle("-fx-background-color: #EAF6EE; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
                 cartesBox.getChildren().add(badge);
             }
         }
@@ -1328,7 +1339,7 @@ public class JavaFXGUI extends IHM {
         // CROIX DE SUPPRESSION
         Button btnSupprimer = new Button("✕");
         btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
-        btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #000000; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1354,8 +1365,9 @@ public class JavaFXGUI extends IHM {
         // BOUTON GÉRER LES CARTES
         Button btnModifierCarte = new Button("Gérer les cartes ✍");
         btnModifierCarte.setMaxWidth(Double.MAX_VALUE);
-        btnModifierCarte.setStyle("-fx-background-color: #3498DB; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
-        btnModifierCarte.setOnAction(ev -> allerVersCarte());
+        btnModifierCarte.setStyle("-fx-background-color: #000000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
+        // MODIFICATION : Transmission de la buvette (b) en paramètre
+        btnModifierCarte.setOnAction(ev -> allerVersCarte(b));
 
         // BOUTON APPLIQUER / ANNULER LA BUVETTE (logique 3 états inchangée)
         Buvette buvetteAppliquee = concertCourant.getBuvetteAppliquee();
@@ -1364,7 +1376,7 @@ public class JavaFXGUI extends IHM {
 
         if (buvetteAppliquee == b) {
             btnAppliquerBuvette.setText("Annuler l'application");
-            btnAppliquerBuvette.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
+            btnAppliquerBuvette.setStyle("-fx-background-color: #000000; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
             btnAppliquerBuvette.setDisable(false);
         } else if (buvetteAppliquee != null) {
             btnAppliquerBuvette.setText("Appliquer buvette");
@@ -1400,7 +1412,9 @@ public class JavaFXGUI extends IHM {
 
     private VBox creerCarteCarte(Carte c) {
         Concert concertCourant = controleur.getConcertSelectionne();
-        boolean estAppliquee = concertCourant.isCarteAppliquee(c);
+
+        // Vérification de l'application de la carte à la buvette en cours de modification
+        boolean estAppliquee = (buvetteEnCoursDeModification != null) && buvetteEnCoursDeModification.isCarteAppliquee(c);
 
         Label nom = new Label("Carte : \"" + c.getNom() + "\"");
         nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
@@ -1408,10 +1422,10 @@ public class JavaFXGUI extends IHM {
         Label theme = new Label("Thème : " + c.getTheme());
         theme.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
-        // ── Bouton suppression ──
+        // ── BOUTON SUPPRESSION DE LA CARTE ──
         Button btnSupprimer = new Button("✕");
         btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
-        btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #000000; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(ev  -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1419,9 +1433,11 @@ public class JavaFXGUI extends IHM {
             alert.setContentText("Supprimer la carte \"" + c.getNom() + "\" ?");
             alert.showAndWait().ifPresent(reponse -> {
                 if (reponse == ButtonType.OK) {
-                    concertCourant.getCartesAppliquees().remove(c);
+                    if (buvetteEnCoursDeModification != null) {
+                        buvetteEnCoursDeModification.getCartesAppliquees().remove(c);
+                    }
                     controleur.supprimerCarte(c);
-                    allerVersCarte();
+                    allerVersCarte(buvetteEnCoursDeModification);
                 }
             });
         });
@@ -1431,27 +1447,21 @@ public class JavaFXGUI extends IHM {
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
         header.setAlignment(Pos.TOP_CENTER);
 
-        // ── Bouton appliquer/toggle ──
+        // ── BOUTON APPLIQUER / TOGGLE ──
         Button btnAppliquer = new Button(estAppliquee ? "✓ Carte appliquée" : "Appliquer carte");
         btnAppliquer.setMaxWidth(Double.MAX_VALUE);
         btnAppliquer.setStyle(estAppliquee
-                ? "-fx-background-color: #27AE60; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"
+                ? "-fx-background-color: #615e5e; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"
                 : "-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
         btnAppliquer.setOnAction(ev -> {
-            concertCourant.toggleCarteAppliquee(c);
-            allerVersCarte();
+            if (buvetteEnCoursDeModification != null) {
+                buvetteEnCoursDeModification.toggleCarteAppliquee(c);
+                allerVersCarte(buvetteEnCoursDeModification);
+            } else {
+                informerUtilisateur("Erreur : Aucune buvette sélectionnée.", false);
+            }
         });
 
-        // ── NOUVEAU : Liste des produits merch de cette carte ──
-        // On récupère le merch qui porte le même nom que la carte (convention)
-        // ou on affiche les produits directement stockés sur la carte si vous ajoutez ce champ au modèle.
-        // Ici on cherche le stand merch du concert dont le nom correspond à la carte.
-        Merch merchAssocie = concertCourant.getMerchs().stream()
-                .filter(m -> m.getNom().equalsIgnoreCase(c.getNom()))
-                .findFirst()
-                .orElse(null);
-
-        // Séparateur visuel
         Separator sep = new Separator();
         sep.setStyle("-fx-padding: 5 0 5 0;");
 
@@ -1462,12 +1472,13 @@ public class JavaFXGUI extends IHM {
         produitsBox.setHgap(8);
         produitsBox.setVgap(8);
 
-        if (merchAssocie == null || merchAssocie.getProduits().isEmpty()) {
-            Label aucun = new Label("Aucun produit — ajoutez un stand merch du même nom");
+        // MODIFICATION : Utilisation directe de la méthode getProduits() de votre classe Carte
+        if (c.getProduits().isEmpty()) {
+            Label aucun = new Label("Aucun produit sur cette carte");
             aucun.setStyle("-fx-font-size: 12px; -fx-text-fill: #AAAAAA; -fx-font-style: italic;");
             produitsBox.getChildren().add(aucun);
         } else {
-            for (Produit p : merchAssocie.getProduits()) {
+            for (Produit p : c.getProduits()) {
                 HBox badge = new HBox(5);
                 badge.setAlignment(Pos.CENTER);
                 badge.setStyle("-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 10 4 12;");
@@ -1476,10 +1487,11 @@ public class JavaFXGUI extends IHM {
                 lblProd.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
                 Button btnRemove = new Button("✕");
-                btnRemove.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0 0 0 5;");
+                btnRemove.setStyle("-fx-background-color: transparent; -fx-text-fill: #000000; -fx-font-size: 10px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0 0 0 5;");
                 btnRemove.setOnAction(ev -> {
-                    merchAssocie.supprimerProduit(p);
-                    allerVersCarte();
+                    // MODIFICATION : Utilisation de votre méthode supprimerProduit de Carte.java
+                    c.supprimerProduit(p);
+                    allerVersCarte(buvetteEnCoursDeModification);
                 });
 
                 badge.getChildren().addAll(lblProd, btnRemove);
@@ -1487,19 +1499,18 @@ public class JavaFXGUI extends IHM {
             }
         }
 
-        // ── NOUVEAU : Zone d'ajout de produit directement dans la carte ──
-        // Choisit la cible : merch associé s'il existe, sinon on le crée à la volée
+        // ── ZONE D'AJOUT DE PRODUIT DIRECT DANS LA CARTE ──
         VBox zoneAjout = new VBox(8);
         zoneAjout.setStyle("-fx-border-color: #EAEAEA; -fx-border-width: 1 0 0 0; -fx-padding: 12 0 0 0;");
 
         TextField tfNomProduit = new TextField();
-        tfNomProduit.setPromptText("Nom du produit (ex: T-Shirt)");
+        tfNomProduit.setPromptText("Nom du produit (ex: Coca-Cola)");
         tfNomProduit.getStyleClass().add("input-field");
         tfNomProduit.setPrefHeight(35);
 
         HBox ligneDetails = new HBox(10);
         TextField tfType = new TextField();
-        tfType.setPromptText("Type (ex: Vêtement)");
+        tfType.setPromptText("Type (ex: Boisson)");
         tfType.getStyleClass().add("input-field");
         tfType.setPrefHeight(35);
         HBox.setHgrow(tfType, Priority.ALWAYS);
@@ -1526,23 +1537,11 @@ public class JavaFXGUI extends IHM {
                 int prix = Integer.parseInt(prixStr);
                 Produit nouveauProduit = new Produit(prix, nomProd, typeProd);
 
-                // On cible le merch associé, ou on en crée un portant le nom de la carte
-                Merch cible = concertCourant.getMerchs().stream()
-                        .filter(m -> m.getNom().equalsIgnoreCase(c.getNom()))
-                        .findFirst()
-                        .orElse(null);
-                if (cible == null) {
-                    // Création automatique d'un stand merch lié à la carte
-                    controleur.creerMerch(new IHM.InfosMerch("carte", c.getNom()));
-                    cible = concertCourant.getMerchs().stream()
-                            .filter(m -> m.getNom().equalsIgnoreCase(c.getNom()))
-                            .findFirst()
-                            .orElse(null);
-                }
-                if (cible != null) {
-                    cible.ajouterProduit(nouveauProduit);
-                }
-                allerVersCarte();
+                // MODIFICATION : Appel direct de votre méthode ajouterProduit de Carte.java
+                // Aucun doublon n'est créé dans la liste des Merchs du concert.
+                c.ajouterProduit(nouveauProduit);
+
+                allerVersCarte(buvetteEnCoursDeModification);
             } catch (NumberFormatException e) {
                 informerUtilisateur("Le prix doit être un nombre entier.", false);
             }
@@ -1554,12 +1553,12 @@ public class JavaFXGUI extends IHM {
 
         zoneAjout.getChildren().addAll(tfNomProduit, ligneDetails, btnAddProduit);
 
-        // ── Assemblage final ──
+        // ── STRUCTURE ET STYLE DE LA CARTE ──
         VBox carte = new VBox(12, header, theme, btnAppliquer, sep, lblProduits, produitsBox, zoneAjout);
 
         String defaultStyle  = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
         String hoverStyle    = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
-        String appliqueeStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #27AE60; -fx-border-radius: 12; -fx-border-width: 2; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(39,174,96,0.2), 12, 0, 0, 4);";
+        String appliqueeStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 2; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(39,174,96,0.2), 12, 0, 0, 4);";
 
         carte.setStyle(estAppliquee ? appliqueeStyle : defaultStyle);
         carte.setPrefWidth(350);
