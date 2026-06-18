@@ -30,9 +30,10 @@ public class Main {
         Salle heureBleue = new Salle("L'Heure Bleue", new ArrayList<>(), 600, "Avenue Jean Vilar, Saint-Martin-d'Hères", 80, 45.1783, 5.7668);
         Salle grandAngle = new Salle("Le Grand Angle", new ArrayList<>(), 1700, "Rue du Moulin, Voiron", 250, 45.3672, 5.5881);
 
-        LocalDate dateDebutSummum = LocalDate.of(2026, 10, 15);
-        LocalDate dateFinSummum = LocalDate.of(2026, 10, 20);
+        LocalDate dateDebutSummum = LocalDate.of(2026, 6, 19);
+        LocalDate dateFinSummum = LocalDate.of(2026, 6, 21);
         summum.ajouterOccupation(dateDebutSummum, dateFinSummum);
+        System.out.println("->tester occupation Salle Le Summum : " + dateDebutSummum + " au " + dateFinSummum);
 
         LocalDate dateDebutBelle = LocalDate.of(2026, 11, 5);
         LocalDate dateFinBelle = LocalDate.of(2026, 11, 10);
@@ -84,11 +85,11 @@ public class Main {
                 }
 
                 // d. Carte & ses Produits (Liés par le même nom dans ton système)
-                genevent.nouvelcarte("VIP", "Pass Premium", c1.getNom());
+                genevent.nouvelcarte("VIP", "Carte Premium", c1.getNom());
                 genevent.nouveauMerch("Virtuel", "Pass Premium", c1.getNom()); // On crée le Merch fantôme pour stocker les produits de la carte
                 Merch passPremium = c1.getMerchs().stream().filter(m -> m.getNom().equals("Pass Premium")).findFirst().orElse(null);
                 if (passPremium != null) {
-                    passPremium.ajouterProduit(new Produit(50, "Carnet Boissons x5", "Conso"));
+                    passPremium.ajouterProduit(new Produit(50, "Carnet Boissons ", "Conso"));
                     passPremium.ajouterProduit(new Produit(150, "Rencontre Artiste", "Service"));
                 }
             }

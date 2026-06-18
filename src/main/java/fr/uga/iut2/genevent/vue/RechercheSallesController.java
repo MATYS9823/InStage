@@ -76,9 +76,7 @@ public class RechercheSallesController {
         listViewSalles.setItems(sallesFiltrees);
         listViewSalles.setFixedCellSize(120);
 
-        // =========================================================================
         // --- GESTION ET VALIDATION AUTOMATIQUE DES DATES DE DÉBUT ET DE FIN ---
-        // =========================================================================
 
         // 1. Écouteur sur la date de début : ajuste automatiquement la date de fin
         date_debut.valueProperty().addListener((observable, ancienneDate, nouvelleDate) -> {
@@ -117,9 +115,8 @@ public class RechercheSallesController {
             }
         });
 
-        // =========================================================================
+
         // --- CHARGEMENT DES DONNÉES ET DE LA CARTE ---
-        // =========================================================================
 
         if (this.controleurPrincipal != null && this.controleurPrincipal.getToutesLesSalles() != null) {
             toutesLesSalles.addAll(this.controleurPrincipal.getToutesLesSalles());
@@ -191,9 +188,8 @@ public class RechercheSallesController {
         listViewSalles.refresh();
     }
 
-    // =========================================================================
+
     // --- ACTIONS DE NAVIGATION ET MENUS ---
-    // =========================================================================
 
     /**
      * Déconnecte l'utilisateur et retourne à l'écran de connexion.
