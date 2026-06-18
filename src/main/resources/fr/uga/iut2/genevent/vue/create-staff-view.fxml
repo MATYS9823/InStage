@@ -6,164 +6,173 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
-    <BorderPane style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header">
+        <children>
+            <Button onAction="#allerVersAccueil" styleClass="icon-button">
+                <graphic>
+                    <ImageView fitHeight="45.0" preserveRatio="true">
+                        <image>
+                            <Image url="@logotransparent.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Region HBox.hgrow="ALWAYS" />
+            <MenuButton styleClass="icon-button">
+                <graphic>
+                    <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="white" scaleX="1.3" scaleY="1.3" />
+                </graphic>
+                <items>
+                    <MenuItem mnemonicParsing="false" onAction="#connexionMenuItemActionNU" text="Se déconnecter" />
+                    <MenuItem mnemonicParsing="false" onAction="#quitterMenuBurgerAction" text="Quitter" />
+                </items>
+            </MenuButton>
+        </children>
+    </HBox>
 
-        <top>
-            <VBox>
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #909090; -fx-padding: 10 20 10 20;">
-                    <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 3; -fx-padding: 5 30 5 30;" text="Logo" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <MenuButton style="-fx-background-color: transparent; -fx-cursor: hand;">
-                        <graphic>
-                            <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="white" scaleX="1.3" scaleY="1.3" />
-                        </graphic>
-                        <items>
-                            <MenuItem mnemonicParsing="false" onAction="#connexionMenuItemAction" text="Se déconnecter" />
-                            <MenuItem mnemonicParsing="false" onAction="#quitterMenuBurgerAction" text="Quitter" />
-                        </items>
-                    </MenuButton>
+    <StackPane VBox.vgrow="ALWAYS">
+        <BorderPane style="-fx-background-color: transparent;">
+            <top>
+                <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-padding: 15 20 0 20;">
+                    <children>
+                        <Label onMouseClicked="#toggleMenuStaff" style="-fx-font-size: 32px; -fx-text-fill: #A0A0A0; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" />
+                    </children>
                 </HBox>
-            </VBox>
-        </top>
+            </top>
 
-        <center>
-            <StackPane>
-                <children>
+            <center>
+                <VBox alignment="CENTER" maxWidth="500.0" spacing="12.0" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets bottom="20.0" top="10.0" />
+                    </BorderPane.margin>
 
-                    <BorderPane style="-fx-background-color: white;">
-                        <top>
-                            <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-padding: 15 20 0 20;">
-                                <children>
-                                    <Label onMouseClicked="#toggleMenuBuvette" style="-fx-font-size: 32px; -fx-text-fill: #A0A0A0; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" />
-                                </children>
-                            </HBox>
-                        </top>
+                    <Label alignment="CENTER" styleClass="text-dark" text="Créer une nouvelle équipe" textAlignment="CENTER" wrapText="true">
+                        <font>
+                            <Font name="System Bold" size="32.0" />
+                        </font>
+                        <VBox.margin>
+                            <Insets bottom="15.0" />
+                        </VBox.margin>
+                    </Label>
 
-                        <center>
-                            <VBox alignment="TOP_CENTER" maxWidth="500.0" spacing="12.0" BorderPane.alignment="TOP_CENTER">
-                                <BorderPane.margin>
-                                    <Insets top="80.0" bottom="20.0" />
-                                </BorderPane.margin>
-
-                                <Label alignment="CENTER" style="-fx-font-size: 32px; -fx-text-fill: #555555; -fx-font-family: 'Segoe UI', sans-serif; -fx-font-weight: bold;" text="Créer une nouvelle équipe" textAlignment="CENTER" wrapText="true">
-                                    <VBox.margin>
-                                        <Insets bottom="15.0" />
-                                    </VBox.margin>
-                                </Label>
-
-                                <VBox spacing="5.0">
-                                    <children>
-                                        <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Nom de l'équipe">
-                                            <VBox.margin>
-                                                <Insets left="15.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <TextField fx:id="tfNomEquipe" prefHeight="40.0" style="-fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-padding: 0 20 0 20; -fx-font-size: 14px;" />
-                                    </children>
-                                </VBox>
-
-                                <VBox spacing="5.0">
-                                    <children>
-                                        <Label style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" text="Catégorie">
-                                            <VBox.margin>
-                                                <Insets left="15.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <TextField fx:id="tfCategorieEquipe" prefHeight="40.0" promptText="ex : Son, Lumière, Sécurité..." style="-fx-background-color: #F0F0F0; -fx-background-radius: 25; -fx-padding: 0 20 0 20; -fx-font-size: 14px;" />
-                                    </children>
-                                </VBox>
-
-                                <Button maxWidth="Infinity" onAction="#createNewStaffAction" prefHeight="45.0" style="-fx-background-color: #0078D4; -fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold; -fx-background-radius: 25; -fx-cursor: hand;" text="Créer">
-                                    <VBox.margin>
-                                        <Insets top="15.0" />
-                                    </VBox.margin>
-                                </Button>
-                            </VBox>
-                        </center>
-                    </BorderPane>
-
-                    <Region fx:id="scrimBuvette" onMouseClicked="#toggleMenuBuvette" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
-
-                    <VBox fx:id="sideMenuBuvette" maxWidth="280.0" prefWidth="280.0" style="-fx-background-color: #555555;" visible="false" StackPane.alignment="CENTER_LEFT">
+                    <VBox spacing="5.0">
                         <children>
-
-                            <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
-                                <children>
-                                    <Label onMouseClicked="#toggleMenuBuvette" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
-                                </children>
-                            </HBox>
-
-                            <VBox spacing="15.0">
-                                <children>
-                                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                                        <children>
-                                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="🏠" />
-                                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Vos concerts" />
-                                        </children>
-                                    </HBox>
-
-                                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersBuvette" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                                        <children>
-                                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="🍸" />
-                                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Buvette" />
-                                        </children>
-                                    </HBox>
-
-                                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMerch" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                                        <children>
-                                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="👕" />
-                                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Merch" />
-                                        </children>
-                                    </HBox>
-
-                                    <HBox alignment="CENTER_LEFT">
-                                        <children>
-                                            <Region minWidth="4.0" prefHeight="35.0" style="-fx-background-color: white; -fx-background-radius: 3;">
-                                                <HBox.margin>
-                                                    <Insets left="15.0" right="11.0" />
-                                                </HBox.margin>
-                                            </Region>
-                                            <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersStaff" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 10 40 10 15; -fx-cursor: hand;">
-                                                <children>
-                                                    <Label style="-fx-font-size: 20px; -fx-text-fill: black;" text="👤" />
-                                                    <Label style="-fx-font-size: 16px; -fx-text-fill: black; -fx-font-weight: bold;" text="Staff" />
-                                                </children>
-                                            </HBox>
-                                        </children>
-                                    </HBox>
-
-                                    <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMateriel" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
-                                        <children>
-                                            <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="📦" />
-                                            <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Matériel" />
-                                        </children>
-                                    </HBox>
-                                </children>
-                            </VBox>
-
-                            <Region VBox.vgrow="ALWAYS" />
-
-                            <VBox alignment="CENTER" style="-fx-padding: 20;">
-                                <children>
-                                    <Button maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
-                                </children>
-                            </VBox>
+                            <Label styleClass="text-dark" text="Nom de l'équipe">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                                <VBox.margin>
+                                    <Insets left="15.0" />
+                                </VBox.margin>
+                            </Label>
+                            <TextField fx:id="tfNomEquipe" prefHeight="45.0" styleClass="input-field" />
                         </children>
                     </VBox>
 
-                </children>
-            </StackPane>
-        </center>
+                    <VBox spacing="5.0">
+                        <children>
+                            <Label styleClass="text-dark" text="Catégorie">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                                <VBox.margin>
+                                    <Insets left="15.0" />
+                                </VBox.margin>
+                            </Label>
+                            <TextField fx:id="tfCategorieEquipe" prefHeight="45.0" promptText="ex : Son, Lumière, Sécurité..." styleClass="input-field" />
+                        </children>
+                    </VBox>
 
-    </BorderPane>
-</AnchorPane>
+                    <Button maxWidth="Infinity" onAction="#createNewStaffAction" prefHeight="50.0" styleClass="custom-button" text="Créer">
+                        <font>
+                            <Font name="System Bold" size="18.0" />
+                        </font>
+                        <VBox.margin>
+                            <Insets top="15.0" />
+                        </VBox.margin>
+                    </Button>
+                </VBox>
+            </center>
+        </BorderPane>
+
+        <Region fx:id="scrimStaff" onMouseClicked="#toggleMenuStaff" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
+
+        <VBox fx:id="sideMenuStaff" maxWidth="280.0" prefWidth="280.0" styleClass="sidebar" visible="false" StackPane.alignment="CENTER_LEFT">
+            <children>
+                <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
+                    <children>
+                        <Label onMouseClicked="#toggleMenuStaff" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
+                    </children>
+                </HBox>
+
+                <VBox spacing="15.0">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                            <children>
+                                <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="🏠" />
+                                <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Vos concerts" />
+                            </children>
+                        </HBox>
+
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersBuvette" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                            <children>
+                                <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="🍸" />
+                                <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Buvette" />
+                            </children>
+                        </HBox>
+
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMerch" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                            <children>
+                                <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="👕" />
+                                <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Merch" />
+                            </children>
+                        </HBox>
+
+                        <HBox alignment="CENTER_LEFT">
+                            <children>
+                                <Region minWidth="4.0" prefHeight="35.0" style="-fx-background-color: white; -fx-background-radius: 3;">
+                                    <HBox.margin>
+                                        <Insets left="15.0" right="11.0" />
+                                    </HBox.margin>
+                                </Region>
+                                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 10 40 10 15; -fx-cursor: hand;">
+                                    <children>
+                                        <Label style="-fx-font-size: 20px; -fx-text-fill: black;" text="👤" />
+                                        <Label style="-fx-font-size: 16px; -fx-text-fill: black; -fx-font-weight: bold;" text="Staff" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMateriel" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
+                            <children>
+                                <Label style="-fx-font-size: 20px; -fx-text-fill: white;" text="📦" />
+                                <Label style="-fx-font-size: 16px; -fx-text-fill: white;" text="Matériel" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <VBox alignment="CENTER" style="-fx-padding: 20;">
+                    <children>
+                        <Button maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </StackPane>
+</VBox>

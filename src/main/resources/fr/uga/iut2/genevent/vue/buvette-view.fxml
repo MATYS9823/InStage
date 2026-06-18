@@ -7,6 +7,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -14,14 +16,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #909090; -fx-padding: 10 20 10 20;">
+        <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header">
             <children>
-                <Button style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 3; -fx-padding: 5 30 5 30;" text="Logo" />
+                <Button onAction="#allerVersAccueil" styleClass="icon-button">
+                    <graphic>
+                        <ImageView fitHeight="45.0" preserveRatio="true">
+                            <image>
+                                <Image url="@logotransparent.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
                 <Region HBox.hgrow="ALWAYS" />
-                <MenuButton style="-fx-background-color: transparent; -fx-cursor: hand;">
+                <MenuButton styleClass="icon-button">
                     <graphic>
                         <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="white" scaleX="1.3" scaleY="1.3" />
                     </graphic>
@@ -37,22 +47,22 @@
     <center>
         <StackPane>
             <children>
-                <BorderPane style="-fx-background-color: #F4F4F4;">
+                <BorderPane styleClass="main-background">
                     <top>
-                        <VBox>
+                        <VBox styleClass="title-bar-white">
                             <children>
-                                <BorderPane style="-fx-padding: 10 20 10 20; -fx-background-color: white;">
+                                <BorderPane style="-fx-padding: 10 20 10 20;">
                                     <left>
                                         <Label onMouseClicked="#toggleMenuBuvette" style="-fx-font-size: 32px; -fx-text-fill: #B0B0B0; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" />
                                     </left>
                                     <center>
-                                        <Label fx:id="welcomeLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #000000;" text="Goosebump_France" BorderPane.alignment="CENTER" />
+                                        <Label fx:id="welcomeLabel" styleClass="text-dark" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Goosebump_France" BorderPane.alignment="CENTER" />
                                     </center>
                                     <right>
-                                        <Label fx:id="artisteLabel" style="-fx-font-size: 20px; -fx-text-fill: #000000;" text="Travis Scott" BorderPane.alignment="CENTER" />
+                                        <Label fx:id="artisteLabel" styleClass="text-dark" style="-fx-font-size: 20px;" text="Travis Scott" BorderPane.alignment="CENTER" />
                                     </right>
                                 </BorderPane>
-                                <Separator style="-fx-background-color: #D0D0D0;" />
+                                <Separator />
                             </children>
                         </VBox>
                     </top>
@@ -62,12 +72,12 @@
                             <children>
                                 <StackPane>
                                     <children>
-                                        <Label alignment="CENTER" maxWidth="Infinity" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: black;" text="Gestion de la buvette" StackPane.alignment="CENTER" />
-                                        <Button onAction="#allerVerscreerBuvette" style="-fx-background-color: #A9A9A9; -fx-text-fill: black; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 25; -fx-cursor: hand;" text="Créer buvette +" StackPane.alignment="CENTER_RIGHT" />
+                                        <Label alignment="CENTER" maxWidth="Infinity" styleClass="text-dark" style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Gestion de la buvette" StackPane.alignment="CENTER" />
+                                        <Button onAction="#allerVerscreerBuvette" styleClass="custom-button" style="-fx-padding: 10 25;" text="Créer buvette +" StackPane.alignment="CENTER_RIGHT" />
                                     </children>
                                 </StackPane>
 
-                                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-border-color: transparent;">
+                                <ScrollPane fitToWidth="true" styleClass="scroll-pane">
                                     <content>
                                         <VBox fx:id="buvetteTilePane" alignment="TOP_CENTER" spacing="25.0" style="-fx-padding: 10 20 20 20;" />
                                     </content>
@@ -75,27 +85,18 @@
                             </children>
                         </VBox>
                     </center>
-
-                    <bottom>
-                        <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 0 40 40 0;" />
-                    </bottom>
                 </BorderPane>
 
-                <!-- CALQUE ASSOMBRISSANT (SCRIM) -->
                 <Region fx:id="scrimBuvette" onMouseClicked="#toggleMenuBuvette" style="-fx-background-color: rgba(0,0,0,0.4);" visible="false" />
 
-                <!-- MENU LATÉRAL COULISSANT (SIDE MENU) -->
-                <VBox fx:id="sideMenuBuvette" maxWidth="280.0" prefWidth="280.0" style="-fx-background-color: #555555;" visible="false" StackPane.alignment="CENTER_LEFT">
+                <VBox fx:id="sideMenuBuvette" maxWidth="280.0" prefWidth="280.0" styleClass="sidebar" visible="false" StackPane.alignment="CENTER_LEFT">
                     <children>
-
-                        <!-- Bouton Fermer (×) -->
                         <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 20 20 20;">
                             <children>
                                 <Label onMouseClicked="#toggleMenuBuvette" style="-fx-font-size: 28px; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;" text="×" />
                             </children>
                         </HBox>
 
-                        <!-- Liens de navigation -->
                         <VBox spacing="15.0">
                             <children>
                                 <HBox alignment="CENTER_LEFT" onMouseClicked="#allerVersMesConcerts" spacing="15.0" style="-fx-padding: 10 20 10 30; -fx-cursor: hand;">
@@ -105,7 +106,6 @@
                                     </children>
                                 </HBox>
 
-                                <!-- Onglet Actif (Buvette) -->
                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                         <Region minWidth="4.0" prefHeight="35.0" style="-fx-background-color: white; -fx-background-radius: 3;">
@@ -147,7 +147,6 @@
 
                         <Region VBox.vgrow="ALWAYS" />
 
-                        <!-- Footer du Menu -->
                         <VBox alignment="CENTER" style="-fx-padding: 20;">
                             <children>
                                 <Button maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 20; -fx-padding: 10 20;" text="Goosebump_France" />

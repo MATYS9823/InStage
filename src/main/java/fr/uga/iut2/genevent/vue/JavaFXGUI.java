@@ -450,6 +450,7 @@ public class JavaFXGUI extends IHM {
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.setTitle("IN STAGE");
+            welcomeLabel.setText(controleur.getConcertSelectionne().getNom());
 
             if (staffTilePane != null && controleur.getConcertSelectionne() != null) {
                 staffTilePane.getChildren().clear();
@@ -590,6 +591,14 @@ public class JavaFXGUI extends IHM {
         allerVersLogin();
         inscritlink.getScene().getWindow().hide();
     }
+
+    @FXML
+    private void connexionMenuItemActionFP() {
+        // Depuis mdp oublié, ce bouton sert à aller sur la page de déconnecter
+        allerVersLogin();
+    }
+
+
 
     @FXML
     private void quitterMenuBurgerAction() {
@@ -963,43 +972,145 @@ public class JavaFXGUI extends IHM {
     }
 
     private VBox creerCarteMerch(Merch m) {
+        // En-tête de la carte
         Label nom = new Label(m.getNom());
         nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
-        Label localisation = new Label("📍 " + m.getLocalisation());
-        localisation.setStyle("-fx-font-size: 14px; -fx-text-fill: #555555;");
+        Label detail = new Label("📍 " + m.getLocalisation());
+        detail.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
-        // CROIX DE SUPPRESSION
-        Button btnSupprimer = new Button("✕");
-        btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
-        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
-        btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
-        btnSupprimer.setOnAction(e -> {
-            controleur.supprimerMerch(m);
+        // --- AFFICHAGE DES PRODUITS EXISTANTS ---
+        FlowPane produitsBox = new FlowPane();
+        produitsBox.setHgap(8);
+        produitsBox.setVgap(8);
+
+        if (m.getProduits().isEmpty()) {
+            Label aucun = new Label("Aucun produit en vente");
+            aucun.setStyle("-fx-font-size: 13px; -fx-text-fill: #AAAAAA; -fx-font-style: italic;");
+            produitsBox.getChildren().add(aucun);
+        } else {
+            for (Produit p : m.getProduits()) {
+                HBox badge = new HBox(5);
+                badge.setAlignment(Pos.CENTER);
+                badge.setStyle("-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 10 4 12;");
+
+                // Affichage du nom, du type et du prix
+                Label lblProd = new Label(p.getNom() + " (" + p.getType() + ") - " + p.getPrix() + "€");
+                lblProd.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
+
+                Button btnRemove = new Button("✕");
+                btnRemove.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0 0 0 5;");
+                btnRemove.setOnAction(ev -> {
+                    m.supprimerProduit(p); // Appelle votre méthode du modèle
+                    allerVersMerch(); // Rafraîchissement de la page
+                });
+
+                badge.getChildren().addAll(lblProd, btnRemove);
+                produitsBox.getChildren().add(badge);
+            }
+        }
+
+        // --- ZONE D'AJOUT D'UN NOUVEAU PRODUIT (Adaptée à votre Produit.java) ---
+        VBox zoneAjout = new VBox(8);
+        zoneAjout.setStyle("-fx-border-color: #EAEAEA; -fx-border-width: 1 0 0 0; -fx-padding: 15 0 0 0;");
+
+        // Champ 1 : Nom du produit
+        TextField tfNomProduit = new TextField();
+        tfNomProduit.setPromptText("Nom du produit (ex: T-Shirt)");
+        tfNomProduit.getStyleClass().add("input-field");
+        tfNomProduit.setPrefHeight(35);
+
+        // Ligne avec Type et Prix côte à côte
+        HBox ligneDetails = new HBox(10);
+
+        TextField tfType = new TextField();
+        tfType.setPromptText("Type (ex: Vêtement)");
+        tfType.getStyleClass().add("input-field");
+        tfType.setPrefHeight(35);
+        HBox.setHgrow(tfType, Priority.ALWAYS);
+
+        TextField tfPrix = new TextField();
+        tfPrix.setPromptText("Prix (€)");
+        tfPrix.getStyleClass().add("input-field");
+        tfPrix.setPrefHeight(35);
+        HBox.setHgrow(tfPrix, Priority.ALWAYS);
+
+        ligneDetails.getChildren().addAll(tfType, tfPrix);
+
+        // Bouton d'ajout
+        Button btnAdd = new Button("Ajouter le produit +");
+        btnAdd.setMaxWidth(Double.MAX_VALUE);
+        btnAdd.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand; -fx-padding: 8;");
+
+        btnAdd.setOnAction(ev -> {
+            try {
+                String nomProd = tfNomProduit.getText();
+                String typeProd = tfType.getText();
+
+                // Vérification que tous les champs sont bien remplis
+                if (nomProd != null && !nomProd.trim().isEmpty() &&
+                        typeProd != null && !typeProd.trim().isEmpty() &&
+                        !tfPrix.getText().isEmpty()) {
+
+                    // Conversion du prix en int (comme attendu dans Produit.java)
+                    int prix = Integer.parseInt(tfPrix.getText().trim());
+
+                    // Création avec votre constructeur Produit(int prix, String nom, String type)
+                    Produit nouveauProduit = new Produit(prix, nomProd.trim(), typeProd.trim());
+                    m.ajouterProduit(nouveauProduit);
+
+                    allerVersMerch(); // Rafraîchit l'affichage
+                } else {
+                    informerUtilisateur("Veuillez remplir tous les champs.", false);
+                }
+            } catch (NumberFormatException e) {
+                // Si l'utilisateur a tapé des lettres dans le champ prix
+                informerUtilisateur("Veuillez entrer un nombre entier valide pour le prix.", false);
+            }
+        });
+
+        // Validation possible avec la touche Entrée depuis n'importe quel champ
+        tfNomProduit.setOnAction(btnAdd.getOnAction());
+        tfType.setOnAction(btnAdd.getOnAction());
+        tfPrix.setOnAction(btnAdd.getOnAction());
+
+        zoneAjout.getChildren().addAll(tfNomProduit, ligneDetails, btnAdd);
+
+
+        // --- CROIX DE SUPPRESSION DU STAND MERCH ---
+        Button btnSupprimerMerch = new Button("✕");
+        btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
+        btnSupprimerMerch.setOnMouseEntered(ev -> btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimerMerch.setOnMouseExited(ev -> btnSupprimerMerch.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimerMerch.setOnAction(ev -> {
+            controleur.supprimerMerch(m); 
             allerVersMerch();
         });
 
+        // --- ASSEMBLAGE DE LA CARTE ---
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, Priority.ALWAYS);
-        HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+        HBox header = new HBox(10, nom, headerSpacer, btnSupprimerMerch);
         header.setAlignment(Pos.TOP_CENTER);
 
         Region vSpacer = new Region();
         VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
-        VBox carte = new VBox(15, header, vSpacer, localisation);
+        VBox carte = new VBox(15, header, detail, produitsBox, vSpacer, zoneAjout);
 
+        // Style de la carte
         String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
         String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
 
         carte.setStyle(defaultStyle);
-        carte.setPrefSize(350, 200);
-        carte.setOnMouseEntered(e -> carte.setStyle(hoverStyle));
-        carte.setOnMouseExited(e -> carte.setStyle(defaultStyle));
+        carte.setPrefWidth(350);
+        carte.setMinHeight(320); // Carte un peu plus haute pour accueillir les 3 champs
+
+        carte.setOnMouseEntered(ev -> carte.setStyle(hoverStyle));
+        carte.setOnMouseExited(ev -> carte.setStyle(defaultStyle));
 
         return carte;
     }
-
     private VBox creerCarteEquipe(Equipe e) {
         Label nom = new Label(e.getNom());
         nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
@@ -1007,44 +1118,94 @@ public class JavaFXGUI extends IHM {
         Label categorie = new Label("🏷 " + e.getCategorie());
         categorie.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
-        HBox personnelBox = new HBox(8);
-        personnelBox.setAlignment(Pos.CENTER_LEFT);
+        // --- AFFICHAGE DES MEMBRES ---
+        // Utilisation d'un FlowPane pour que les badges aillent à la ligne s'ils sont nombreux
+        FlowPane personnelBox = new FlowPane();
+        personnelBox.setHgap(8);
+        personnelBox.setVgap(8);
+
         if (e.getPersonnels().isEmpty()) {
             Label aucun = new Label("Aucun personnel assigné");
             aucun.setStyle("-fx-font-size: 13px; -fx-text-fill: #AAAAAA; -fx-font-style: italic;");
             personnelBox.getChildren().add(aucun);
         } else {
             for (String membre : e.getPersonnels()) {
-                Label badge = new Label(membre);
-                badge.setStyle("-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
+                // Création d'un petit badge contenant le nom et un bouton supprimer
+                HBox badge = new HBox(5);
+                badge.setAlignment(Pos.CENTER);
+                badge.setStyle("-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 10 4 12;");
+
+                Label lblMembre = new Label(membre);
+                lblMembre.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
+
+                // Bouton miniature pour retirer ce membre spécifique
+                Button btnRemove = new Button("✕");
+                btnRemove.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0 0 0 5;");
+                btnRemove.setOnAction(ev -> {
+                    e.supprimerPersonnel(membre); // Suppression du modèle
+                    allerVersStaff(); // Rafraîchissement de la page
+                });
+
+                badge.getChildren().addAll(lblMembre, btnRemove);
                 personnelBox.getChildren().add(badge);
             }
         }
-        // CROIX DE SUPPRESSION
-        Button btnSupprimer = new Button("✕");
-        btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
-        btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
-        btnSupprimer.setOnMouseExited(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
-        btnSupprimer.setOnAction(ev -> {
+
+        // --- ZONE D'AJOUT D'UN NOUVEAU MEMBRE ---
+        HBox addBox = new HBox(10);
+        addBox.setAlignment(Pos.CENTER_LEFT);
+
+        TextField tfNouveauMembre = new TextField();
+        tfNouveauMembre.setPromptText("Nom du membre...");
+        tfNouveauMembre.getStyleClass().add("input-field");
+        tfNouveauMembre.setPrefHeight(35);
+        HBox.setHgrow(tfNouveauMembre, Priority.ALWAYS); // Le champ prend l'espace disponible
+
+        Button btnAdd = new Button("+");
+        btnAdd.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 15; -fx-cursor: hand; -fx-padding: 5 15 5 15;");
+        btnAdd.setOnAction(ev -> {
+            String nouveauNom = tfNouveauMembre.getText();
+            if (nouveauNom != null && !nouveauNom.trim().isEmpty()) {
+                e.ajouterPersonnel(nouveauNom); // Ajout au modèle
+                allerVersStaff(); // Rafraîchissement de la page
+            }
+        });
+
+        // Ajouter la validation avec la touche "Entrée" sur le clavier
+        tfNouveauMembre.setOnAction(btnAdd.getOnAction());
+
+        addBox.getChildren().addAll(tfNouveauMembre, btnAdd);
+
+
+        // --- CROIX DE SUPPRESSION DE L'ÉQUIPE (Entière) ---
+        Button btnSupprimerEquipe = new Button("✕");
+        btnSupprimerEquipe.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
+        btnSupprimerEquipe.setOnMouseEntered(ev -> btnSupprimerEquipe.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimerEquipe.setOnMouseExited(ev -> btnSupprimerEquipe.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
+        btnSupprimerEquipe.setOnAction(ev -> {
             controleur.supprimerEquipe(e);
             allerVersStaff();
         });
 
+        // --- ASSEMBLAGE DE LA CARTE ---
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, Priority.ALWAYS);
-        HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
+        HBox header = new HBox(10, nom, headerSpacer, btnSupprimerEquipe);
         header.setAlignment(Pos.TOP_CENTER);
 
         Region vSpacer = new Region();
         VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
-        VBox carte = new VBox(15, header, categorie, vSpacer, personnelBox);
+        // Intégration de la zone d'ajout (addBox) tout en bas de la carte
+        VBox carte = new VBox(15, header, categorie, personnelBox, vSpacer, addBox);
 
         String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
         String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
 
         carte.setStyle(defaultStyle);
-        carte.setPrefSize(350, 200);
+        carte.setPrefWidth(350);
+        carte.setMinHeight(250); // Hauteur minimale dynamique pour que la carte s'allonge si beaucoup de membres sont ajoutés
+
         carte.setOnMouseEntered(ev -> carte.setStyle(hoverStyle));
         carte.setOnMouseExited(ev -> carte.setStyle(defaultStyle));
 
@@ -1223,6 +1384,7 @@ public class JavaFXGUI extends IHM {
             Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.setTitle("IN STAGE");
+            welcomeLabel.setText(controleur.getConcertSelectionne().getNom());
 
             if (materielTilePane != null) {
                 materielTilePane.getChildren().clear();

@@ -51,4 +51,16 @@ public class Equipe implements Serializable {
     public int hashCode() {
         return Objects.hash(nom, categorie);
     }
+
+    public void ajouterPersonnel(String nomPersonne) {
+        if (nomPersonne != null && !nomPersonne.trim().isEmpty() && !this.personnels.contains(nomPersonne.trim())) {
+            this.personnels.add(nomPersonne.trim());
+        }
+    }
+
+    public void supprimerPersonnel(String nomPersonne) {
+        this.personnels.remove(nomPersonne);
+    }
 }
+
+
