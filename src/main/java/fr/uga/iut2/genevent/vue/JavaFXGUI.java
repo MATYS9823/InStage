@@ -1306,28 +1306,28 @@ public class JavaFXGUI extends IHM {
     }
 
     private VBox creerCarteBuvette(Buvette b) {
+        Concert concertCourant = controleur.getConcertSelectionne();
+
         Label nom = new Label(b.getNom());
         nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
         Label localisation = new Label("📍 " + b.getLocalisation());
         localisation.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
-        Concert concertCourant = controleur.getConcertSelectionne();
-        Buvette buvetteAppliqueeDuConcert = concertCourant.getBuvetteAppliquee();
+        // --- BADGES DES CARTES APPLIQUÉES AU CONCERT ---
+        FlowPane cartesBox = new FlowPane(8, 6);
+        cartesBox.setAlignment(Pos.CENTER_LEFT);
 
-        HBox equipesBox = new HBox(8);
-        equipesBox.setAlignment(Pos.CENTER_LEFT);
-
-        // Modification du texte ici selon ta demande
-        if (b.getEquipes().isEmpty()) {
-            Label aucune = new Label("Aucune buvette assignée");
+        List<Carte> cartesAppliquees = concertCourant.getCartesAppliquees();
+        if (cartesAppliquees == null || cartesAppliquees.isEmpty()) {
+            Label aucune = new Label("Aucune carte assignée");
             aucune.setStyle("-fx-font-size: 13px; -fx-text-fill: #AAAAAA; -fx-font-style: italic;");
-            equipesBox.getChildren().add(aucune);
+            cartesBox.getChildren().add(aucune);
         } else {
-            for (Equipe equipe : b.getEquipes()) {
-                Label badge = new Label(equipe.getNom());
-                badge.setStyle("-fx-background-color: #F2F2F7; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000;");
-                equipesBox.getChildren().add(badge);
+            for (Carte carte : cartesAppliquees) {
+                Label badge = new Label("🗺 " + carte.getNom());
+                badge.setStyle("-fx-background-color: #EAF6EE; -fx-background-radius: 15; -fx-padding: 4 12 4 12; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #27AE60;");
+                cartesBox.getChildren().add(badge);
             }
         }
 
@@ -1342,7 +1342,7 @@ public class JavaFXGUI extends IHM {
             alert.setContentText("Supprimer la buvette \"" + b.getNom() + "\" ?");
             alert.showAndWait().ifPresent(reponse -> {
                 if (reponse == ButtonType.OK) {
-                    if (buvetteAppliqueeDuConcert == b) concertCourant.setBuvetteAppliquee(null);
+                    if (concertCourant.getBuvetteAppliquee() == b) concertCourant.setBuvetteAppliquee(null);
                     controleur.supprimerBuvette(b);
                     allerVersBuvette();
                 }
@@ -1357,50 +1357,49 @@ public class JavaFXGUI extends IHM {
         Region vSpacer = new Region();
         VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
-        // --- NOUVEAU : BOUTON MODIFIER CARTE ---
-        Button btnModifierCarte = new Button("Modifier la carte ✍");
+        // BOUTON GÉRER LES CARTES
+        Button btnModifierCarte = new Button("Gérer les cartes ✍");
         btnModifierCarte.setMaxWidth(Double.MAX_VALUE);
         btnModifierCarte.setStyle("-fx-background-color: #3498DB; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
-        btnModifierCarte.setOnAction(ev -> {
-            allerVersCarte(); // C'est maintenant ce bouton qui redirige !
-        });
+        btnModifierCarte.setOnAction(ev -> allerVersCarte());
 
-        // --- MODIFIÉ : BOUTON APPLIQUER / ANNULER ---
-        Button btnAppliquerCarte = new Button();
-        btnAppliquerCarte.setMaxWidth(Double.MAX_VALUE);
+        // BOUTON APPLIQUER / ANNULER LA BUVETTE (logique 3 états inchangée)
+        Buvette buvetteAppliquee = concertCourant.getBuvetteAppliquee();
+        Button btnAppliquerBuvette = new Button();
+        btnAppliquerBuvette.setMaxWidth(Double.MAX_VALUE);
 
-        // Gestion des 3 états possibles du bouton "Appliquer carte"
-        if (buvetteAppliqueeDuConcert == b) {
-            btnAppliquerCarte.setText("Annuler l'application");
-            btnAppliquerCarte.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
-            btnAppliquerCarte.setDisable(false);
-        } else if (buvetteAppliqueeDuConcert != null) {
-            btnAppliquerCarte.setText("Appliquer carte");
-            btnAppliquerCarte.setStyle("-fx-background-color: #95A5A6; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 16 8 16;");
-            btnAppliquerCarte.setDisable(true);
+        if (buvetteAppliquee == b) {
+            btnAppliquerBuvette.setText("Annuler l'application");
+            btnAppliquerBuvette.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
+            btnAppliquerBuvette.setDisable(false);
+        } else if (buvetteAppliquee != null) {
+            btnAppliquerBuvette.setText("Appliquer buvette");
+            btnAppliquerBuvette.setStyle("-fx-background-color: #95A5A6; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 16 8 16;");
+            btnAppliquerBuvette.setDisable(true);
         } else {
-            btnAppliquerCarte.setText("Appliquer carte");
-            btnAppliquerCarte.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
-            btnAppliquerCarte.setDisable(false);
+            btnAppliquerBuvette.setText("Appliquer buvette");
+            btnAppliquerBuvette.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
+            btnAppliquerBuvette.setDisable(false);
         }
 
-        btnAppliquerCarte.setOnAction(ev -> {
+        btnAppliquerBuvette.setOnAction(ev -> {
             if (concertCourant.getBuvetteAppliquee() == b) {
-                concertCourant.setBuvetteAppliquee(null); // On annule dans le modèle
+                concertCourant.setBuvetteAppliquee(null);
             } else {
-                concertCourant.setBuvetteAppliquee(b); // On applique dans le modèle
+                concertCourant.setBuvetteAppliquee(b);
             }
-            allerVersBuvette(); // Recharge la page
+            allerVersBuvette();
         });
 
-        // Assemblage final de la carte (avec les deux boutons en bas)
-        VBox carte = new VBox(15, header, localisation, vSpacer, equipesBox, btnModifierCarte, btnAppliquerCarte);
+        // ── ASSEMBLAGE FINAL ──
+        // ordre : en-tête | localisation | espace | badges cartes | bouton gérer cartes | bouton appliquer buvette
+        VBox carte = new VBox(15, header, localisation, vSpacer, cartesBox, btnModifierCarte, btnAppliquerBuvette);
 
         String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
-        String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
+        String hoverStyle   = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
 
         carte.setStyle(defaultStyle);
-        carte.setPrefSize(350, 260); // J'ai légèrement augmenté la hauteur pour faire de la place aux deux boutons
+        carte.setPrefSize(350, 280);
         carte.setOnMouseEntered(ev -> carte.setStyle(hoverStyle));
         carte.setOnMouseExited(ev -> carte.setStyle(defaultStyle));
 
@@ -1408,13 +1407,16 @@ public class JavaFXGUI extends IHM {
     }
 
     private VBox creerCarteCarte(Carte c) {
+        Concert concertCourant = controleur.getConcertSelectionne();
+        boolean estAppliquee = concertCourant.isCarteAppliquee(c);
+
         Label nom = new Label("Carte : \"" + c.getNom() + "\"");
         nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
         Label theme = new Label("Thème : " + c.getTheme());
         theme.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
-        // CROIX DE SUPPRESSION
+        // Bouton suppression
         Button btnSupprimer = new Button("✕");
         btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
         btnSupprimer.setOnMouseEntered(ev -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
@@ -1425,11 +1427,11 @@ public class JavaFXGUI extends IHM {
             alert.setContentText("Supprimer la carte \"" + c.getNom() + "\" ?");
             alert.showAndWait().ifPresent(reponse -> {
                 if (reponse == ButtonType.OK) {
+                    concertCourant.getCartesAppliquees().remove(c); // Désapplique si nécessaire
                     controleur.supprimerCarte(c);
                     allerVersCarte();
                 }
             });
-
         });
 
         Region headerSpacer = new Region();
@@ -1440,15 +1442,29 @@ public class JavaFXGUI extends IHM {
         Region vSpacer = new Region();
         VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
-        VBox carte = new VBox(15, header, vSpacer, theme);
+        // Bouton toggle : actif = vert coché, inactif = noir
+        Button btnAppliquer = new Button(estAppliquee ? "✓ Carte appliquée" : "Appliquer carte");
+        btnAppliquer.setMaxWidth(Double.MAX_VALUE);
+        btnAppliquer.setStyle(estAppliquee
+                ? "-fx-background-color: #27AE60; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"
+                : "-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
+
+        btnAppliquer.setOnAction(ev -> {
+            concertCourant.toggleCarteAppliquee(c);
+            allerVersCarte(); // Rafraîchit tous les boutons
+        });
+
+        VBox carte = new VBox(15, header, vSpacer, theme, btnAppliquer);
 
         String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
-        String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
+        String hoverStyle   = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
+        // Bordure verte si appliquée pour feedback visuel immédiat
+        String appliqueeStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #27AE60; -fx-border-radius: 12; -fx-border-width: 2; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(39,174,96,0.2), 12, 0, 0, 4);";
 
-        carte.setStyle(defaultStyle);
-        carte.setPrefSize(350, 200);
-        carte.setOnMouseEntered(ev -> carte.setStyle(hoverStyle));
-        carte.setOnMouseExited(ev -> carte.setStyle(defaultStyle));
+        carte.setStyle(estAppliquee ? appliqueeStyle : defaultStyle);
+        carte.setPrefSize(350, 220);
+        carte.setOnMouseEntered(ev2 -> carte.setStyle(estAppliquee ? appliqueeStyle : hoverStyle));
+        carte.setOnMouseExited(ev2  -> carte.setStyle(estAppliquee ? appliqueeStyle : defaultStyle));
 
         return carte;
     }

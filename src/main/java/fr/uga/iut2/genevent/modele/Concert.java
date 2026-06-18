@@ -191,6 +191,25 @@ public class Concert implements Serializable {
         return this.cartes;
     }
 
+    private  List<Carte> cartesAppliquees = new ArrayList<>();
+
+    public List<Carte> getCartesAppliquees() {
+        if (this.cartesAppliquees == null) this.cartesAppliquees = new ArrayList<>();
+        return this.cartesAppliquees;
+    }
+
+    public boolean isCarteAppliquee(Carte c) {
+        return getCartesAppliquees().contains(c);
+    }
+
+    public void toggleCarteAppliquee(Carte c) {
+        if (getCartesAppliquees().contains(c)) {
+            getCartesAppliquees().remove(c);
+        } else {
+            getCartesAppliquees().add(c);
+        }
+    }
+
     /**
      * Calcule le coût de location de la salle affectée à ce concert.
      * @return Le coût total, ou 0 si aucune salle n'est affectée.
