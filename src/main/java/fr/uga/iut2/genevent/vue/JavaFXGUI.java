@@ -100,6 +100,8 @@ public class JavaFXGUI extends IHM {
     @FXML private Label dashboardStaffCountLabel;
     @FXML private Label dashboardStaffCategoriesLabel;
     @FXML private Label dashboardMaterielCategoriesLabel;
+    @FXML private Label dashboardDateLabel;
+    @FXML private FlowPane dashboardBadgesBox;
 
     @FXML private TextField tfNomEquipe;
     @FXML private TextField tfCategorieEquipe;
@@ -124,6 +126,17 @@ public class JavaFXGUI extends IHM {
     @FXML private Label lblDernierArtiste;
     @FXML private Label lblDernierDate;
     @FXML private Label lblDernierLieu;
+
+
+    // champs vue Couts / Optimisation
+    @FXML private Label titreCoutsLabel;
+    @FXML private Label coutSalleLabel;
+    @FXML private Label coutMaterielLabel;
+    @FXML private Label coutTotalLabel;
+    @FXML private Label optiRevenuMaxLabel;
+    @FXML private Label optiPlacesMaxLabel;
+    @FXML private Label optiRentabiliteLabel;
+    @FXML private Label optiPlacesMinLabel;
 
     public JavaFXGUI(Controleur controleur) {
         this.controleur = controleur;
@@ -355,7 +368,7 @@ public class JavaFXGUI extends IHM {
         }
     }
 
-    private void allerVersdashboard(){
+    public void allerVersdashboard(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
             loader.setController(this);
@@ -367,13 +380,22 @@ public class JavaFXGUI extends IHM {
             controleur.selectionnerConcertRecent(concert);
 
             if (concert != null) {
-                // Mise à jour de l'en-tête
+                // Mise à jour de l'en-tête (Titre et Artiste)
                 if (dashboardConcertLabel != null) dashboardConcertLabel.setText(concert.getNom());
                 if (dashboardArtisteLabel != null) dashboardArtisteLabel.setText(concert.getArtiste());
 
-                // Mise à jour de la section Buvette (utilisation du premier merch comme buvette par défaut si besoin, ou adaptation future)
-                // Pour l'instant, on laisse les valeurs par défaut si non géré explicitement dans le modèle Concert
-                
+                // NOUVEAU : Date et durée
+                if (dashboardDateLabel != null) {
+                    long duree = 1;
+                    String dateStr = "Date non définie";
+                    if (concert.getDate_debut() != null && concert.getDate_fin() != null) {
+                        duree = java.time.temporal.ChronoUnit.DAYS.between(concert.getDate_debut(), concert.getDate_fin()) + 1;
+                        java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yy");
+                        dateStr = concert.getDate_debut().format(fmt) + " au " + concert.getDate_fin().format(fmt) + " (" + duree + " j)";
+                    }
+                    dashboardDateLabel.setText("📅 " + dateStr);
+                }
+
                 // Merch
                 if (dashboardMerchNomLabel != null) {
                     if (!concert.getMerchs().isEmpty()) {
@@ -390,7 +412,7 @@ public class JavaFXGUI extends IHM {
                 if (dashboardStaffCategoriesLabel != null) {
                     Set<String> categories = new HashSet<>();
                     for (Equipe e : concert.getEquipes()) {
-                        categories.add(e.getNom()); // ou e.getLocalisation() selon l'usage
+                        categories.add(e.getNom());
                     }
                     if (categories.isEmpty()) {
                         dashboardStaffCategoriesLabel.setText("Aucune équipe");
@@ -413,7 +435,7 @@ public class JavaFXGUI extends IHM {
                 }
             }
 
-        }catch (IOException exc){
+        } catch (IOException exc){
             throw new RuntimeException(exc);
         }
     }
@@ -842,7 +864,6 @@ public class JavaFXGUI extends IHM {
 
 
     private VBox creerCarteConcert(Concert c) {
-        // --- TEXTES ---
         Label nom = new Label(c.getNom());
         nom.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
@@ -853,20 +874,17 @@ public class JavaFXGUI extends IHM {
         lieu.setStyle("-fx-font-size: 14px; -fx-text-fill: #555555;");
 
         String dateStr = c.getDate_debut() != null
-                ? c.getDate_debut().format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRANCE))
+                ? c.getDate_debut().format(java.time.format.DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRANCE))
                 : "Date inconnue";
         Label date = new Label("📅 " + dateStr);
         date.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #000000;");
 
-        // --- CROIX DE SUPPRESSION (EN HAUT À DROITE) ---
         Button btnSupprimer = new Button("✕");
         btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;");
-        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;")); // Devient rouge
+        btnSupprimer.setOnMouseEntered(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnMouseExited(e -> btnSupprimer.setStyle("-fx-background-color: transparent; -fx-text-fill: #B0B0B0; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 0;"));
         btnSupprimer.setOnAction(e -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation de suppression");
-            alert.setContentText("Supprimer le concert \"" + c.getNom() + "\" ?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer le concert \"" + c.getNom() + "\" ?");
             alert.showAndWait().ifPresent(reponse -> {
                 if (reponse == ButtonType.OK) {
                     controleur.supprimerConcert(c);
@@ -875,24 +893,17 @@ public class JavaFXGUI extends IHM {
             });
         });
 
-        // --- BOUTON CALENDRIER (iCal) ---
         Button btnCalendrier = new Button("📅 Exporter");
-        btnCalendrier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
-        btnCalendrier.setOnMouseEntered(e -> btnCalendrier.setStyle("-fx-background-color: #3A3A3C; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
-        btnCalendrier.setOnMouseExited(e -> btnCalendrier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
-        btnCalendrier.setOnAction(e -> telechargerFichierIcs(c)); // Appel de la méthode d'export
+        btnCalendrier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16;");
+        btnCalendrier.setOnAction(e -> telechargerFichierIcs(c));
 
-        // --- BOUTON MODIFIER ---
         Button btnModifier = new Button("Modifier ✍");
-        btnModifier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;");
-        btnModifier.setOnMouseEntered(e -> btnModifier.setStyle("-fx-background-color: #3A3A3C; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
-        btnModifier.setOnMouseExited(e -> btnModifier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16 8 16;"));
+        btnModifier.setStyle("-fx-background-color: #2C2C2E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 8 16;");
         btnModifier.setOnAction(e -> {
             controleur.selectionnerConcert(c);
             allerVersdashboard();
         });
 
-        // --- ASSEMBLAGE DE LA CARTE ---
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, Priority.ALWAYS);
         HBox header = new HBox(10, nom, headerSpacer, btnSupprimer);
@@ -901,24 +912,20 @@ public class JavaFXGUI extends IHM {
         VBox corpsContenu = new VBox(5, artiste, lieu);
 
         Region footerSpacer = new Region();
-        HBox.setHgrow(footerSpacer, javafx.scene.layout.Priority.ALWAYS);
-
-        // On intègre le bouton calendrier juste avant le bouton modifier dans le footer
+        HBox.setHgrow(footerSpacer, Priority.ALWAYS);
         HBox footer = new HBox(10, date, footerSpacer, btnCalendrier, btnModifier);
-        footer.setAlignment(javafx.geometry.Pos.BOTTOM_CENTER);
+        footer.setAlignment(Pos.BOTTOM_CENTER);
 
         Region vSpacer = new Region();
         VBox.setVgrow(vSpacer, Priority.ALWAYS);
 
         VBox carte = new VBox(15, header, corpsContenu, vSpacer, footer);
 
-        // --- STYLE DE LA CARTE (Fond blanc, bordure dynamique) ---
         String defaultStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #EAEAEA; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);";
         String hoverStyle = "-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #000000; -fx-border-radius: 12; -fx-border-width: 1; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 18, 0, 0, 6);";
 
         carte.setStyle(defaultStyle);
         carte.setPrefSize(350, 200);
-
         carte.setOnMouseEntered(e -> carte.setStyle(hoverStyle));
         carte.setOnMouseExited(e -> carte.setStyle(defaultStyle));
 
@@ -1680,6 +1687,85 @@ public class JavaFXGUI extends IHM {
             // Sélection automatique et redirection
             controleur.selectionnerConcert(org.getDernierConcertConsulte());
             allerVersdashboard();
+        }
+    }
+
+    @FXML
+    private void allerVersCoutsDepuisDashboard() {
+        Concert c = controleur.getConcertSelectionne();
+        if (c != null) {
+            allerVersCouts(c);
+        }
+    }
+    //page pour les coûts
+    @FXML
+    public void allerVersCouts(Concert c) {
+        try {
+            controleur.selectionnerConcert(c); // Mémoriser le concert sélectionné
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("couts-view.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("IN STAGE - Coûts et Optimisation");
+
+            // 1. Initialisation des Titres
+            if (titreCoutsLabel != null) {
+                titreCoutsLabel.setText("Tableau financier : " + c.getNom());
+            }
+
+            // 2. Calcul du Matériel
+            int coutMateriel = 0;
+            if (c.getMateriels() != null) {
+                for (Materiel m : c.getMateriels()) {
+                    coutMateriel += m.getPrix();
+                }
+            }
+
+            // 3. Récupération Coût Salle (S'assurer que getCoutLocationSalle est accessible)
+            int coutSalle = 0;
+            try { coutSalle = c.getCoutLocationSalle(); } catch(Exception ignored) {}
+
+            int coutTotal = coutSalle + coutMateriel;
+
+            // 4. Affichage des Dépenses
+            if (coutSalleLabel != null) coutSalleLabel.setText("Location de la Salle : " + coutSalle + " €");
+            if (coutMaterielLabel != null) coutMaterielLabel.setText("Coût du Matériel : " + coutMateriel + " €");
+            if (coutTotalLabel != null) coutTotalLabel.setText("TOTAL DES DÉPENSES : " + coutTotal + " €");
+
+            // 5. Utilisation de votre Simulateur Financier
+            if (c.getSalle() != null && optiRevenuMaxLabel != null) {
+                fr.uga.iut2.genevent.modele.optimisation.SimulateurFinancier simulateur = new fr.uga.iut2.genevent.modele.optimisation.SimulateurFinancier();
+
+                int tarifStandard = 50; // MODIFIEZ ICI si vous avez des tarifs variables
+                int tarifVIP = 100;     // MODIFIEZ ICI
+
+                fr.uga.iut2.genevent.modele.optimisation.ResultatOptimisation opti = simulateur.calculerOptimisationRevenu(c.getSalle(), coutTotal, tarifStandard, tarifVIP);
+                fr.uga.iut2.genevent.modele.optimisation.ResultatRentabiliteMin min = simulateur.calculerMinimumBilletsPourRentabilite(c.getSalle(), coutTotal, tarifStandard, tarifVIP);
+
+                if (opti != null) {
+                    optiRevenuMaxLabel.setText("Revenu Max : " + opti.getRevenuMax() + " €");
+                    optiPlacesMaxLabel.setText("Billetterie : " + opti.getPlacesStandard() + " Stand. / " + opti.getPlacesVIP() + " VIP");
+                } else {
+                    optiRevenuMaxLabel.setText("Revenu Max : Non Rentable");
+                    optiPlacesMaxLabel.setText("La salle est trop petite par rapport aux coûts.");
+                }
+
+                if (min != null) {
+                    optiRentabiliteLabel.setText("Seuil de rentabilité : " + min.getRevenuGenere() + " €");
+                    optiPlacesMinLabel.setText("Objectif minimal : " + min.getPlacesStandard() + " Stand. / " + min.getPlacesVIP() + " VIP");
+                } else {
+                    optiRentabiliteLabel.setText("Rentabilité inatteignable");
+                    optiPlacesMinLabel.setText("Impossible de rembourser les frais.");
+                }
+            } else if (optiRevenuMaxLabel != null) {
+                optiRevenuMaxLabel.setText("Aucune salle assignée");
+                optiPlacesMaxLabel.setText("--");
+                optiRentabiliteLabel.setText("--");
+                optiPlacesMinLabel.setText("--");
+            }
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
         }
     }
 

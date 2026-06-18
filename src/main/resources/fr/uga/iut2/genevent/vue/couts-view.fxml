@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" styleClass="root-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+
+        <HBox alignment="CENTER_LEFT" prefHeight="75.0" styleClass="header">
+            <children>
+                <Button onAction="#allerVersAccueil" styleClass="icon-button">
+                    <graphic>
+                        <ImageView fitHeight="45.0" preserveRatio="true">
+                            <image><Image url="@logotransparent.png" /></image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button onAction="#allerVersdashboard" styleClass="custom-button" style="-fx-background-color: white; -fx-text-fill: black; -fx-padding: 8 25;" text="← Retour à mon concert" />
+            </children>
+        </HBox>
+
+        <StackPane VBox.vgrow="ALWAYS">
+            <children>
+                <VBox alignment="CENTER" spacing="40.0" style="-fx-padding: 40;">
+
+                    <Label fx:id="titreCoutsLabel" styleClass="text-dark" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="Tableau financier" />
+
+                    <HBox alignment="CENTER" spacing="50.0">
+                        <children>
+
+                            <!-- Carte DÉPENSES (Blanche avec bordure noire, pour respecter votre style) -->
+                            <VBox prefWidth="450.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 35; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+                                <children>
+                                    <Label styleClass="text-dark" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Dépenses Estimées 📉" />
+                                    <Separator style="-fx-background-color: #000000;" />
+
+                                    <Label fx:id="coutSalleLabel" styleClass="text-dark" style="-fx-font-size: 18px;" text="Location Salle : -- €" />
+                                    <Label fx:id="coutMaterielLabel" styleClass="text-dark" style="-fx-font-size: 18px;" text="Matériel : -- €" />
+
+                                    <Region VBox.vgrow="ALWAYS" />
+                                    <Separator style="-fx-background-color: #000000;" />
+                                    <Label fx:id="coutTotalLabel" styleClass="text-dark" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #E74C3C;" text="TOTAL DÉPENSES : -- €" />
+                                </children>
+                            </VBox>
+
+                            <!-- Carte OPTIMISATION (Noire, pour respecter votre style) -->
+                            <VBox prefWidth="550.0" spacing="20.0" style="-fx-background-color: #000000; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 35; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 5);">
+                                <children>
+                                    <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="Optimisation Financière 🚀" />
+                                    <Separator style="-fx-background-color: #555555;" />
+
+                                    <VBox spacing="5.0">
+                                        <Label style="-fx-text-fill: #AAAAAA; -fx-font-size: 14px;" text="Cible de bénéfice maximal (Salle pleine) :" />
+                                        <Label fx:id="optiRevenuMaxLabel" style="-fx-text-fill: #4CD964; -fx-font-size: 22px; -fx-font-weight: bold;" text="Revenu Max : -- €" />
+                                        <Label fx:id="optiPlacesMaxLabel" style="-fx-text-fill: white; -fx-font-size: 16px;" text="Billetterie : --" />
+                                    </VBox>
+
+                                    <Separator style="-fx-background-color: #555555;" />
+
+                                    <VBox spacing="5.0">
+                                        <Label style="-fx-text-fill: #AAAAAA; -fx-font-size: 14px;" text="Pour ne pas perdre d'argent (Remboursement des frais) :" />
+                                        <Label fx:id="optiRentabiliteLabel" style="-fx-text-fill: #FFCC00; -fx-font-size: 22px; -fx-font-weight: bold;" text="Seuil de rentabilité : -- €" />
+                                        <Label fx:id="optiPlacesMinLabel" style="-fx-text-fill: white; -fx-font-size: 16px;" text="Objectif minimal : --" />
+                                    </VBox>
+
+                                </children>
+                            </VBox>
+
+                        </children>
+                    </HBox>
+
+                </VBox>
+            </children>
+        </StackPane>
+    </children>
+</VBox>

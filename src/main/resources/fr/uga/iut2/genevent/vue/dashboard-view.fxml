@@ -41,9 +41,20 @@
                                     <left>
                                         <Label onMouseClicked="#toggleMenuD" style="-fx-font-size: 32px; -fx-text-fill: #B0B0B0; -fx-font-weight: bold; -fx-cursor: hand;" text="☰" BorderPane.alignment="CENTER" />
                                     </left>
+
                                     <center>
-                                        <Label fx:id="dashboardConcertLabel" styleClass="text-dark" style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Goosebump_France" BorderPane.alignment="CENTER" />
+                                        <HBox alignment="CENTER_LEFT" spacing="15.0" BorderPane.alignment="CENTER">
+                                            <BorderPane.margin>
+                                                <Insets left="30.0" />
+                                            </BorderPane.margin>
+                                            <children>
+                                                <Label fx:id="dashboardConcertLabel" styleClass="text-dark" style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Goosebump_France" />
+                                                <Label fx:id="dashboardDateLabel" style="-fx-font-size: 14px; -fx-text-fill: #555555; -fx-font-style: italic;" text="📅 --" />
+                                                <Button onAction="#allerVersCoutsDepuisDashboard" style="-fx-background-color: #1C1C1E; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-background-radius: 12; -fx-cursor: hand; -fx-padding: 4 12; -fx-font-size: 12px;" text="Coûts &amp; Opti 📊" />
+                                            </children>
+                                        </HBox>
                                     </center>
+
                                     <right>
                                         <Label fx:id="dashboardArtisteLabel" styleClass="text-dark" style="-fx-font-size: 24px;" text="Travis Scott" BorderPane.alignment="CENTER" />
                                     </right>
@@ -66,9 +77,9 @@
                                 <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                                     <children>
                                         <Label styleClass="text-dark" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Ma buvette" />
-                                        <VBox alignment="CENTER" prefHeight="180.0" spacing="15.0" style="-fx-background-color: #F2F2F7; -fx-background-radius: 20;">
+                                        <VBox alignment="CENTER" prefHeight="180.0" spacing="15.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);">
                                             <children>
-                                                <Label fx:id="dashboardBuvetteNomLabel" styleClass="text-dark" style="-fx-font-size: 18px;" text="Utopia" />
+                                                <Label fx:id="dashboardBuvetteNomLabel" styleClass="text-dark" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Utopia" />
                                                 <Label fx:id="dashboardBuvetteThemeLabel" styleClass="text-dark" style="-fx-font-size: 14px; -fx-font-style: italic;" text="Thème: Amerique" />
                                                 <Button onAction="#allerVersBuvette" styleClass="custom-button" style="-fx-padding: 8 25 8 25;" text="Voir plus" />
                                             </children>
@@ -79,9 +90,9 @@
                                 <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                     <children>
                                         <Label styleClass="text-dark" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Merchandising" />
-                                        <VBox alignment="CENTER" prefHeight="180.0" spacing="15.0" style="-fx-background-color: #F2F2F7; -fx-background-radius: 20;">
+                                        <VBox alignment="CENTER" prefHeight="180.0" spacing="15.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);">
                                             <children>
-                                                <Label fx:id="dashboardMerchNomLabel" styleClass="text-dark" style="-fx-font-size: 18px;" text="Utopia_store" />
+                                                <Label fx:id="dashboardMerchNomLabel" styleClass="text-dark" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Utopia_store" />
                                                 <Button onAction="#allerVersMerch" styleClass="custom-button" style="-fx-padding: 8 20 8 20;" text="Voir les produits" />
                                             </children>
                                         </VBox>
@@ -91,13 +102,14 @@
                                 <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
                                     <children>
                                         <Label styleClass="text-dark" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Personnel" />
-                                        <VBox alignment="CENTER" prefHeight="180.0" spacing="5.0" style="-fx-background-color: #F2F2F7; -fx-background-radius: 20; -fx-padding: 10;">
+                                        <VBox alignment="CENTER" prefHeight="180.0" spacing="5.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);">
                                             <children>
-                                                <Label fx:id="dashboardStaffCountLabel" styleClass="text-dark" style="-fx-font-size: 16px;" text="Nombre d'équipe: 5" />
-                                                <Label styleClass="text-dark" style="-fx-font-size: 16px;" text="Catégorie:" />
-                                                <Label fx:id="dashboardStaffCategoriesLabel" styleClass="text-dark" style="-fx-font-size: 16px;" text="Sécurité,Buvette,Merch" />
-                                                <Button onMouseClicked="#allerVersStaff" styleClass="custom-button" style="-fx-padding: 8 25 8 25;" text="Voir les équipes">
+                                                <Label fx:id="dashboardStaffCountLabel" styleClass="text-dark" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Nombre d'équipe: 5" />
+                                                <Label styleClass="text-dark" style="-fx-font-size: 14px;" text="Catégories:" />
+                                                <Label fx:id="dashboardStaffCategoriesLabel" styleClass="text-dark" style="-fx-font-size: 14px; -fx-font-style: italic;" text="Sécurité,Buvette,Merch" />
+                                                <Button onMouseClicked="#allerVersStaff" styleClass="custom-button" style="-fx-padding: 8 25 8 25;">
                                                     <VBox.margin><Insets top="15.0" /></VBox.margin>
+                                                    <text>Voir les équipes</text>
                                                 </Button>
                                             </children>
                                         </VBox>
@@ -107,12 +119,13 @@
                                 <VBox alignment="TOP_CENTER" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <children>
                                         <Label styleClass="text-dark" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Matériel" />
-                                        <VBox alignment="CENTER" prefHeight="180.0" spacing="5.0" style="-fx-background-color: #F2F2F7; -fx-background-radius: 20; -fx-padding: 10;">
+                                        <VBox alignment="CENTER" prefHeight="180.0" spacing="5.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);">
                                             <children>
-                                                <Label styleClass="text-dark" style="-fx-font-size: 16px;" text="Catégorie:" />
-                                                <Label fx:id="dashboardMaterielCategoriesLabel" styleClass="text-dark" style="-fx-font-size: 16px;" text="Son,Lumière,Sécurité" />
-                                                <Button onAction="#allerVersMateriel" styleClass="custom-button" style="-fx-padding: 8 15 8 15;" text="Voir la liste logistique">
+                                                <Label styleClass="text-dark" style="-fx-font-size: 14px;" text="Catégories:" />
+                                                <Label fx:id="dashboardMaterielCategoriesLabel" styleClass="text-dark" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-font-style: italic;" text="Son,Lumière,Sécurité" />
+                                                <Button onAction="#allerVersMateriel" styleClass="custom-button" style="-fx-padding: 8 15 8 15;">
                                                     <VBox.margin><Insets top="15.0" /></VBox.margin>
+                                                    <text>Voir la liste logistique</text>
                                                 </Button>
                                             </children>
                                         </VBox>
