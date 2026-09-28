@@ -4,7 +4,7 @@ GenEvent est une application de bureau conçue en Java et JavaFX pour la **gesti
 
 L'application accompagne les organisateurs d'événements de la création du concert jusqu'à l'optimisation de la billetterie, en passant par la gestion logistique et matérielle.
 
-## 🚀 Fonctionnalités Principales
+##  Fonctionnalités Principales
 
 * **Gestion des Concerts** : Création, modification et suppression d'événements. Exportation des dates au format agenda standard (`.ics`).
 * **Recherche de Salles** : Catalogue de salles avec filtres (capacité, tarif, disponibilité aux dates souhaitées) et visualisation interactive sur une carte web.
@@ -19,7 +19,7 @@ L'application accompagne les organisateurs d'événements de la création du con
 
 ---
 
-## 🛠️ Installation et Lancement
+##  Installation et Lancement
 
 ### Prérequis
 * **JDK 17 ou supérieur** (L'application utilise Java et les modules JavaFX).
@@ -35,7 +35,7 @@ Pour faciliter la découverte de l'application, des données de test sont géné
 
 ---
 
-## 📁 Organisation du dépôt
+##  Organisation du dépôt
 
 Le code fourni est distribué comme un module Java, regroupé dans le *package* racine `fr.uga.iut2.genevent`.
 Les fichiers sources sont dans le dossier `src`, et le dossier `persistence` est l'endroit où l'application stocke les données locales.
@@ -51,7 +51,7 @@ genevent
 
 ---
 
-## 💾 Persistence des données
+##  Persistence des données
 
 L'application ne nécessite pas de base de données externe. Un mécanisme de sérialisation binaire (classe `genevent.util.Persisteur`) est utilisé pour sauvegarder l'état de l'application localement.
 
@@ -64,7 +64,7 @@ L'application ne nécessite pas de base de données externe. Un mécanisme de s�
 
 ---
 
-## 🏗️ Architecture et Code Source
+##  Architecture et Code Source
 
 Le projet suit rigoureusement le patron de conception **MVC (Modèle, Vue, Contrôleur)**.
 Les composants sont séparés dans les *packages* respectifs `genevent.modele`, `genevent.vue` et `genevent.controleur`.
